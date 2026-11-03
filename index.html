@@ -151,7 +151,8 @@ label.s:has(>select:empty){display:none}
 body.cb #c{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;max-width:none!important;max-height:none!important;z-index:9999;background:transparent;transform:none!important;margin:0!important}
 body.cb{background:#000!important}
 .cbv{pointer-events:none;position:fixed;top:0;left:0;width:50vw;height:100vh;height:100dvh;object-fit:cover;z-index:9998;background:#000;display:none}
-body.cb *{visibility:hidden!important}body.cb #c,body.cb .cbv,body.cb #cbh,body.cb #cbh *{visibility:visible!important}
+body.cb *{visibility:hidden!important}body.cb #c,body.cb .cbv,body.cb #cbh,body.cb #cbh *,body.cb #cbo{visibility:visible!important}
+#cbo{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;z-index:9999;pointer-events:none}
 #cbh{display:none;position:fixed;left:0;right:0;bottom:9vh;z-index:10000;pointer-events:none;color:#fff;font:600 13px/1.35 'JetBrains Mono',ui-monospace,monospace;text-shadow:0 0 4px #000,0 0 8px #000}#cbh span{position:absolute;bottom:0;width:44vw;text-align:center;transform:translateX(-50%);white-space:pre-line}
 #xro{display:none;position:fixed;inset:0;z-index:99;pointer-events:none;font:500 14px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#fff;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 #xro .lg{position:relative;overflow:hidden;background:linear-gradient(150deg,rgba(255,255,255,.28),rgba(255,255,255,.08) 55%,rgba(255,255,255,.15));-webkit-backdrop-filter:blur(24px) saturate(190%) brightness(1.08);backdrop-filter:blur(24px) saturate(190%) brightness(1.08);border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -1px 1px rgba(255,255,255,.14),inset 0 0 22px rgba(255,255,255,.07),0 10px 34px rgba(0,0,0,.38)}
@@ -782,6 +783,7 @@ body.wcon #stage{touch-action:none}
 <p class="hint full" data-s="i3 o3 e2 wc">Joystick Bluetooth (PlayStation/Xbox), accoppiato al telefono: premi un tasto per farlo riconoscere. Sbloccata: stick sinistro = sposta · stick destro ↔ ruota, ↕ avvicina/allontana · R2/L2 = ingrandisci/riduci · ✕ = blocca · △ = ricentra. Bloccata: stick sinistro = muove il puntatore (segue lo sguardo) · stick destro ↕ = profondità · R2 = spingi/deforma · L2 = attrai · ✕ = sblocca.</p>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrpt" disabled> Passthrough (realtà mista)</label>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrcbh" checked> Hand tracking con la fotocamera (Cardboard, telefono)</label>
+<label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrcbo" checked> Mostra le mani tracciate (scheletro) sopra il passthrough, in entrambi gli occhi</label>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrcbsw"> Scambia mano destra/sinistra (se risultano invertite)</label>
 <label class="s" data-s="i3 o3 e2 wc">Campo visivo fotocamera (°)<b></b><input type="range" id="xrcbf" min="45" max="95" step="1" value="65"></label>
 <p class="hint full" data-s="i3 o3 e2 wc">Hand tracking da telefono: usa la fotocamera posteriore (serve il permesso), tieni le mani davanti al telefono a 20-80 cm. Le mani appaiono come in VR sul Quest: pizzico pollice+indice, pollice+medio apre il menu. Se le mani non coincidono con quelle del passthrough, regola il campo visivo.</p>
@@ -4737,7 +4739,8 @@ xrArB.onclick=()=>xrEnter(1);
     H.busy=0;
   }
   function cbHIngest(res,v,now){
-    const H=CB.H,W=v.videoWidth,Hh=v.videoHeight,fpx=(W/2)/Math.tan((+byId('xrcbf').value||65)*D/2),sw=byId('xrcbsw').checked;
+    const H=CB.H;H.ov=res.landmarks||[];H.ovt=now;
+    const W=v.videoWidth,Hh=v.videoHeight,fpx=(W/2)/Math.tan((+byId('xrcbf').value||65)*D/2),sw=byId('xrcbsw').checked;
     const L=res.landmarks||[],WL=res.worldLandmarks||[],HD=res.handedness||res.handednesses||[];
     for(let n=0;n<L.length;n++){
       const lm=L[n],wl=WL[n];if(!lm||!wl)continue;
@@ -4750,6 +4753,28 @@ xrArB.onclick=()=>xrEnter(1);
       const pv=H.hands[side];
       if(pv&&now-pv.t<300)j=j.map((q,i)=>q.map((x,a)=>pv.j[i][a]+(x-pv.j[i][a])*.55));
       H.hands[side]={j,t:now};
+    }
+  }
+  const LK=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+  function cbOv(){
+    const H=CB.H,v=CB.vs&&CB.vs[0];let o=document.getElementById('cbo');
+    const on=CB.on&&H.on&&byId('xrcbo').checked&&v;
+    if(!on){if(o)o.remove();return}
+    const dpr=Math.min(devicePixelRatio||1,2),W=Math.round(innerWidth*dpr),Hh=Math.round(innerHeight*dpr);
+    if(!o){o=document.createElement('canvas');o.id='cbo';document.body.appendChild(o)}
+    if(o.width!==W||o.height!==Hh){o.width=W;o.height=Hh}
+    const g=o.getContext('2d');g.clearRect(0,0,W,Hh);
+    if(!v.videoWidth||!H.ov||performance.now()-(H.ovt||0)>500)return;
+    const bw=W/2,s=Math.max(bw/v.videoWidth,Hh/v.videoHeight),dw=v.videoWidth*s,dh=v.videoHeight*s,dx=(bw-dw)/2,dy=(Hh-dh)/2;
+    g.lineCap='round';g.lineWidth=Math.max(2,Hh*.006);
+    for(const lm of H.ov){
+      const pin=Math.hypot(lm[4].x-lm[8].x,lm[4].y-lm[8].y)/(Math.hypot(lm[0].x-lm[9].x,lm[0].y-lm[9].y)||1)<.35,col=pin?'#3ddc97':'#6ab7ff';
+      for(let e=0;e<2;e++){
+        const P=p=>[e*bw+dx+p.x*dw,dy+p.y*dh];
+        g.save();g.beginPath();g.rect(e*bw,0,bw,Hh);g.clip();
+        g.strokeStyle=col;g.beginPath();for(const[a,b]of LK){const A=P(lm[a]),B=P(lm[b]);g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1])}g.stroke();
+        g.fillStyle=col;for(let i=0;i<21;i++){const q=P(lm[i]);g.beginPath();g.arc(q[0],q[1],(i===4||i===8)&&pin?Hh*.016:Hh*.008,0,7);g.fill()}
+        g.restore()}
     }
   }
   function cbHands(R,hp){
@@ -4771,7 +4796,7 @@ xrArB.onclick=()=>xrEnter(1);
       cbHint(m,1500)}
     const src=[];
     for(const side of['left','right']){
-      const h=H.hands[side];if(!h||now-h.t>300)continue;
+      const h=H.hands[side];if(!h||now-h.t>500)continue;
       const map=new Map();
       for(let i=0;i<25;i++){const q=h.j[i];map.set(HN[i],{p:{x:hp.x+R[0][0]*q[0]+R[0][1]*q[1]+R[0][2]*q[2],y:hp.y+R[1][0]*q[0]+R[1][1]*q[1]+R[1][2]*q[2],z:hp.z+R[2][0]*q[0]+R[2][1]*q[1]+R[2][2]*q[2]}})}
       src.push({handedness:side,hand:map,targetRayMode:'tracked-pointer'});
@@ -4789,6 +4814,7 @@ xrArB.onclick=()=>xrEnter(1);
     const views=[-1,1].map((sg,i)=>({projectionMatrix:mkP(),transform:{inverse:{matrix:inv},position:{x:hp.x+sg*ipd/2*rt[0],y:hp.y+sg*ipd/2*rt[1],z:hp.z+sg*ipd/2*rt[2]}},_vp:{x:i?Math.floor(W/2):0,y:0,width:Math.floor(W/2),height:H}}));
     const pose={transform:{position:hp,orientation:{x:q[0],y:q[1],z:q[2],w:q[3]},inverse:{matrix:inv}},views};
     try{cbHands(R,hp)}catch(ex){console.warn('mani cardboard',ex)}
+    try{cbOv()}catch(ex){}
     return{getViewerPose:()=>pose,getPose:()=>null,getJointPose:j=>j&&j.p?{transform:{position:j.p,orientation:{x:0,y:0,z:0,w:1}}}:null};
   }
   const onOri=e=>{if(e.alpha==null&&e.beta==null)return;CB.a=e.alpha||0;CB.b=e.beta||0;CB.g=e.gamma||0};
@@ -4799,7 +4825,7 @@ xrArB.onclick=()=>xrEnter(1);
     if(!CB.on)return;CB.on=0;CB.H.on=0;CB.H.hands={left:null,right:null};
     removeEventListener('deviceorientation',onOri);document.removeEventListener('fullscreenchange',fsc);
     c.removeEventListener('pointerdown',dn);c.removeEventListener('pointerup',up);c.removeEventListener('pointercancel',up);up();
-    document.body.classList.remove('cb');cbHint('');
+    document.body.classList.remove('cb');cbHint('');{const o=document.getElementById('cbo');if(o)o.remove()}
     try{wl&&wl.release()}catch(e){}wl=null;
     CB.vs.forEach(v=>{try{v.pause();v.srcObject=null;v.remove()}catch(e){}});CB.vs=[];
     if(CB.cam){try{CB.cam.getTracks().forEach(t=>t.stop())}catch(e){}CB.cam=null}
