@@ -4133,8 +4133,12 @@ function xrPrep(cdO){
         Bloccata: stick sx = muove il puntatore (segue lo sguardo) · stick dx ↕ = profondità · R2 = spingi/deforma · L2 = attrai · ✕ = sblocca
         Options/Share = esci */
   if(CB.on)try{
-    const gp=[...(navigator.getGamepads?navigator.getGamepads():[])].find(g=>g&&g.connected&&g.axes&&g.axes.length>=4);
+    const pads=[...(navigator.getGamepads?navigator.getGamepads():[])].filter(Boolean);
+    const gp=pads.find(g=>g.connected&&g.axes&&g.axes.length>=2);   /* bastano 2 assi (joystick economici); col secondo stick si ha anche rotazione e distanza */
     const G=XR.gp||(XR.gp={b:[],cx:0,cy:0,dz:0,on:0});G.ret=null;
+    {const nd=performance.now();if(nd-(G.dg||0)>1000){G.dg=nd;
+      CB.jd=gp?'':(nd-CB.t0<20000?(pads.length?'JOY: '+String(pads[0].id).slice(0,34)+' · assi '+pads[0].axes.length+' · tasti '+pads[0].buttons.length+(pads[0].connected?' (pochi assi)':' (non connesso)'):'JOY: nessuno visto · premi un tasto sul joystick'):'');
+      if(CB.jd&&!CB.H.on)cbHint(CB.jd,1500)}}
     if(gp){
       if(!G.on){G.on=1;cbHint(XR.lock?'BLOCCATA · guarda dove vuoi deformare · R2 spingi · L2 attrai · ✕ sblocca':'Joystick collegato · stick sx sposta · stick dx ruota / distanza · R2-L2 scala · ✕ blocca la nuvola',7000)}
       const dzn=v=>Math.abs(v)<.15?0:Math.sign(v)*(Math.abs(v)-.15)/.85,ax=i=>dzn(gp.axes[i]||0),bt=i=>gp.buttons[i]?gp.buttons[i].value:0;
@@ -4167,7 +4171,7 @@ function xrPrep(cdO){
         if(edge(11))G.cx=G.cy=G.dz=0;
         const dc=(Pc[0]-hp.x)*Fw[0]+(Pc[1]-hp.y)*Fw[1]+(Pc[2]-hp.z)*Fw[2],D=Math.min(30,Math.max(.3,dc+G.dz));
         const Q=rig({x:hp.x+Fw[0]*D+Rg[0]*G.cx+Up[0]*G.cy,y:hp.y+Fw[1]*D+Rg[1]*G.cx+Up[1]*G.cy,z:hp.z+Fw[2]*D+Rg[2]*G.cx+Up[2]*G.cy});
-        const r2=bt(7),l2=bt(6),att=r2>.05?-.6*r2:l2>.05?l2:0;
+        const r2=Math.max(bt(7),bt(5)),l2=Math.max(bt(6),bt(4)),att=r2>.05?-.6*r2:l2>.05?l2:0;
         XR.xp.set([Q[0],Q[1],Q[2],+byId('xrr').value*XR.k],0);xrVel(0,Q,att);
         G.ret=[Q[0],Q[1],Q[2],+byId('xrr').value*XR.k];G.st=r2>.05?-r2:l2>.05?l2:0;
       }
@@ -4793,7 +4797,7 @@ xrArB.onclick=()=>xrEnter(1);
     }
     if(now-(H.dg||0)>1000){H.dg=now;
       const m=H.fail?'MANI: modello non caricato (serve internet)':!H.lm?'MANI: carico il modello…':H.er?'MANI: errore '+H.er:(v.readyState<2||!v.videoWidth)?'MANI: fotocamera non attiva':H.n?'MANI: '+H.n+' rilevat'+(H.n>1?'e':'a'):'MANI: nessuna mano vista ('+v.videoWidth+'x'+v.videoHeight+')';
-      cbHint(m,1500)}
+      cbHint(m+(CB.jd?'\n'+CB.jd:''),1500)}
     const src=[];
     for(const side of['left','right']){
       const h=H.hands[side];if(!h||now-h.t>500)continue;
