@@ -325,7 +325,7 @@ body.wcon #stage{touch-action:none}
 </div></details>
   <details class="blk" id="blkfl" data-s="e2"><summary>Fluido</summary><div class="in">
 <div class="seg full" id="modes"><button data-m="fluido" title="Navier-Stokes">Fluido</button><button data-m="liquify" title="Spinge i pixel, resta deformato">Liquify</button><button data-m="vortici" title="Gorghi continui">Vortici</button><button data-m="sort" data-s="e2" title="Ordina i pixel per luminosità lungo una direzione">Pixel sort</button><button data-m="onde" data-s="e2" title="Onde con rifrazione">Onde</button></div>
-<label class="s">Speed<input type="range" id="spd" min="0" max="3" step=".01" value=".6"></label>
+<label class="s">Velocità<input type="range" id="spd" min="0" max="3" step=".01" value=".6"></label>
 <label class="s">Pennello<input type="range" id="rad" min=".008" max=".2" step=".002"></label>
 <label class="s"><span>Displacement</span><input type="range" id="dpa" min="0" max="1" step=".02" value=".5"></label>
 <label class="s">Dettaglio pennello<input type="range" id="dpf" min="1" max="10" step=".2" value="3.5"></label>
@@ -363,25 +363,54 @@ body.wcon #stage{touch-action:none}
 <label class="s">Saturazione<input type="range" id="pds" min=".5" max="2" step=".05" value="1.3"></label>
 <p class="hint full">Con "Dall'immagine / video" i 4 colori vengono estratti dall'immagine o dal video caricato e seguono i cambi di immagine e i fotogrammi del video.</p>
 </div></details>
-  <details class="blk" data-s="i3"><summary>Maschera particelle</summary><div class="in">
-<label class="s full">Sorgente maschera<select id="i3mk"><option value="none">Nessuna (tutte le particelle)</option><option value="lum">Luminosità dell'immagine</option><option value="sat">Saturazione dell'immagine</option><option value="alpha">Trasparenza (canale alfa)</option><option value="img">Immagine maschera caricata</option><option value="mouse" selected>Mouse (pennello)</option><option value="vr">Controller VR (Quest)</option></select></label>
-<p class="full mkvr" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Pennello VR (controller Quest)</p>
-<label class="s full mkvr">Tasto di emissione<select id="i3mvb"><option value="a" selected>Trigger (tasti anteriori) emette &middot; B / Y cancella</option><option value="s">Sempre attivo &middot; B / Y cancella</option><option value="n">Disattivato in VR</option></select></label>
-<label class="s full mkvr">Dove nascono (VR)<select id="i3mvm"><option value="air" selected>Nello spazio 3D, davanti al controller</option><option value="plane">Sul piano dell&rsquo;immagine (raggio)</option></select></label>
-<label class="s mkvr">Distanza dal controller (VR)<input type="range" id="i3mvd" min="0" max="6" step=".05" value=".3"></label>
-<label class="s mkq">Quantità per fotogramma (VR)<input type="range" id="i3mvq" min="1" max="200" step="1" value="40"></label>
-<p class="hint full mkvr" id="i3mvh"><b>Cosa fa in VR</b><br>Ogni controller emette particelle: tieni premuto il tasto scelto e nascono nello spazio 3D davanti al controller (i 3 anelli mostrano l&rsquo;area, Raggio pennello ne regola la dimensione; Distanza li allontana lungo il raggio). B / Y cancella quelle vicine. Dissolvenza 0 = restano, altrimenti svaniscono. Ne hai a disposizione quante ne imposta Densità. &laquo;Sul piano&raquo; = nascono dove il raggio tocca l&rsquo;immagine. Si attiva scegliendo &laquo;Controller VR (Quest)&raquo; come sorgente.</p>
-<label class="btn full" style="cursor:pointer">Carica immagine maschera<input type="file" id="i3mf" accept="image/*" hidden></label>
-<label class="s">Soglia min<input type="range" id="i3mlo" min="0" max="1" step=".01" value="0"></label>
-<label class="s">Soglia max<input type="range" id="i3mhi" min="0" max="1" step=".01" value="1"></label>
-<label class="s full">Morbidezza<input type="range" id="i3msf" min="0" max=".5" step=".01" value=".05"></label>
-<label class="s">Raggio pennello<input type="range" id="i3mr" min=".02" max=".5" step=".01" value=".1"></label>
-<label class="s">Dissolvenza<input type="range" id="i3mdc" min="0" max="1" step=".02" value=".2"></label>
-<label class="s mkm">Quantità emissione mouse<input type="range" id="i3mmq" min="0.5" max="40" step="0.5" value="4"></label>
-<label class="s mkm">Vivacità emissione mouse<input type="range" id="i3mcm" min="0" max="10" step="0.5" value="1"></label>
-<button class="full" id="i3mcl">Cancella pennellate</button>
-<label class="chk full"><input type="checkbox" id="i3mki"> Inverti maschera</label>
-<p class="hint full">Le particelle compaiono solo dove la maschera è accesa: bianco = particelle, nero = niente. Con Luminosità, Soglia min/max scelgono quali toni generano particelle. Con l'immagine maschera il bianco genera, il nero no. Con Mouse le particelle compaiono dove passa il cursore, senza bisogno di cliccare (Dissolvenza 0 = restano). Con Mouse + Inverti maschera le particelle nascono dal centro del cursore e si vedono solo quelle emesse (Quantità per fotogramma regola il flusso; Dissolvenza 0 = restano).</p>
+  <details class="blk" data-s="i3 o3"><summary>Interazione particelle</summary><div class="in">
+<label data-s="i3" class="s full">Sorgente particelle<select id="i3mk"><option value="none">Nessuna (tutte le particelle)</option><option value="lum">Luminosità dell'immagine</option><option value="sat">Saturazione dell'immagine</option><option value="alpha">Trasparenza (canale alfa)</option><option value="img">Immagine maschera caricata</option><option value="mouse" selected>Mouse (pennello)</option><option value="cam">Webcam</option><option value="vr">Controller VR (Quest)</option></select></label>
+<label class="s full">Comportamento<select id="mbeh"><option value="0">Buca e sposta le particelle</option><option value="1">Le particelle nascono dal mouse</option><option value="2">Nascono dal mouse e restano</option><option value="3">Attrae le particelle</option></select></label>
+<p class="hint full" id="mbehh" style="display:none"></p>
+<label data-s="i3" class="s full mkcam">Cosa legge la webcam<select id="i3cms"><option value="lum">Luminosità (zone chiare = particelle)</option><option value="mov">Movimento (dove ti muovi)</option></select></label>
+<label data-s="i3" class="s mkcam">Sensibilità movimento<input type="range" id="i3cmg" min=".2" max="4" step=".1" value="1"></label>
+<label data-s="i3" class="chk full mkcam"><input type="checkbox" id="i3cmr" checked> Specchia l'immagine (come uno specchio)</label>
+<p data-s="i3" class="hint full mkcam" id="i3cst"></p>
+<p data-s="i3" class="full mkvr" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Pennello VR (controller Quest)</p>
+<label data-s="i3" class="s full mkvr">Tasto di emissione<select id="i3mvb"><option value="a" selected>Trigger (tasti anteriori) emette &middot; B / Y cancella</option><option value="s">Sempre attivo &middot; B / Y cancella</option><option value="n">Disattivato in VR</option></select></label>
+<label data-s="i3" class="s full mkvr">Dove nascono (VR)<select id="i3mvm"><option value="air" selected>Nello spazio 3D, davanti al controller</option><option value="plane">Sul piano dell&rsquo;immagine (raggio)</option></select></label>
+<label data-s="i3" class="s mkvr">Distanza dal controller (VR)<input type="range" id="i3mvd" min="0" max="6" step=".05" value=".3"></label>
+<label data-s="i3" class="s mkq">Quantità per fotogramma (VR)<input type="range" id="i3mvq" min="1" max="200" step="1" value="40"></label>
+<p data-s="i3" class="hint full mkvr" id="i3mvh"><b>Cosa fa in VR</b><br>Ogni controller emette particelle: tieni premuto il tasto scelto e nascono nello spazio 3D davanti al controller (i 3 anelli mostrano l&rsquo;area, Raggio pennello ne regola la dimensione; Distanza li allontana lungo il raggio). B / Y cancella quelle vicine. Dissolvenza 0 = restano, altrimenti svaniscono. Ne hai a disposizione quante ne imposta Densità. &laquo;Sul piano&raquo; = nascono dove il raggio tocca l&rsquo;immagine. Si attiva scegliendo &laquo;Controller VR (Quest)&raquo; come sorgente.</p>
+<label data-s="i3" class="btn full mkimg" style="cursor:pointer">Carica immagine maschera<input type="file" id="i3mf" accept="image/*" hidden></label>
+<label data-s="i3" class="s mkth">Soglia min<input type="range" id="i3mlo" min="0" max="1" step=".01" value="0"></label>
+<label data-s="i3" class="s mkth">Soglia max<input type="range" id="i3mhi" min="0" max="1" step=".01" value="1"></label>
+<label data-s="i3" class="s full mkth full">Morbidezza<input type="range" id="i3msf" min="0" max=".5" step=".01" value=".05"></label>
+<label data-s="i3" class="s mkbr">Raggio pennello<input type="range" id="i3mr" min=".02" max=".5" step=".01" value=".1"></label>
+<label data-s="i3" class="s mkdc">Dissolvenza<input type="range" id="i3mdc" min="0" max="1" step=".02" value=".2"></label>
+<label data-s="i3" class="s mkm">Quantità emissione mouse<input type="range" id="i3mmq" min="0.5" max="40" step="0.5" value="4"></label>
+<label data-s="i3" class="s mkm">Vivacità emissione mouse<input type="range" id="i3mcm" min="0" max="10" step="0.5" value="1"></label>
+<button data-s="i3" class="full mkcl" id="i3mcl">Cancella pennellate</button>
+<label data-s="i3" class="chk full mkinv"><input type="checkbox" id="i3mki"> Inverti maschera</label>
+<p class="hint full" id="i3mkh" data-s="i3" style="display:none"></p>
+<p class="full" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Layer triangolazione Delaunay</p>
+<label class="chk full"><input type="checkbox" id="dlon"> Mostra il layer sopra le particelle</label>
+<label class="s">Precisione<input type="range" id="dlpr" min="1" max="10" step="1" value="7"></label>
+<label class="s">Soglia luminosità<input type="range" id="dlth" min=".02" max=".9" step=".01" value=".12"></label>
+<label class="s">Lunghezza max linee<input type="range" id="dlml" min=".03" max="1" step=".01" value=".5"></label>
+<label class="s">Spessore linee<input type="range" id="dlw" min=".25" max="5" step=".25" value=".75"></label>
+<label class="s">Opacità linee<input type="range" id="dlop" min=".05" max="1" step=".05" value=".8"></label>
+<label class="s">Colore linee<input type="color" id="dlcol" value="#ffffff"></label>
+<label class="chk full"><input type="checkbox" id="dlpt"> Mostra anche i punti</label>
+<label class="s full">Fusione: Delaunay ↔ Voronoi<input type="range" id="dlmx" min="0" max="1" step=".01" value="1"></label>
+<label class="s full">Reattività (bassa = più fluido)<input type="range" id="dlfl" min="1" max="30" step="1" value="8"></label>
+<p class="hint full">Il layer legge dove ci sono particelle luminose, ne sceglie dei punti e li unisce con la triangolazione di Delaunay, quindi collega anche gruppi di particelle distanti (per esempio due sagome). Precisione alta = più punti e più triangoli (più pesante). Lunghezza max taglia i collegamenti troppo lunghi.</p>
+<p class="full" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Spinta del mouse</p>
+<label class="s">Raggio<input type="range" id="mra" min=".03" max=".6" step=".01" value=".18"></label>
+<label class="s">Spinta<input type="range" id="mst" min="-2" max="2" step=".05" value="1"></label>
+<label class="s">Vortice<input type="range" id="mwi" min="-2" max="2" step=".05" value=".6"></label>
+<label class="s">Trascinamento<input type="range" id="mdr" min="0" max="3" step=".05" value="1.2"></label>
+<label class="s">Profondità<input type="range" id="mzd" min="0" max="2" step=".05" value=".8"></label>
+<label class="s">Click ×<input type="range" id="mck" min="1" max="4" step=".1" value="2"></label>
+<label class="s">Irregolarità forma<input type="range" id="mir" min="0" max="1" step=".02" value="0"></label>
+<label class="s">Sfrangiatura bordo<input type="range" id="mgn" min="0" max="1" step=".02" value="0"></label>
+<label class="s full">Allungamento (scia)<input type="range" id="mel" min="0" max="1" step=".02" value="0"></label>
+<p class="hint full">Forma: Irregolarità = contorno a lobi che ondeggia · Sfrangiatura = bordo a spruzzo · Allungamento = coda a cometa dietro il cursore. A 0 il raggio resta circolare. Muovi il mouse sulle particelle · tieni premuto per spingere più forte · Spinta negativa = attrae</p>
 </div></details>
   <details class="blk" data-s="i3 o3"><summary>Particelle</summary><div class="in">
 <label class="s full" data-s="o3">Rendering<select id="rmode"><option value="particelle">Particelle 3D</option><option value="gaussian">Gaussian splat</option></select></label>
@@ -417,6 +446,7 @@ body.wcon #stage{touch-action:none}
     <button data-p="onde">Onde</button>
     <button data-p="tempesta">Tempesta</button>
     <button data-p="correnti">Correnti</button>
+    <button data-p="sciame">Sciame</button>
   </div>
 </div>
 <label hidden style="display:none"><input type="checkbox" id="i3inv"></label>
@@ -433,6 +463,7 @@ body.wcon #stage{touch-action:none}
 <input type="file" id="audfin" accept="audio/*,.wav,.mp3,.ogg,.m4a,.flac" style="display:none">
 <label class="s full">Intensità<b></b><input type="range" id="audamt" min="0" max="2" step=".05" value="1.6"></label>
 <label class="s full">Sensibilità<b></b><input type="range" id="audsns" min=".3" max="4" step=".05" value="1.5"></label>
+<label class="s full">Velocità (audio reactive)<b></b><input type="range" id="audspd" min="0" max="3" step=".01" value=".6"></label>
 <label class="s full">Morbidezza<b></b><input type="range" id="audsm" min="0" max=".95" step=".01" value=".55"></label>
 <div id="audmt" class="full"><span>Bassi</span><div class="aumt"><div></div></div><span>Medi</span><div class="aumt"><div></div></div><span>Alti</span><div class="aumt"><div></div></div><span>Beat</span><div class="aumt"><div></div></div></div>
 <div class="full hint" style="margin-top:4px">Parametri che reagiscono · banda che li pilota</div>
@@ -440,6 +471,12 @@ body.wcon #stage{touch-action:none}
 <div id="audtg" class="full"></div>
 <p class="hint full" id="audst">Spento. Ogni preset reagisce a modo suo: Calmo respira sui bassi, Fumo si increspa sugli alti, Onde ondeggia sui bassi, Tempesta esplode a ogni colpo, Correnti si avvolge sui medi.</p>
 </div>
+<h2 class="full">Forza speculare</h2>
+<label class="s">Quota di particelle<input type="range" id="sqf" min="0" max="1" step=".01" value="0"></label>
+<label class="s">Tempo di traversata (s)<input type="range" id="sqt" min=".3" max="30" step=".1" value="4"></label>
+<label class="s">Dispersione laterale<input type="range" id="sqd" min="0" max="1" step=".01" value=".6"></label>
+<label class="s">Asse speculare X<input type="range" id="sqx" min="-1" max="1" step=".01" value="0"></label>
+<p class="hint full">Solo una parte delle particelle (la quota) parte verso la silhouette speculare in un flusso continuo a senso unico: a metà viaggio è piena, mentre all'arrivo si dissolve sfumando e nuove particelle nascono sfumando dal corpo di origine; le altre restano ferme, quindi le silhouette non si svuotano. Una quota bassa (0,1–0,3) dà l'effetto nuvola tra i due corpi.</p>
 <label class="s full">Trails · tipo<select id="trm"><option value="0">Scia continua</option><option value="1">Copie (ripetizione)</option><option value="2">Tratteggio (scia a trattini)</option><option value="3">Fluid hairs (optical flow)</option><option value="4">Serpentina (scia ondulata)</option></select></label>
 <label class="s">Trails · lunghezza<input type="range" id="trl" min="0" max="2" step=".02" value="0"></label>
 <label class="s">Trails · campioni<input type="range" id="trk" min="2" max="16" step="1" value="8"></label>
@@ -500,18 +537,6 @@ body.wcon #stage{touch-action:none}
 <label class="s">Rughe<input type="range" id="frg" min="0" max="1" step=".02" value=".6"></label>
 <label class="s">Scorrimento<input type="range" id="fsl" min="0" max="1.5" step=".02" value=".5"></label>
 <label class="s">Ombra pieghe<input type="range" id="fao" min="0" max="2" step=".02" value=".8"></label>
-</div></details>
-  <details class="blk" data-s="i3 o3"><summary>Mouse</summary><div class="in">
-<label class="s">Raggio<input type="range" id="mra" min=".03" max=".6" step=".01" value=".18"></label>
-<label class="s">Spinta<input type="range" id="mst" min="-2" max="2" step=".05" value="1"></label>
-<label class="s">Vortice<input type="range" id="mwi" min="-2" max="2" step=".05" value=".6"></label>
-<label class="s">Trascinamento<input type="range" id="mdr" min="0" max="3" step=".05" value="1.2"></label>
-<label class="s">Profondità<input type="range" id="mzd" min="0" max="2" step=".05" value=".8"></label>
-<label class="s">Click ×<input type="range" id="mck" min="1" max="4" step=".1" value="2"></label>
-<label class="s">Irregolarità forma<input type="range" id="mir" min="0" max="1" step=".02" value="0"></label>
-<label class="s">Sfrangiatura bordo<input type="range" id="mgn" min="0" max="1" step=".02" value="0"></label>
-<label class="s full">Allungamento (scia)<input type="range" id="mel" min="0" max="1" step=".02" value="0"></label>
-<p class="hint full">Forma: Irregolarità = contorno a lobi che ondeggia · Sfrangiatura = bordo a spruzzo · Allungamento = coda a cometa dietro il cursore. A 0 il raggio resta circolare. Muovi il mouse sulle particelle · tieni premuto per spingere più forte · Spinta negativa = attrae</p>
 </div></details>
 
   <details class="blk" data-s="i3 o3"><summary>Luce</summary><div class="in">
@@ -730,6 +755,8 @@ body.wcon #stage{touch-action:none}
 <label class="s">Dimensione<input type="range" id="wcps" min=".5" max="5" step=".1" value="1.8"></label>
 <label class="s">Durata<input type="range" id="wcpl" min=".3" max="3" step=".05" value="1.2"></label>
 <label class="s">Gravità<input type="range" id="wcpg" min="-1" max="1" step=".02" value=".2"></label>
+<label class="chk full"><input type="checkbox" id="wcad" checked> Qualità adattiva (mantiene 60 fps)</label>
+<p class="hint full">Se gli fps scendono sotto circa 55 riduce prima le iterazioni del fluido e poi un poco la quantità di capelli; torna alla qualità piena appena c'è margine. Spegnila per avere sempre il massimo.</p>
 </div></details>
   <details class="blk" data-s="wc"><summary>Colore</summary><div class="in">
 <label class="s full">Palette<select id="wcpal"><option value="fur">Pelo (giallo · blu · rosa · viola · verde)</option><option value="neon">Neon</option><option value="fuoco">Fuoco</option><option value="aurora">Aurora</option><option value="mono">Mono</option><option value="custom">Personalizzata</option></select></label>
@@ -877,9 +904,8 @@ body.wcon #stage{touch-action:none}
   <details class="blk" data-s="i3 e2 o3"><summary>OSC</summary><div class="in">
 <div class="row full"><input type="text" id="wsu" value="ws://localhost:8080" aria-label="URL WebSocket"><button id="wsb">Connetti</button></div>
 <span id="wss" class="full">non connesso</span>
-<pre class="full">/fluida/x   0–1
-/fluida/y   0–1
-/fluida/pointer x y</pre>
+<p class="hint full">Ogni parametro del pannello si controlla con /fluida/nome_del_parametro (es. /fluida/velocita 0.5). Slider: valore 0–1 sul suo intervallo · interruttori: 0 / 1 · menu: numero della voce (0, 1, 2…) o il nome · pulsanti: 1. Preset movimento: /fluida/preset_movimento con nome o numero. Mouse: /fluida/x, /fluida/y (0–1) o /fluida/pointer x y. Elenco completo qui sotto.</p>
+<textarea id="oscl" class="full" readonly rows="8" style="font:11px monospace;color:var(--wh);background:#000;border:1px solid var(--gr);width:100%;box-sizing:border-box"></textarea>
 </div></details>
   <div class="acts"><button id="rst" title="Azzera la deformazione">Azzera</button><button id="sv" title="Salva l'immagine corrente come PNG">Salva PNG</button><button id="rs" title="Reset impostazioni">Default</button></div>
   <div class="acts" id="prjrow"><button id="prjsv" class="pri" title="Salva tutto il progetto in un file (Ctrl/Cmd+S)">Salva progetto</button><label class="btn" title="Apri un progetto salvato (puoi anche trascinare il file nella finestra)">Apri progetto<input type="file" id="prjop" accept=".json,.fluida,application/json" hidden></label></div>
@@ -1225,7 +1251,7 @@ vec3 trc(vec3 ro,vec3 rd,int nb){
   return acc;}
 `;
 
-const pvP=P(`uniform sampler2D P,U,H,F;uniform float A,ya,pi,cd,sc,fl,sp,dm,de,tu,T,nz,ns,nt,ob,gA,gF,gR,gS,gT,mr,ms,mw,md,mz,mo,mel,mir,mgn,nO,nL,nG,nR,cE,cG,wJ,wR,wP,vF,vS,vW,kV,kD,kA,kT,nS;uniform vec3 cam;uniform vec2 mp,mv,mp2,mv2;uniform float mo2;uniform vec4 xhp[10],xhq[10];uniform float xhf;
+const pvP=P(`uniform sampler2D P,U,H,F;uniform float A,ya,pi,cd,sc,fl,sp,dm,de,tu,T,nz,ns,nt,ob,gA,gF,gR,gS,gT,mr,ms,mw,md,mz,mo,mel,mir,mgn,nO,nL,nG,nR,cE,cG,wJ,wR,wP,vF,vS,vW,kV,kD,kA,kT,nS,qF,qT,qP,qD,qX,qK;uniform vec3 cam;uniform vec2 mp,mv,mp2,mv2;uniform float mo2;uniform vec4 xhp[10],xhq[10];uniform float xhf;
 `+RR+`float hs(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
 float vn3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
   return mix(mix(mix(hs(i),hs(i+vec3(1,0,0)),f.x),mix(hs(i+vec3(0,1,0)),hs(i+vec3(1,1,0)),f.x),f.y),
@@ -1272,6 +1298,7 @@ vec3 NF(vec3 q,float k,float t){int m=int(k+.5);
   if(m==4)return wlp(q);
   if(m==5)return wvp(q,t);
   return fv3(q)-.5;}
+float hq(vec2 s,float k){return fract(sin(dot(s,vec2(12.9898,78.233))+k)*43758.5453);}
 void main(){
   ivec2 ij=ivec2(gl_FragCoord.xy);vec3 p=texelFetch(P,ij,0).xyz,u=texelFetch(U,ij,0).xyz;vec4 h4=texelFetch(H,ij,0);vec3 h=h4.xyz;bool fr_=h4.w>1.5;
   vec3 b=(ob>.5||fr_)?h:vec3(h.xy,(h.z-.5)*de);
@@ -1280,9 +1307,10 @@ void main(){
   vec3 hp=b+dir*(hh-.5)*gA+wf*gS*.6;
   float r3=fract(sin(dot(h.xy,vec2(73.156,91.733)))*13758.5453)-.5;
   if(kV>0.){
-    vec3 vb=(ob>.5||fr_)?h+vec3(fract(sin(dot(h.xy,vec2(12.9898,78.233)))*43758.5453)-.5,fract(sin(dot(h.xy,vec2(39.346,11.135)))*24634.6345)-.5,r3)*kD*2.:vec3(h.xy,r3*kD*2.);
-    vec3 vt=vb+NF(vb*ns*.5+vec3(kT*.3,kT*.17,kT*.5),nt,kT)*kA*1.4;
-    hp=mix(hp,vt,kV);}
+    float ok=(ob>.5||fr_)?.3:1.;
+    vec3 vb=(ob>.5||fr_)?h+ok*vec3(fract(sin(dot(h.xy,vec2(12.9898,78.233)))*43758.5453)-.5,fract(sin(dot(h.xy,vec2(39.346,11.135)))*24634.6345)-.5,r3)*kD*2.:vec3(h.xy,r3*kD*2.);
+    vec3 vt=vb+NF(vb*ns*.5+vec3(kT*.3,kT*.17,kT*.5),nt,kT)*kA*1.4*ok;
+    hp=mix(hp,vt,kV*((ob>.5||fr_)?.6:1.));}
   mat3 M=R(ya,pi);vec3 q=M*(p-cam);
   vec2 uv=vec2(q.x/A,q.y)*sc*cd/(cd-q.z)*.5+.5;
   vec2 f=texture(F,uv).xy;
@@ -1311,8 +1339,29 @@ void main(){
   }}
   for(int i=0;i<10;i++){vec4 H=xhp[i];if(H.w>0.){vec3 d=p-H.xyz;float l=length(d),f=1.-smoothstep(0.,H.w,l);
     if(f>0.){vec4 Q=xhq[i];a+=(Q.xyz*3.-u)*f*.2*xhf;a-=d/(l+1e-3)*Q.w*f*.05*xhf;}}}
-  o=vec4((u+a)*dm,1);}`),
-ppP=P(`uniform sampler2D P,U;uniform float kk;void main(){ivec2 i=ivec2(gl_FragCoord.xy);o=vec4(texelFetch(P,i,0).xyz+texelFetch(U,i,0).xyz*kk,1);}`),
+  float qfd=1.;
+  if(qF>0.){
+    float qs=.75+.5*hq(h.xy,3.1),qo=hq(h.xy,5.7);
+    float t1=qT*.5*qs+qo,t0=qP*.5*qs+qo,c1=floor(t1),qw=t1-c1;
+    if(hq(h.xy,fract(c1*.6180339)*40.+9.1)<qF){
+      if(floor(t0)<c1)u=vec3(0);
+      qfd=smoothstep(0.,.15,qw)*(1.-smoothstep(.8,1.,qw));
+      float kc=fract(c1*.6180339)*40.;
+      vec2 sc=vec2(hq(h.xy,kc+1.)-.5,hq(h.xy,kc+2.)-.5);
+      vec3 qm=vec3(2.*qX-hp.x,hp.y,hp.z);
+      vec3 qg=mix(hp,qm,qw)+vec3(sc.x*.6,sc.y*.4,0.)*sin(qw*3.14159)*qD;
+      a+=(qg-p)*.12/qK;
+    }
+  }
+  o=vec4((u+a)*dm,1.-qfd);}`),
+ppP=P(`uniform sampler2D P,U,H;uniform float kk,qF,qT,qP,qD,ob,de;
+float hq(vec2 s,float k){return fract(sin(dot(s,vec2(12.9898,78.233))+k)*43758.5453);}
+void main(){ivec2 i=ivec2(gl_FragCoord.xy);vec3 np=texelFetch(P,i,0).xyz+texelFetch(U,i,0).xyz*kk;
+  if(qF>0.){vec4 h4=texelFetch(H,i,0);vec3 h=h4.xyz;
+    float qs=.75+.5*hq(h.xy,3.1),qo=hq(h.xy,5.7);
+    float t1=qT*.5*qs+qo,t0=qP*.5*qs+qo,c0=floor(t0);
+    if(floor(t1)>c0&&hq(h.xy,fract(c0*.6180339)*40.+9.1)<qF)np=(ob>.5||h4.w>1.5)?h:vec3(h.xy,(h.z-.5)*de);}
+  o=vec4(np,1);}`),
 
 /* Fragment shader particelle geometriche: due luci extra con tipo indipendente
    + luce principale con ON/OFF. Tutte passano per lightOne in world-space. */
@@ -1454,6 +1503,7 @@ void main(){
   vec3 p=pp.xyz,u=texelFetch(U,ij,0).xyz,c;
   float size=cell*mix(sz,mix(mn,mx,h(id,1.)),rnd);
   size*=1.-trT*float(jj)/max(trK,1.);
+  if(em<.5)size*=1.-texelFetch(U,ij,0).w;
   if(em>.5){float t=pp.w/(lf*(.5+h(id,7.)));size*=2.5;
     if(t>=1.)size=0.;else size*=smoothstep(0.,.08,t)*(1.-smoothstep(.65,1.,t));
     c=pc(t);}else c=texelFetch(C,ij,0).rgb;
@@ -1908,26 +1958,28 @@ function mk(w,h,f,data){
 }
 const dbl=(w,h,f,d)=>({a:mk(w,h,f,d),b:mk(w,h,f,d),get read(){return this.a},get write(){return this.b},swap(){[this.a,this.b]=[this.b,this.a]}});
 var KIA=0,KIAU=0,SCRO=null;
+function sU(p,k,v,unit){
+  if(!(k in p.u))p.u[k]=gl.getUniformLocation(p.p,k);const l=p.u[k];
+  if(l===null)return unit;
+  if(k==='uXR')gl.uniformMatrix3fv(l,false,v);
+  else if(k==='xhp'||k==='xhq'||k==='xhj'||k==='xhc'||k==='xht')gl.uniform4fv(l,v);
+  else if(v instanceof WebGLTexture){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,v);gl.uniform1i(l,unit);return unit+1}
+  else if(typeof v==='number')gl.uniform1f(l,v);
+  else if(v.length===2)gl.uniform2f(l,v[0],v[1]);
+  else if(v.length===3)gl.uniform3f(l,v[0],v[1],v[2]);
+  else if(v.length===4)gl.uniform4f(l,v[0],v[1],v[2],v[3]);
+  else if(v.length===6)gl.uniform3fv(l,v);
+  else if(v.length===8)gl.uniform4fv(l,v);
+  else if(v.length===12)gl.uniform3fv(l,v);
+  else gl.uniform3fv(l,v);
+  return unit}
 function draw(p,out,u,mode=gl.TRIANGLES,n=3,inst=0){
   if(!out&&SCRO)out=SCRO;
-  if(!('kiA' in u))u={...u,kiA:KIAU};
-  u={...u,uXon:XR.on?1:0,uPt:XR.pt?1:0,uXR:XR.R};
   gl.useProgram(p.p);let unit=0;
-  for(const k in u){
-    const v=u[k];if(!(k in p.u))p.u[k]=gl.getUniformLocation(p.p,k);const l=p.u[k];
-    if(l===null)continue;
-    if(k==='uXR')gl.uniformMatrix3fv(l,false,v);
-    else if(k==='xhp'||k==='xhq'||k==='xhj'||k==='xhc'||k==='xht')gl.uniform4fv(l,v);
-    else if(v instanceof WebGLTexture){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,v);gl.uniform1i(l,unit++)}
-    else if(typeof v==='number')gl.uniform1f(l,v);
-    else if(v.length===2)gl.uniform2f(l,v[0],v[1]);
-    else if(v.length===3)gl.uniform3f(l,v[0],v[1],v[2]);
-    else if(v.length===4)gl.uniform4f(l,v[0],v[1],v[2],v[3]);
-    else if(v.length===6)gl.uniform3fv(l,v);
-    else if(v.length===8)gl.uniform4fv(l,v);
-    else if(v.length===12)gl.uniform3fv(l,v);
-    else gl.uniform3fv(l,v);
-  }
+  /* uniform comuni (kiA, uXon, uPt, uXR) impostati a parte: prima si copiava due volte l'intero oggetto u a ogni draw */
+  for(const k in u){if(k==='uXon'||k==='uPt'||k==='uXR')continue;unit=sU(p,k,u[k],unit)}
+  if(!('kiA' in u))unit=sU(p,'kiA',KIAU,unit);
+  unit=sU(p,'uXon',XR.on?1:0,unit);unit=sU(p,'uPt',XR.pt?1:0,unit);unit=sU(p,'uXR',XR.R,unit);
   gl.bindFramebuffer(gl.FRAMEBUFFER,out?out.fbo:(XR.on?XR.fb:null));
   if(!out&&XR.on&&XR.cur){const e=XR.cur;gl.enable(gl.SCISSOR_TEST);gl.scissor(e.sx,e.sy,e.sw,e.sh);gl.viewport(Math.round(e.vx),Math.round(e.vy),Math.round(e.Vw),Math.round(e.Vh))}
   else{gl.disable(gl.SCISSOR_TEST);gl.viewport(0,0,out?out.w:c.width,out?out.h:c.height)}
@@ -2311,11 +2363,11 @@ function oscMove(){
 }
 const n01=x=>Math.max(0,Math.min(1,+x||0));
 function onOSC({a,v}){
-  const k=a.replace(/^\/fluida/,'');
+  const k=String(a||'').replace(/^\/?fluida/,'');
   if(k==='/x')O.x=n01(v[0]);
   else if(k==='/y')O.y=n01(v[0]);
   else if(k==='/pointer'||k==='/xy'){O.x=n01(v[0]);O.y=n01(v[1])}
-  else return;
+  else{oscParam(k,v);return}
   oscMove();
 }
 let ws;const wsb=document.getElementById('wsb'),wss=document.getElementById('wss'),wsu=document.getElementById('wsu');
@@ -2349,6 +2401,8 @@ function fpsTick(){
   const hide=!!(pw&&!pw.closed)||!!document.fullscreenElement;   /* niente fps su proiezione / schermo intero */
   FPS.el.hidden=hide;if(!hide)FPS.el.textContent=Math.round(FPS.v)+' fps';
   if(dt>1500){FPS.lo=FPS.hi=0;return}
+  FPS.mx=Math.max((FPS.mx||0)*.995,FPS.v);
+  if(V==='wc')wcGov(FPS.v);
   const lx=!!(window.LOWAUTO&&XR.on),tLo=lx?55:42,tHi=lx?66:57,sMin=lx?.35:.35,sMax=lx?.6:.6;   /* in VR su Quest/mobile si punta a ~72 fps, la scena ambiente varia tra 0.35 e 0.6 */
   if(FPS.v<tLo)FPS.lo++;else FPS.lo=0;
   if(FPS.v>tHi)FPS.hi++;else FPS.hi=0;
@@ -2861,7 +2915,122 @@ function RAF(){
   requestAnimationFrame(run);
   if(!OUT&&pw&&!pw.closed)try{pw.requestAnimationFrame(run)}catch(e){}
 }
-function winTick(){XR.w=0;if(XR.ses)return;frame()}
+
+/* ================= Layer Delaunay sopra le particelle ================= */
+const DL={cv:null,x:null,sm:null,sx:null,seen:null,n:0};
+function dlDelaunay(X,Y,n,W,H){   /* Bowyer-Watson: indici dei triangoli, a tre a tre */
+  const N=n+3,x=new Float64Array(N),y=new Float64Array(N);
+  for(let i=0;i<n;i++){x[i]=X[i]+((i*7919)%13)*.0007;y[i]=Y[i]+((i*104729)%11)*.0007}
+  const M=Math.max(W,H)*20,cx=W/2,cy=H/2;
+  x[n]=cx-M;y[n]=cy-M;x[n+1]=cx+M;y[n+1]=cy-M;x[n+2]=cx;y[n+2]=cy+M;
+  const TA=[],TB=[],TC=[],TX=[],TY=[],TR=[];
+  const add=(a,b,c)=>{const ax=x[a],ay=y[a],bx=x[b],by=y[b],ex=x[c],ey=y[c];
+    let d=2*(ax*(by-ey)+bx*(ey-ay)+ex*(ay-by));if(Math.abs(d)<1e-12)d=1e-12;
+    const a2=ax*ax+ay*ay,b2=bx*bx+by*by,e2=ex*ex+ey*ey,
+      ux=(a2*(by-ey)+b2*(ey-ay)+e2*(ay-by))/d,uy=(a2*(ex-bx)+b2*(ax-ex)+e2*(bx-ax))/d;
+    TA.push(a);TB.push(b);TC.push(c);TX.push(ux);TY.push(uy);TR.push((ax-ux)*(ax-ux)+(ay-uy)*(ay-uy))};
+  add(n,n+1,n+2);
+  for(let p=0;p<n;p++){
+    const px=x[p],py=y[p],bad=[];
+    for(let t=0;t<TA.length;t++){const dx=px-TX[t],dy=py-TY[t];if(dx*dx+dy*dy<TR[t])bad.push(t)}
+    const ed=new Map();
+    for(const t of bad){const v=[TA[t],TB[t],TC[t]];
+      for(let k=0;k<3;k++){const a=v[k],b=v[(k+1)%3],key=a<b?a*N+b:b*N+a;ed.set(key,(ed.get(key)||0)+1)}}
+    for(let k=bad.length-1;k>=0;k--){const t=bad[k],l=TA.length-1;
+      if(t!==l){TA[t]=TA[l];TB[t]=TB[l];TC[t]=TC[l];TX[t]=TX[l];TY[t]=TY[l];TR[t]=TR[l]}
+      TA.pop();TB.pop();TC.pop();TX.pop();TY.pop();TR.pop()}
+    for(const[key,c]of ed)if(c===1)add(Math.floor(key/N),key%N,p);
+  }
+  const out=[];out.cx=[];out.cy=[];
+  for(let t=0;t<TA.length;t++)if(TA[t]<n&&TB[t]<n&&TC[t]<n){out.push(TA[t],TB[t],TC[t]);out.cx.push(TX[t]);out.cy.push(TY[t])}
+  return out}
+const DLP=new Float64Array(4),DLQ=new Float64Array(4),DLO=new Float64Array(4);
+function dlClip(x0,y0,x1,y1,W,H){   /* Liang-Barsky: taglia il segmento nel rettangolo, risultato in DLO */
+  const dx=x1-x0,dy=y1-y0;let t0=0,t1=1;
+  DLP[0]=-dx;DLP[1]=dx;DLP[2]=-dy;DLP[3]=dy;DLQ[0]=x0;DLQ[1]=W-x0;DLQ[2]=y0;DLQ[3]=H-y0;
+  for(let i=0;i<4;i++){const p=DLP[i],q=DLQ[i];
+    if(p===0){if(q<0)return false}
+    else{const r=q/p;if(p<0){if(r>t1)return false;if(r>t0)t0=r}else{if(r<t0)return false;if(r<t1)t1=r}}}
+  DLO[0]=x0+t0*dx;DLO[1]=y0+t0*dy;DLO[2]=x0+t1*dx;DLO[3]=y0+t1*dy;return true}
+function dlRender(){
+  const g=id=>document.getElementById(id);
+  if(!DL.cv){
+    const cv=document.createElement('canvas');cv.id='dlc';cv.style.cssText='pointer-events:none;z-index:6;display:none';
+    document.getElementById('stage').appendChild(cv);DL.cv=cv;DL.x=cv.getContext('2d');
+    DL.sm=document.createElement('canvas');DL.sx=DL.sm.getContext('2d',{willReadFrequently:true})}
+  const cv=DL.cv,x=DL.x;
+  if(!g('dlon').checked||OUT||V==='wc'||XR.ses||document.body.classList.contains('blackout')){if(cv.style.display!=='none')cv.style.display='none';DL.t=0;return}
+  const now=performance.now(),dt=Math.min(.1,Math.max(.001,(now-(DL.t||now))/1000));DL.t=now;
+  const st=document.getElementById('stage').getBoundingClientRect(),r=c.getBoundingClientRect();
+  cv.style.display='block';cv.style.position='absolute';cv.style.inset='auto';cv.style.margin='0';
+  cv.style.left=(r.left-st.left)+'px';cv.style.top=(r.top-st.top)+'px';cv.style.width=r.width+'px';cv.style.height=r.height+'px';
+  const tw=Math.max(2,Math.round(c.width/2)),th=Math.max(2,Math.round(c.height/2));
+  if(cv.width!==tw||cv.height!==th){cv.width=tw;cv.height=th}
+  /* 1) campionamento a bassa risoluzione dell'immagine delle particelle */
+  const SW=192,SH=Math.max(2,Math.round(SW*c.height/c.width));
+  if(DL.sm.width!==SW||DL.sm.height!==SH){DL.sm.width=SW;DL.sm.height=SH}
+  DL.sx.drawImage(c,0,0,SW,SH);
+  const d=DL.sx.getImageData(0,0,SW,SH).data,thr=(+g('dlth').value)*255,target=48*(+g('dlpr').value),
+    cs=Math.max(2,Math.round(Math.sqrt(SW*SH/target))),cw=Math.ceil(SW/cs),ch=Math.ceil(SH/cs),ns=cw*ch;
+  /* 2) siti persistenti: uno per cella, seguono il baricentro luminoso con smorzamento e isteresi, così non scattano */
+  if(DL.cs!==cs||DL.ns!==ns||DL.SW!==SW||DL.SH!==SH){DL.cs=cs;DL.ns=ns;DL.SW=SW;DL.SH=SH;
+    DL.ms=new Float32Array(ns);DL.px=new Float32Array(ns);DL.py=new Float32Array(ns);DL.on=new Uint8Array(ns);
+    DL.aw=new Float32Array(ns);DL.ax=new Float32Array(ns);DL.ay=new Float32Array(ns);DL.ac=new Float32Array(ns);DL.T=null}
+  const aw=DL.aw,ax=DL.ax,ay=DL.ay,ac=DL.ac;aw.fill(0);ax.fill(0);ay.fill(0);ac.fill(0);
+  for(let yy=0;yy<SH;yy++){const row=((yy/cs)|0)*cw;
+    for(let xx=0;xx<SW;xx++){const o=(yy*SW+xx)*4,v=Math.max(d[o],d[o+1],d[o+2])-thr;
+      if(v>0){const sl=row+((xx/cs)|0);aw[sl]+=v;ax[sl]+=v*(xx+.5);ay[sl]+=v*(yy+.5);ac[sl]++}}}
+  const k=+g('dlfl').value,ra=1-Math.exp(-dt*k),ms=DL.ms,px=DL.px,py=DL.py,on=DL.on,act=[];let sig=0;
+  for(let sl=0;sl<ns;sl++){
+    const cov=ac[sl]/(cs*cs);ms[sl]+=(cov-ms[sl])*ra;
+    if(ac[sl]>0){const cx=ax[sl]/aw[sl],cy=ay[sl]/aw[sl];
+      if(on[sl]){px[sl]+=(cx-px[sl])*ra;py[sl]+=(cy-py[sl])*ra}else{px[sl]=cx;py[sl]=cy}}
+    if(!on[sl]&&ms[sl]>.07)on[sl]=1;else if(on[sl]&&ms[sl]<.03)on[sl]=0;
+    if(on[sl]){act.push(sl);sig=(sig*31+sl+1)|0}}
+  const n=act.length;x.clearRect(0,0,tw,th);
+  if(n<3)return;
+  const X=new Float32Array(n),Y=new Float32Array(n);
+  for(let i=0;i<n;i++){X[i]=px[act[i]];Y[i]=py[act[i]]}
+  /* 3) la topologia (chi è vicino a chi) si ricalcola ogni 3 frame o quando cambiano i siti; le posizioni ogni frame */
+  if(!DL.T||DL.sig!==sig||DL.n!==n||++DL.age>=3){DL.T=dlDelaunay(X,Y,n,SW,SH);DL.sig=sig;DL.n=n;DL.age=0}
+  const T=DL.T,nt=T.length/3,sx=tw/SW,sy=th/SH,hx=g('dlcol').value,mx=+g('dlmx').value,
+    maxL=(+g('dlml').value)*SW,maxL2=maxL*maxL,Rm=maxL*.5;
+  if(!DL.seen||DL.seen.length<n*n)DL.seen=new Int32Array(n*n);else DL.seen.fill(0,0,n*n);
+  const seen=DL.seen;
+  if(!DL.CX||DL.CX.length<nt){DL.CX=new Float32Array(nt+64);DL.CY=new Float32Array(nt+64)}
+  const CX=DL.CX,CY=DL.CY;
+  /* riquadro dei punti: la rete non esce mai dalla zona delle particelle (niente linee verso sopra e sotto) */
+  let bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9;
+  for(let i=0;i<n;i++){if(X[i]<bx0)bx0=X[i];if(X[i]>bx1)bx1=X[i];if(Y[i]<by0)by0=Y[i];if(Y[i]>by1)by1=Y[i]}
+  const mg=cs*1.5;bx0-=mg;by0-=mg;bx1+=mg;by1+=mg;const bw=bx1-bx0,bh=by1-by0;
+  if(mx>0)for(let t=0;t<nt;t++){   /* vertici delle celle = baricentri dei triangoli (celle sempre compatte e dentro la nuvola) */
+    const a=T[3*t],b=T[3*t+1],e=T[3*t+2];
+    CX[t]=(X[a]+X[b]+X[e])/3;CY[t]=(Y[a]+Y[b]+Y[e])/3}
+  const op=[],vs=[];
+  const put=(x0,y0,x1,y1)=>{if(dlClip(x0-bx0,y0-by0,x1-bx0,y1-by0,bw,bh))vs.push((DLO[0]+bx0)*sx,(DLO[1]+by0)*sy,(DLO[2]+bx0)*sx,(DLO[3]+by0)*sy)};
+  /* un lato di Delaunay (a,b) e il suo duale Voronoi (u,w) si incrociano nel punto medio: la fusione accorcia l'uno e allunga l'altro */
+  const edge=(a,b,u,w)=>{
+    const mx_=(X[a]+X[b])/2,my_=(Y[a]+Y[b])/2;
+    if(mx<.999){const k=1-mx;put(mx_+(X[a]-mx_)*k,my_+(Y[a]-my_)*k,mx_+(X[b]-mx_)*k,my_+(Y[b]-my_)*k)}
+    if(mx>.001&&w>=0)put(mx_+(CX[u]-mx_)*mx,my_+(CY[u]-my_)*mx,mx_+(CX[w]-mx_)*mx,my_+(CY[w]-my_)*mx)};   /* sui lati di bordo la cella si chiude con la corda, non con una mezza linea nel vuoto */
+  const tok=(t)=>{for(let e=0;e<3;e++){const a=T[3*t+e],b=T[3*t+(e+1)%3],dx=X[a]-X[b],dy=Y[a]-Y[b];if(dx*dx+dy*dy>maxL2)return false}return true};   /* un triangolo con un lato troppo lungo sparisce tutto insieme: niente linee spezzate */
+  for(let t=0;t<nt;t++){if(!tok(t))continue;for(let e=0;e<3;e++){
+    const a=T[3*t+e],b=T[3*t+(e+1)%3],key=a<b?a*n+b:b*n+a,prev=seen[key];
+    if(prev>0){seen[key]=-1;edge(a,b,prev-1,t)}
+    else if(prev===0){seen[key]=t+1;op.push(key,a,b,t)}}}
+  const hv1=new Int32Array(n).fill(-1),hv2=new Int32Array(n).fill(-1),hc=new Uint8Array(n);
+  for(let i=0;i<op.length;i+=4)if(seen[op[i]]>0){
+    edge(op[i+1],op[i+2],op[i+3],-1);   /* lati di bordo: Delaunay + mezza linea duale */
+    for(let q=1;q<=2;q++){const v=op[i+q];hc[v]++;if(hv1[v]<0)hv1[v]=op[i+3];else hv2[v]=op[i+3]}}
+  if(mx>.001)for(let v=0;v<n;v++){   /* cella di un punto sul bordo: si chiude unendo i due baricentri estremi */
+    const t1=hv1[v],t2=hv2[v];if(hc[v]!==2||t1<0||t2<0||t1===t2)continue;
+    const mx_=(CX[t1]+CX[t2])/2,my_=(CY[t1]+CY[t2])/2;
+    put(mx_+(CX[t1]-mx_)*mx,my_+(CY[t1]-my_)*mx,mx_+(CX[t2]-mx_)*mx,my_+(CY[t2]-my_)*mx)}
+  x.globalAlpha=+g('dlop').value;x.strokeStyle=hx;x.lineWidth=+g('dlw').value;x.lineJoin='round';x.lineCap='round';
+  x.beginPath();for(let i=0;i<vs.length;i+=4){x.moveTo(vs[i],vs[i+1]);x.lineTo(vs[i+2],vs[i+3])}x.stroke();
+  if(g('dlpt').checked){x.globalAlpha=+g('dlop').value;x.fillStyle=hx;const pr=Math.max(1,+g('dlw').value*1.3);x.beginPath();for(let i=0;i<n;i++){x.moveTo(X[i]*sx+pr,Y[i]*sy);x.arc(X[i]*sx,Y[i]*sy,pr,0,6.2832)}x.fill()}
+  x.globalAlpha=1}
+function winTick(){XR.w=0;if(XR.ses)return;frame();try{dlRender()}catch(e){if(!dlRender.er){dlRender.er=1;console.error(e)}}}
 function xrTick(t,fr){
   if(!XR.ses)return;
   XR.fr=fr;xrGuard(t);
@@ -3228,8 +3397,8 @@ function xrVel(i,P,att){
   XR.xq.set([vx,vy,vz,att],i*4);
 }
 /* ---------- parametri dal visore: stick destro (controller) o pizzichi (mani) + pannello in VR ---------- */
-const XRP=[['mvpresets','Preset movimento','m'],['thumbs','Immagine / video','q'],['spd','Velocità'],['shp','Forma particella','s'],['xrk','Scala mondo'],['xrpt','Passthrough','b'],['trm','Tails · tipo','s'],['trl','Tails · lunghezza'],['trk','Tails · campioni'],['trt','Tails · rastremazione'],['tri','Tails · intensità'],['gtf','Tails come i gaussian','x'],['rmode','Rendering','s'],['gst','Stile gaussian','s'],['gsh','Durezza bordo'],['gsl','Allungamento scaglie'],['gsv','Reattività al movimento'],['gsz','Scala gaussian'],['gop','Opacità gaussian'],['xrhs','Stile mani','s'],['xrh','Mani 3D','x'],['xrsph','Sfere interattive','x'],['xrspn','Sfere · quantità'],['xrspr','Sfere · dimensione'],['snd','Suono attivo','x'],['sndm','Sorgente suono','s'],['sndv','Volume suono'],['sndpt','Intonazione'],['sndvr','Pitch col movimento'],['sndgr','Durata grano'],['envm','Mondi','s'],['den','Particelle'],['grw','Crescita particelle'],['sz','Dimensione'],['nz','Noise'],['flw','Flusso'],['tur','Turbolenza'],['i3mr','Raggio pennello'],['i3mvq','Quantità pennello'],['i3mvd','Distanza pennello'],['li','Luce · intensità'],['fgd','Nebbia · densità'],['fgr','Nebbia · raggi'],['envi','Ambiente · intensità'],['xrf','Forza mani'],['xrr','Raggio mani']];
-const MVN=['calmo','fumo','onde','tempesta','correnti'];
+const XRP=[['mvpresets','Preset movimento','m'],['thumbs','Immagine / video','q'],['spd','Velocità'],['aud','Audio reactive','x'],['audsrc','Sorgente audio','s'],['audspd','Velocità audio'],['audamt','Audio · intensità'],['audsns','Audio · sensibilità'],['audsm','Audio · morbidezza'],['shp','Forma particella','s'],['xrk','Scala mondo'],['xrpt','Passthrough','b'],['trm','Tails · tipo','s'],['trl','Tails · lunghezza'],['trk','Tails · campioni'],['trt','Tails · rastremazione'],['tri','Tails · intensità'],['gtf','Tails come i gaussian','x'],['rmode','Rendering','s'],['gst','Stile gaussian','s'],['gsh','Durezza bordo'],['gsl','Allungamento scaglie'],['gsv','Reattività al movimento'],['gsz','Scala gaussian'],['gop','Opacità gaussian'],['xrhs','Stile mani','s'],['xrh','Mani 3D','x'],['xrsph','Sfere interattive','x'],['xrspn','Sfere · quantità'],['xrspr','Sfere · dimensione'],['snd','Suono attivo','x'],['sndm','Sorgente suono','s'],['sndv','Volume suono'],['sndpt','Intonazione'],['sndvr','Pitch col movimento'],['sndgr','Durata grano'],['envm','Mondi','s'],['den','Particelle'],['grw','Crescita particelle'],['sz','Dimensione'],['nz','Noise'],['flw','Flusso'],['tur','Turbolenza'],['i3mr','Raggio pennello'],['i3mvq','Quantità pennello'],['i3mvd','Distanza pennello'],['li','Luce · intensità'],['fgd','Nebbia · densità'],['fgr','Nebbia · raggi'],['envi','Ambiente · intensità'],['xrf','Forza mani'],['xrr','Raggio mani']];
+const MVN=['calmo','fumo','onde','tempesta','correnti','sciame'];
 function xrPtSet(on){if(!XR.ptCap){XR.hudDirty=1;return}XR.pt=on?1:0;byId('xrpt').checked=!!on;XR.hudDirty=1;XR.stT=0}
 byId('xrpt').addEventListener('change',()=>{if(XR.on&&XR.ptCap)xrPtSet(byId('xrpt').checked)});
 Object.assign(XR,{pmOn:0,pmI:0,pmT:0,pcl:0,hudDirty:1,hudUntil:0,hudOn:0,hud:null,pn:[[0,0,0,0],[0,0,0,0]],pw:[null,null],clap:1,cl:[],clT:0,sc2:0,pdr:null,lh:null,hs:[null,null],sp:null,mvI:-1,pmT2:0,ptCap:0});
@@ -3338,6 +3507,7 @@ const TBW=896,TBH=632,TBHW=.17,TBHH=TBHW*TBH/TBW;   /* metà larghezza/altezza d
 const TBT=[
   {n:'Shape particles',c:'#ffb85a',it:['shp','sz']},
   {n:'Movimento',c:'#6ea8ff',it:['mvpresets','spd']},
+  {n:'Audio',c:'#ff8f5a',it:['aud','audsrc','audspd','audamt','audsns','audsm']},
   {n:'Mondi',c:'#7be0a8',it:['envm','xrpt','#btns']},
   {n:'Tails',c:'#ff7ab8',it:['trm','trl','trk','trt','tri','gtf']},
   {n:'Gaussian',c:'#ffd166',it:['gst','gsh','gsl','gsv','gsz','gop']},
@@ -5295,6 +5465,7 @@ const AUDMAP={
   fumo:{spd:[.3,.1,.2,.3,.2],flw:[.6,.2,0,.3,.5],tur:[0,.6,1.2,0,.6],nz:[.5,.4,0,0,.4],dep:[.7,0,0,0,.5],spr:[0,0,0,0,-.6],sz:[.3,0,.4,0,.3],vts:[.3,0,.3,.4,0],trl:[0,.3,0,.5,0],vam:[0,.5,.3,0,0]},
   onde:{spd:[.4,0,0,.3,.2],flw:[.5,0,0,.2,.3],tur:[0,0,.6,0,.3],nz:[.8,0,0,.2,.5],dep:[.8,0,0,0,.5],spr:[0,0,0,0,-.4],sz:[.4,0,0,0,.4],vts:[.3,0,0,.4,0],nvw:[.9,.3,0,0,.4],trl:[.3,0,0,.3,0]},
   tempesta:{spd:[.4,.2,0,.4,.6],flw:[.5,.2,0,.3,1],tur:[0,.5,.8,0,1.2],nz:[.4,.3,0,0,.8],dep:[.5,0,0,0,.8],spr:[0,0,0,0,-.9],sz:[.3,0,.3,0,.5],vts:[.5,0,0,.6,.5],trl:[.3,0,0,.4,0]},
+  sciame:{spd:[.3,.2,.2,.3,.4],flw:[.5,.3,0,.3,.6],tur:[0,.5,1,0,.8],nz:[.4,.5,0,0,.5],dep:[.6,0,0,0,.5],spr:[0,0,0,0,-.7],sz:[.3,0,.3,0,.4],vts:[.3,.2,0,.5,.2],vam:[.3,.5,0,0,.5],vol:[.3,.3,0,0,.3],trl:[.2,.3,0,.4,0]},
   correnti:{spd:[.3,.3,0,.4,.2],flw:[.4,.6,0,.3,.4],tur:[0,.7,.8,0,.4],nz:[.3,.6,0,.2,0],dep:[.6,0,0,0,.4],spr:[0,0,0,0,-.6],sz:[.3,0,.3,0,.3],vts:[.3,0,0,.5,0],vam:[.4,.6,0,0,.3],vol:[.3,.4,0,0,0],trl:[.2,.3,0,.6,0]}
 };
 const AUDE={};
@@ -5304,7 +5475,7 @@ const AUDW={spd:.6,flw:.8,tur:1,nz:.7,dep:.8,spr:-.8,sz:.7,vts:.7,trl:.5,nvw:.9,
 const AUDSEL={},AUDOF={};
 AUDROWS.forEach(r=>{AUDSEL[r[0]]={on:true,band:'p'};r[2].forEach(i=>AUDOF[i]=r[0])});
 function audM(id){
-  const e=AUDE[id]||(AUDE[id]=aid(id)),base=+e.value;
+  const e=AUDE[id]||(AUDE[id]=aid(id)),base=(id==='spd'&&AUD.on)?+aid('audspd').value:+e.value;   /* con audio reactive la velocità è quella dedicata */
   if(!AUD.on)return base;
   const rk=AUDOF[id],sl=rk&&AUDSEL[rk];if(sl&&!sl.on)return base;
   let c=(AUDMAP[AUD.pn]||AUDMAP._)[id];
@@ -5315,6 +5486,47 @@ function audM(id){
   if(q>0&&base>0)v+=q*(+e.max-+e.min)*.05;   /* contributo minimo: anche i preset con valori bassi si muovono in modo visibile */
   return Math.max(+e.min,Math.min(+e.max*1.6,v));
 }
+
+/* ---------- parametri OSC ---------- */
+(function(){
+  aid('aud').addEventListener('change',()=>{const a=aid('audspd');if(aid('aud').checked&&!a.dataset.t){a.dataset.t=1;a.value=aid('spd').value;a.dispatchEvent(new Event('input',{bubbles:true}))}});
+})();
+var OSCM=null,OSCL=[];
+const oscSlug=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+function oscBuild(){
+  OSCM={};OSCL=[];
+  document.querySelectorAll('nav input[id],nav select[id],nav button[id]').forEach(el=>{
+    if(['file','text','password','hidden'].includes(el.type)||/^(wsu|wsb|wss|oscl)$/.test(el.id))return;
+    let t;
+    if(el.tagName==='BUTTON')t=el.textContent;
+    else{const lab=el.closest('label');t=lab?[...lab.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' '):''}
+    let n=oscSlug(t||'')||oscSlug(el.id);if(OSCM[n])n+='_'+oscSlug(el.id);
+    OSCM[n]=el;
+    const al=oscSlug(el.id);if(al&&!OSCM[al])OSCM[al]=el;
+    const ty=el.type==='range'?'0–1':el.type==='checkbox'?'0/1':el.tagName==='SELECT'?'indice 0–'+(el.options.length-1):'1';
+    OSCL.push('/fluida/'+n+'  '+ty);
+  });
+  const ta=aid('oscl');if(ta)ta.value='/fluida/x  0–1\n/fluida/y  0–1\n/fluida/pointer  x y\n/fluida/preset_movimento  nome | indice\n'+OSCL.join('\n');
+}
+function oscParam(k,v){
+  if(!OSCM)oscBuild();
+  const n=oscSlug(k.replace(/^\//,'')),a=v[0];
+  if(n==='preset_movimento'||n==='preset'){const i=typeof a==='string'&&isNaN(+a)?MVN.indexOf(oscSlug(a)):Math.round(+a);if(MVN[i])setMvPreset(MVN[i]);return}
+  const el=OSCM[n];if(!el||el.disabled)return;
+  const num=typeof a==='string'?parseFloat(a):+a;
+  if(el.type==='range'){
+    const mn=+el.min,mx=+el.max,st=+el.step||.01;let x=mn+(mx-mn)*n01(num);
+    x=Math.max(mn,Math.min(mx,+((Math.round((x-mn)/st)*st+mn).toFixed(6))));
+    if(+el.value!==x){el.value=x;el.dispatchEvent(new Event('input',{bubbles:true}))}
+  }else if(el.type==='checkbox'){
+    const w=typeof a==='string'&&isNaN(num)?/^(on|true|si|sì)$/i.test(a):num>=.5;if(el.checked!==w)el.click();
+  }else if(el.tagName==='SELECT'){
+    let i=-1;if(typeof a==='string'&&isNaN(num))i=[...el.options].findIndex(o=>oscSlug(o.text)===oscSlug(a)||o.value===a);else i=Math.round(num);
+    i=Math.max(0,Math.min(el.options.length-1,i));
+    if(i!==el.selectedIndex){el.selectedIndex=i;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))}
+  }else if(el.tagName==='BUTTON'){if(a===undefined||num>0)el.click()}
+}
+setTimeout(()=>{try{oscBuild()}catch(e){}},0);
 const audE=()=>AUD.on?Math.min(4,1+AUD.amt*(1.1*AUD.b+.5*AUD.m+1.2*AUD.k)):1;
 function audSay(t){const e=aid('audst');if(e)e.textContent=t}
 function audStop(){
@@ -5562,15 +5774,21 @@ const MVP={
   fumo:{dep:1.3,flw:2,spr:.004,dmp:.95,tur:.7,trl:1.1,trk:14,trt:.85,nty:3,nz:.9,ns:1.7,nce:.12,ncg:1.5,vol:.9,vdp:1.7,vam:1,vts:.7},
   onde:{dep:.9,flw:1.8,spr:.012,dmp:.91,tur:.12,trl:.35,trk:8,trt:.6,nty:5,nz:1,ns:2,nvf:3,nvs:1.4,nvw:.5,vol:.6,vam:.9,vts:1.3},
   correnti:{dep:1.1,flw:3,spr:.004,dmp:.92,tur:.5,trl:1.3,trk:16,trt:.8,nty:6,nz:1.1,ns:1.6,nfo:4,nfl:2.1,nfg:.55,nsa:.9,vol:.9,vdp:1.6,vam:1.2,vts:1.1},   /* fluido Navier-Stokes con scie lunghe: le particelle scorrono in filamenti che si avvolgono */
+  sciame:{dep:1.2,flw:2.8,spr:.007,dmp:.9,tur:.9,trl:.8,trk:12,trt:.7,nty:4,nz:1.2,ns:3.2,nce:.12,ncg:1.8,vol:.85,vdp:1.4,vam:1.4,vts:1.8},   /* sciame: nuvola che si muove a stormo, con turbolenza viva e scie */
   tempesta:{dep:1.7,flw:3.4,spr:.005,dmp:.86,tur:1.2,trl:.7,trk:12,trt:.5,nty:3,nz:1.4,ns:3,nce:.1,ncg:2.4,vol:1,vdp:2.2,vam:1.5,vts:2.2}
 };
 function stopMvPreset(){
   cancelAnimationFrame(mvRaf);
   document.querySelectorAll('#mvpresets button').forEach(b=>b.classList.remove('active'));
 }
+/* con i PLY le coordinate sono 3D vere: ampiezze ridotte, e Calmo riporta la nuvola alla forma originale */
+function mvObj(T,n){
+  if(n==='calmo'){Object.assign(T,{vol:.03,vdp:.25,vam:.1,flw:.4,tur:.03,nz:.05,spr:.03,dmp:.95,trl:0,vts:.3});return}
+  T.vol*=.4;T.vdp*=.4;T.vam*=.5;T.flw*=.7;T.tur*=.5;T.nz*=.6;T.spr=Math.max(T.spr,.01);T.dmp=Math.max(T.dmp,.9);
+}
 function setMvPreset(name){
   stopMvPreset();if(typeof AUD==='object'&&AUD)AUD.pn=name;
-  const T={...MVD,...MVP[name]},ids=Object.keys(T).filter(k=>k!=='nty'),from={},ny=document.getElementById('nty');
+  const T={...MVD,...MVP[name]};if(V==='o3')mvObj(T,name);const ids=Object.keys(T).filter(k=>k!=='nty'),from={},ny=document.getElementById('nty');
   if(ny.value!==String(T.nty)){ny.value=T.nty;ny.dispatchEvent(new Event('change',{bubbles:true}))}
   ids.forEach(id=>from[id]=nv(id));
   document.querySelectorAll('#mvpresets button').forEach(b=>b.classList.toggle('active',b.dataset.p===name));
@@ -6268,9 +6486,10 @@ function drawP(){
   if(!SCN){
     const mo=XR.on?0:MS.on*(1+(nv('mck')-1)*MS.down),iv=1/Math.max(dt,.004),cl=x=>Math.max(-8,Math.min(8,x));
     MS.vx+=(cl(MS.ax*iv*pAsp)-MS.vx)*.3;MS.vy+=(cl(MS.ay*iv)-MS.vy)*.3;MS.ax=MS.ay=0;
-    pass(pvP,pVel,{P:pPos.read.t,U:pVel.read.t,H:home.t,F:vel.read.t,A:pAsp,ya,pi,cd,sc,fl,sp:audM('spr'),dm:nv('dmp'),de:audM('dep'),ob:V==='o3'?1:0,tu,nz,ns,nt:nv('nty'),T,cam,nO:nv('nfo'),nS:nv('nsa'),nL:nv('nfl'),nG:nv('nfg'),nR:nv('nrs'),cE:nv('nce'),cG:nv('ncg'),wJ:nv('nwj'),wR:nv('nwr'),wP:nv('nwp'),vF:nv('nvf'),vS:nv('nvs'),vW:audM('nvw'),kV:audM('vol'),kD:audM('vdp'),kA:audM('vam'),kT:ZT,
+    const MQ0=MQT;if(nv('sqf')>0)MQT=(MQT+fdt/Math.max(.1,nv('sqt')))%4096;else MQT=0;const MQ1=MQT;
+    pass(pvP,pVel,{P:pPos.read.t,U:pVel.read.t,H:home.t,F:vel.read.t,A:pAsp,ya,pi,cd,sc,fl,sp:audM('spr'),dm:nv('dmp'),de:audM('dep'),ob:V==='o3'?1:0,tu,nz,ns,nt:nv('nty'),T,cam,nO:nv('nfo'),nS:nv('nsa'),nL:nv('nfl'),nG:nv('nfg'),nR:nv('nrs'),cE:nv('nce'),cG:nv('ncg'),wJ:nv('nwj'),wR:nv('nwr'),wP:nv('nwp'),vF:nv('nvf'),vS:nv('nvs'),vW:audM('nvw'),kV:audM('vol'),kD:audM('vdp'),kA:audM('vam'),kT:ZT,qF:nv('sqf'),qT:MQ1,qP:MQ0,qD:nv('sqd'),qX:nv('sqx')*(V==='o3'?1:pAsp),qK:Math.max(kk,.02),
       gA:nv('fam'),gF:nv('ffq'),gR:nv('frg'),gS:nv('fsl'),gT:FT,mp:MS.p,mv:[MS.vx,MS.vy],mr:nv('mra'),ms:nv('mst'),mw:nv('mwi'),md:nv('mdr'),mz:nv('mzd'),mel:nv('mel'),mir:nv('mir'),mgn:nv('mgn'),mo,xhp:(netXP(),NET.xp),xhq:NET.xq,xhf:XR.on?XR.f:(NET.xn?1:0),mp2:NET.rm,mv2:NET.rmv,mo2:NET.rmo});
-    pass(ppP,pPos,{P:pPos.read.t,U:pVel.read.t,kk});
+    pass(ppP,pPos,{P:pPos.read.t,U:pVel.read.t,H:home.t,kk,qF:nv('sqf'),qT:MQ1,qP:MQ0,qD:nv('sqd'),ob:V==='o3'?1:0,de:audM('dep')});
   }
   palRGB().forEach((c,i)=>palArr.set(c,i*3));
   const trLen=SCN?0:audM('trl'),TRK=Math.round(nv('trk')),HAIR=P3&&nv('trm')===3&&trLen>.001,KK=(trLen>.001&&!HAIR)?TRK:1;
@@ -6367,7 +6586,7 @@ const blank=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blank);
 gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,255]));
 gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
 const base=()=>V==='e2'&&!document.getElementById('eimg').checked?blank:orig;
-let RT=0,ROA=1,spdCur=.6,TT=0,FT=0,ZT=0,fdt=.016,lastF=performance.now(),oc=0,cam=[0,0,0],cv=[0,0,0],cyaw=0,cpit=0;
+let MQT=0,RT=0,ROA=1,spdCur=.6,TT=0,FT=0,ZT=0,fdt=.016,lastF=performance.now(),oc=0,cam=[0,0,0],cv=[0,0,0],cyaw=0,cpit=0;
 const keys=new Set(),palArr=new Float32Array(12);
 const PRES={Fuoco:['#ffd23f','#ff7a00','#e0201b','#5a0a0a'],Oceano:['#e0fbfc','#3dc1d3','#1b6ca8','#0b2a4a'],Neon:['#ff2bd6','#7a2bff','#00e5ff','#a6ff00'],Aurora:['#b8ffd0','#3ddc97','#2f7fc1','#7b3fa8'],Tramonto:['#ffe29a','#ff9a5a','#d6456b','#4b2a6e'],Mono:['#ffffff','#bfbfbf','#7f7f7f','#3f3f3f']};
 const pset=document.getElementById('pset'),pcs=[0,1,2,3].map(i=>document.getElementById('pc'+i));
@@ -6437,6 +6656,7 @@ var BOOT=1;
 function applyView(){
   {const sl=document.getElementById('spd').closest('label'),t=document.querySelector(P3?'#blkmv .in':'#blkfl .in');if(sl.parentNode!==t){const pr=P3&&t.querySelector(':scope>div.full>#mvpresets');const pb=pr&&pr.parentNode;t.insertBefore(sl,pb?pb.nextSibling:t.firstChild)}}
   document.querySelectorAll('[data-s]').forEach(e=>e.hidden=!e.dataset.s.split(' ').includes(V));
+  if(window.mbehSync)window.mbehSync();
 }
 document.querySelector('.panel').addEventListener('input',e=>{if(e.target.type==='range'){const i=e.target;i.style.setProperty('--p',(100*(i.value-i.min)/(i.max-i.min))+'%');const b=i.parentNode.querySelector('b');if(b)b.textContent=fmtV(i)}});
 /* ---------- minimal: parametri e preset ---------- */
@@ -6513,6 +6733,7 @@ function setView(v){
   if(LASTX&&(nv('den')!==gridL||v==='o3'||pv==='o3'||(v==='i3'&&(GI!==IDX||ZB!==zsig()))))buildP(LASTX);
   document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
   reset();applyView();netScSend();
+  try{camSync()}catch(e){}
 }
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>setView(b.dataset.v));
 const RM=matchMedia('(prefers-reduced-motion:reduce)');
@@ -6574,6 +6795,16 @@ const WPAL={fur:['#ffd400','#2f7bff','#ff2fa3','#7a2bff','#2fe86b'],neon:['#ff2b
  for(let i=0;i<5;i++)document.getElementById('wcp'+i).addEventListener('input',()=>s.value='custom')}
 const WC={on:false,vid:null,st:null,w:0,h:0,gw:0,gh:0,t:0,t0:performance.now(),ai:null,aiLoad:0,aiFail:0,aiSign:1,aiEma:0,aiTs:0,
   bg:null,bgAcc:null,capT:0,capN:0,lastVT:-1,lastFT:0,vdt:1/30,hasPrev:false,nc:0,ne:0,msg:'',trPh:0};
+/* qualità adattiva della vista Webcam: se gli fps scendono sotto ~55 riduce prima le iterazioni del fluido, poi un poco i capelli; risale con calma quando c'è margine */
+const WCG={q:1,it:14,hs:1,lo:0,hi:0};
+function wcGovApply(){const k=x=>x<0?0:x>1?1:x;WCG.it=Math.round(6+8*k((WCG.q-.5)/.5));WCG.hs=.6+.4*k(WCG.q/.5)}
+function wcGov(fps){
+  if(!wcq('wcad')){if(WCG.q<1){WCG.q=1;wcGovApply()}WCG.lo=WCG.hi=0;return}
+  const tgt=Math.min(57,.93*(FPS.mx||0));if(tgt<20)return;   /* tiene conto della frequenza dello schermo: su 50 Hz il bersaglio scende */
+  if(fps<tgt){WCG.lo++;WCG.hi=0}else if(fps>=tgt+2){WCG.hi++;WCG.lo=0}else{WCG.lo=WCG.hi=0}
+  if(WCG.lo>=2&&WCG.q>0){WCG.q=Math.max(0,WCG.q-.1);WCG.lo=0;wcGovApply()}
+  else if(WCG.hi>=8&&WCG.q<1){WCG.q=Math.min(1,WCG.q+.05);WCG.hi=0;wcGovApply()}
+}
 const wcSay=t=>{if(WC.msg!==t){WC.msg=t;const e=document.getElementById('wcst');if(e)e.textContent=t}};
 
 /* ---- griglia di analisi (bassa risoluzione) ---- */
@@ -6749,10 +6980,12 @@ function wcAnalyze(now,dt){
     const stab=wcq('wcstb');
     for(let i=0;i<n;i++){let v=(mr[i]-.5)*2+.5;v=v<0?0:v>1?1:v;m[i]=m[i]*stab+v*(1-stab)}
   }
+  const nSil=wcq('wcsil'),nEdge=wcq('wcolon'),nHair=wcq('wchon'),nPart=wcq('wcpon'),nFl=wcq('wcfon'),
+    needFlow=nFl||nHair||nPart,needGrad=nHair||nEdge,needCells=nHair||nPart;   /* gli effetti spenti non pagano calcoli: stessi risultati per quelli attivi */
   /* flusso ottico (Lucas-Kanade) sulla silhouette + luminanza */
   const I=WC.I,Ip=WC.Ip;
   for(let i=0;i<n;i++)I[i]=.5*L[i]+.5*m[i];
-  if(WC.hasPrev){
+  if(WC.hasPrev&&needFlow){
     const ixx=WC.ixx,ixy=WC.ixy,iyy=WC.iyy,ixt=WC.ixt,iyt=WC.iyt,t1=WC.t1;
     for(let y=1;y<gh-1;y++)for(let x=1;x<gw-1;x++){const i=y*gw+x,ix=(I[i+1]-I[i-1])*.5,iy=(I[i+gw]-I[i-gw])*.5,it=I[i]-Ip[i];
       ixx[i]=ix*ix;ixy[i]=ix*iy;iyy[i]=iy*iy;ixt[i]=ix*it;iyt[i]=iy*it}
@@ -6769,21 +7002,22 @@ function wcAnalyze(now,dt){
   Ip.set(I);WC.hasPrev=true;
   /* gradiente (normali verso l'esterno), liste di celle, immagini silhouette / contorno */
   const mb=WC.mb,gx=WC.gx,gy=WC.gy,cells=WC.cells,ec=WC.edgeCells,oi=WC.oi.data,ei=WC.ei.data;
-  boxB(m,mb,WC.t1,gw,gh,3);
+  if(needGrad||nFl)boxB(m,mb,WC.t1,gw,gh,3);
   let nc=0,ne=0;
   const sc=wcc('wcsilc'),oc=wcc('wcoc');
   for(let y=0;y<gh;y++)for(let x=0;x<gw;x++){
-    const i=y*gw+x,o=i*4;
-    if(x>0&&y>0&&x<gw-1&&y<gh-1){gx[i]=(mb[i+1]-mb[i-1])*.5;gy[i]=(mb[i+gw]-mb[i-gw])*.5}else{gx[i]=0;gy[i]=0}
+    const i=y*gw+x,o=i*4,inn=x>0&&y>0&&x<gw-1&&y<gh-1;
+    if(needGrad){if(inn){gx[i]=(mb[i+1]-mb[i-1])*.5;gy[i]=(mb[i+gw]-mb[i-gw])*.5}else{gx[i]=0;gy[i]=0}}
     const v=m[i];
-    if(v>.55){cells[nc++]=i;if(x>0&&y>0&&x<gw-1&&y<gh-1&&(m[i-1]<.4||m[i+1]<.4||m[i-gw]<.4||m[i+gw]<.4))ec[ne++]=i}
-    let a=(v-.5)*6+.5;a=a<0?0:a>1?1:a;
-    oi[o]=sc[0];oi[o+1]=sc[1];oi[o+2]=sc[2];oi[o+3]=a*255;
-    let e=Math.hypot(gx[i],gy[i])*8;e=e>1?1:e;
-    ei[o]=oc[0];ei[o+1]=oc[1];ei[o+2]=oc[2];ei[o+3]=e*255;
+    if(needCells&&v>.55){cells[nc++]=i;if(inn&&(m[i-1]<.4||m[i+1]<.4||m[i-gw]<.4||m[i+gw]<.4))ec[ne++]=i}
+    if(nSil){let a=(v-.5)*6+.5;a=a<0?0:a>1?1:a;
+      oi[o]=sc[0];oi[o+1]=sc[1];oi[o+2]=sc[2];oi[o+3]=a*255}
+    if(nEdge){let e=Math.hypot(gx[i],gy[i])*8;e=e>1?1:e;
+      ei[o]=oc[0];ei[o+1]=oc[1];ei[o+2]=oc[2];ei[o+3]=e*255}
   }
   WC.nc=nc;WC.ne=ne;
-  WC.ovx.putImageData(WC.oi,0,0);WC.edx.putImageData(WC.ei,0,0);
+  if(nSil)WC.ovx.putImageData(WC.oi,0,0);
+  if(nEdge)WC.edx.putImageData(WC.ei,0,0);
 }
 
 /* ---- capelli: catene di segmenti (verlet) ancorate alla silhouette ---- */
@@ -6803,7 +7037,7 @@ function wcSpawn(i,cm){
 }
 const HB=[new Int32Array(HMAX),new Int32Array(HMAX),new Int32Array(HMAX),new Int32Array(HMAX),new Int32Array(HMAX)],HBN=[0,0,0,0,0];
 function wcHair(dt){
-  const g=WC,gw=g.gw,gh=g.gh,kx=g.w/gw,ky=g.h/gh,n=Math.min(HMAX,wcq('wchn')|0),sc=g.h/720,base=wcq('wchl')*.055*g.h,t=g.t,
+  const g=WC,gw=g.gw,gh=g.gh,kx=g.w/gw,ky=g.h/gh,n=Math.min(HMAX,(wcq('wchn')*WCG.hs)|0),sc=g.h/720,base=wcq('wchl')*.055*g.h,t=g.t,
     f=Math.min(2,dt*60),dm=wcq('wchd'),cm=wcq('wchc'),grav=wcq('wchg')*5*sc,drag=wcq('wchdr'),colS=wcq('wchco'),st=.03+wcq('wchs')*.5,react=wcq('wchf'),wind=wcq('wchw'),fr=Math.pow(wcq('wchi'),f);
   let budget=Math.max(300,n*.2|0);
   HBN.fill(0);
@@ -6923,7 +7157,7 @@ function fAdv(dst,src,u,v,d,gw,gh){
 function wcFluid(dt){
   const g=WC,gw=g.gw,gh=g.gh,n=gw*gh,u=g.fu,v=g.fv,u0=g.fu0,v0=g.fv0,p=g.fp,dv=g.fdv,cu=g.fcu,R=g.fr,G=g.fg,B=g.fb;
   const d=Math.min(dt,.04),force=wcq('wcff'),vis=Math.pow(wcq('wcfv'),d*60),dis=Math.pow(wcq('wcfd'),d*60),inj=wcq('wcfi'),vor=wcq('wcfw');
-  const P=[0,1,2,3,4].map(i=>wcc('wcp'+i)),lut=new Float32Array(64*3);
+  const P=[0,1,2,3,4].map(i=>wcc('wcp'+i)),lut=WC.lut||(WC.lut=new Float32Array(64*3));
   for(let j=0;j<64;j++){const f=j/64*5,a=f|0,b=(a+1)%5,q=f-a;for(let k=0;k<3;k++)lut[j*3+k]=(P[a][k]+(P[b][k]-P[a][k])*q)/255}
   g.trPh=(g.trPh+d*.12)%1;const ph=g.trPh,cpl=Math.min(1,d*12);
   /* forze e immissione colore */
@@ -6944,9 +7178,9 @@ function wcFluid(dt){
       u[i]+=d*vor*3*(ey/l)*cu[i];v[i]-=d*vor*3*(ex/l)*cu[i];
     }
   }
-  fProj(u,v,p,dv,gw,gh,14);
+  fProj(u,v,p,dv,gw,gh,WCG.it);
   fAdv(u0,u,u,v,d,gw,gh);fAdv(v0,v,u,v,d,gw,gh);u.set(u0);v.set(v0);
-  fProj(u,v,p,dv,gw,gh,14);
+  fProj(u,v,p,dv,gw,gh,WCG.it);
   fAdv(g.fr0,R,u,v,d,gw,gh);fAdv(g.fg0,G,u,v,d,gw,gh);fAdv(g.fb0,B,u,v,d,gw,gh);R.set(g.fr0);G.set(g.fg0);B.set(g.fb0);
   const fd=g.fi.data;
   for(let i=0;i<n;i++){
@@ -7048,7 +7282,7 @@ function zMkArr(){
   MKO.ck=k;MKO.cache=a;return a}
 function zMkMake(){
   const g=id=>document.getElementById(id),mode=g('i3mk').value;if(mode==='none')return null;
-  const lo=+g('i3mlo').value,hi=+g('i3mhi').value,sf=Math.max(.001,+g('i3msf').value),arr=mode==='img'?zMkArr():(mode==='mouse'||mode==='vr')?zMouseArr():null;
+  const lo=+g('i3mlo').value,hi=+g('i3mhi').value,sf=Math.max(.001,+g('i3msf').value),arr=mode==='img'?zMkArr():(mode==='mouse'||mode==='vr'||mode==='cam')?zMouseArr():null;
   const ss=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t)};
   return (r,gg,b,a,i)=>{
     let v;
@@ -7093,20 +7327,31 @@ function tintBuf(src){
   for(let i=0;i<K.length;i++){const k=K[i];if(!k)continue;const q=i*4,w=k/255,f=M[i]?1:.55+.9*(.299*u[q]+.587*u[q+1]+.114*u[q+2])/255;   /* la tinta mantiene un po' del chiaroscuro dell'immagine */
     b[q]=u[q]+(Math.min(255,C[i*3]*f)-u[q])*w;b[q+1]=u[q+1]+(Math.min(255,C[i*3+1]*f)-u[q+1])*w;b[q+2]=u[q+2]+(Math.min(255,C[i*3+2]*f)-u[q+2])*w}
   return b}
-var EM={home:null,np:0,free:null,pos:null,ptr:0,S:1,cnt:0,dirty:false,up:null};
+var EM={home:null,np:0,free:null,pos:null,ptr:0,S:1,cnt:0,dirty:false,up:null,pq:null,pn:0,t1:null};
+function emPend(i){if(EM.pn<0)return;if(EM.pn>=48){EM.pn=-1;return}EM.pq[EM.pn++]=i}   /* -1 = troppe modifiche: si ricarica tutta la texture */
 function emInit(){
   if(EM.home===home&&EM.np===np&&EM.free)return;
-  EM.home=home;EM.np=np;EM.free=new Uint8Array(np);EM.pos=new Float32Array(np*3);EM.ptr=0;EM.cnt=0;EM.dirty=false;
+  EM.home=home;EM.np=np;EM.free=new Uint8Array(np);EM.pos=new Float32Array(np*3);EM.ptr=0;EM.cnt=0;EM.dirty=false;EM.pq=new Int32Array(48);EM.pn=0;
   const gc=(a,b)=>b?gc(b,a%b):a;let S=Math.max(1,Math.floor(np*.6180339));if(!(S&1))S++;while(gc(S,np)!==1)S+=2;EM.S=S}
-function emRelease(i){tintClr(i);if(EM.free&&EM.free[i]){EM.free[i]=0;EM.cnt--;EM.dirty=true}}
+function emRelease(i){tintClr(i);if(EM.free&&EM.free[i]){EM.free[i]=0;EM.cnt--;EM.dirty=true;emPend(i)}}
 function emClear(){if(EM.cnt>0&&EM.free){EM.free.fill(0);EM.cnt=0;homeUp()}}
 function homeUp(){
   if(!home||!HDA)return;
+  EM.pn=0;
   let a=HDA;
   if(EM&&EM.cnt>0&&EM.home===home&&EM.free&&EM.np*4===HDA.length){
     a=(EM.up&&EM.up.length===HDA.length)?EM.up:(EM.up=new Float32Array(HDA.length));a.set(HDA);
     for(let i=0;i<EM.np;i++)if(EM.free[i]){const n=i*4,q=i*3;a[n]=EM.pos[q];a[n+1]=EM.pos[q+1];a[n+2]=EM.pos[q+2];a[n+3]=2}}
   gl.bindTexture(gl.TEXTURE_2D,home.t);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,gw,gh,gl.RGBA,gl.FLOAT,a)}
+function homeFlush(){
+  const n=EM.pn;
+  if(n<0||!home||!HDA||EM.home!==home||!EM.free||EM.np*4!==HDA.length){homeUp();return}
+  EM.pn=0;if(!n)return;
+  const t=EM.t1||(EM.t1=new Float32Array(4));
+  gl.bindTexture(gl.TEXTURE_2D,home.t);
+  for(let k=0;k<n;k++){const i=EM.pq[k],x=i%gw,y=(i/gw)|0;
+    if(EM.free[i]){const q=i*3;t[0]=EM.pos[q];t[1]=EM.pos[q+1];t[2]=EM.pos[q+2];t[3]=2;gl.texSubImage2D(gl.TEXTURE_2D,0,x,y,1,1,gl.RGBA,gl.FLOAT,t)}
+    else gl.texSubImage2D(gl.TEXTURE_2D,0,x,y,1,1,gl.RGBA,gl.FLOAT,HDA.subarray(i*4,i*4+4))}}
 function emSpawn(m,cx,cy,cz,r,n,vel,flat,jit,tn){
   if(jit===undefined)jit=.002;
   emInit();const tx=new Float32Array(4),tv=new Float32Array(4);let made=0,guard=0;
@@ -7117,7 +7362,7 @@ function emSpawn(m,cx,cy,cz,r,n,vel,flat,jit,tn){
     if(flat)z=0;
     const px=cx+x*r,py=cy+y*r,pz=cz+z*r,q=idx*3;
     if(!EM.free[idx]){EM.free[idx]=1;EM.cnt++}
-    EM.pos[q]=px;EM.pos[q+1]=py;EM.pos[q+2]=pz;m[idx]=1;if(tn)tintSet(idx,tn,1);else tintClr(idx);
+    emPend(idx);EM.pos[q]=px;EM.pos[q+1]=py;EM.pos[q+2]=pz;m[idx]=1;if(tn)tintSet(idx,tn,1);else tintClr(idx);
     const ix=idx%gw,iy=(idx/gw)|0;
     tx[0]=px;tx[1]=py;tx[2]=pz;tx[3]=1;
     tv[0]=vel[0]+(Math.random()-.5)*jit;tv[1]=vel[1]+(Math.random()-.5)*jit;tv[2]=vel[2]+(Math.random()-.5)*jit;tv[3]=1;
@@ -7149,14 +7394,62 @@ function zVrBrush(m,r){
     }else MKO.vl[h]=null;
   }
   return any}
+/* ---- maschera dalla webcam: luminosità o movimento, aggiornata in tempo reale ---- */
+const CAMK={v:null,s:null,busy:0,t:0,prev:null,c:null,x:null};
+function camSt(t){const e=document.getElementById('i3cst');if(e)e.textContent=t}
+function camStop(){
+  if(CAMK.s){try{CAMK.s.getTracks().forEach(t=>t.stop())}catch(e){}}
+  if(CAMK.v){try{CAMK.v.pause();CAMK.v.srcObject=null}catch(e){}}
+  CAMK.s=CAMK.v=null;CAMK.prev=null;if(MKO.m)MKO.m.fill(0);camSt('')}
+async function camSync(){
+  const want=document.getElementById('i3mk').value==='cam';
+  if(!want){if(CAMK.s||CAMK.v)camStop();return}
+  if(CAMK.s||CAMK.busy)return;
+  CAMK.busy=1;camSt('Avvio webcam\u2026');
+  try{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('serve https o file locale');
+    const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false});
+    if(document.getElementById('i3mk').value!=='cam'){st.getTracks().forEach(t=>t.stop());CAMK.busy=0;return}
+    const v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.srcObject=st;await v.play();
+    CAMK.s=st;CAMK.v=v;camSt('Webcam attiva')
+  }catch(e){camSt('Webcam non disponibile: '+(e&&e.message||e))}
+  CAMK.busy=0}
+function camMask(m){
+  const g=id=>document.getElementById(id);let dirty=false;
+  const v=CAMK.v,now=performance.now();
+  if(v&&v.readyState>=2&&v.videoWidth&&now-CAMK.t>=33){
+    const dt=Math.min(.2,(now-(CAMK.t||now))/1000);CAMK.t=now;
+    if(!CAMK.c){CAMK.c=document.createElement('canvas');CAMK.x=CAMK.c.getContext('2d',{willReadFrequently:true})}
+    const c=CAMK.c,x=CAMK.x;if(c.width!==gw||c.height!==gh){c.width=gw;c.height=gh;CAMK.prev=null}
+    const A=gw/gh,vw=v.videoWidth,vh=v.videoHeight;let sw=vw,sh=vh;if(vw/vh>A)sw=vh*A;else sh=vw/A;
+    x.save();if(g('i3cmr').checked){x.translate(gw,0);x.scale(-1,1)}
+    x.drawImage(v,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,gw,gh);x.restore();
+    const d=x.getImageData(0,0,gw,gh).data,mov=g('i3cms').value==='mov',n=gw*gh;
+    if(mov){
+      if(!CAMK.prev||CAMK.prev.length!==n){CAMK.prev=new Float32Array(n);for(let i=0;i<n;i++)CAMK.prev[i]=(.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2])/255}
+      const P=CAMK.prev,gain=8*(+g('i3cmg').value),dc=+g('i3mdc').value,f=Math.exp(-dt*dc*3);
+      for(let i=0;i<n;i++){const l=(.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2])/255,df=Math.max(0,Math.abs(l-P[i])-.03)*gain;P[i]=l;const o=m[i]*f;m[i]=Math.max(o<.004?0:o,Math.min(1,df))}
+    }else for(let i=0;i<n;i++)m[i]=(.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2])/255;
+    dirty=true}
+  if(MKO.col!==col){MKO.col=col;dirty=true}
+  if(KIA>.001||MKO.ka>.001)dirty=true;MKO.ka=KIA;
+  if(dirty&&!XF.on){
+    const mk=zMkMake();
+    for(let i=0;i<m.length;i++)CIM[i*4+3]=mk(0,0,0,0,i);
+    gl.bindTexture(gl.TEXTURE_2D,col);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,gw,gh,gl.RGBA,gl.UNSIGNED_BYTE,tintBuf(CIM))}
+}
 function zMouseMask(ya,pi,cd,sc){
-  if(V!=='i3'||!pPos||!CIM||['mouse','vr'].indexOf(document.getElementById('i3mk').value)<0)return;
+  if(V!=='i3'||!pPos||!CIM||['mouse','vr','cam'].indexOf(document.getElementById('i3mk').value)<0)return;
   const g=id=>document.getElementById(id),m=zMouseArr(),tnM=tnMine();let dirty=false,hit=null;
+  if(g('i3mk').value==='cam'){camMask(m);return}
   if(EM.home&&EM.home!==home){   /* particelle ricostruite: le libere non esistono piu' */
     if(EM.free&&EM.free.length===m.length)for(let i=0;i<m.length;i++)if(EM.free[i]){m[i]=0;tintClr(i)}
     EM.cnt=0;EM.free=null;EM.home=null;dirty=true}
   const dc=+g('i3mdc').value;
-  if(dc>0&&MKO.any){const f=Math.exp(-fdt*dc*3);let mx=0;for(let i=0;i<m.length;i++){const v=m[i]*f;m[i]=v<.004?0:v;if(v<.004){if(TINT.n>0)tintClr(i);if(EM.cnt>0&&EM.free[i])emRelease(i)}if(v>mx)mx=v}MKO.any=mx>0;dirty=true}
+  if(dc>0&&MKO.any&&!(TINT.n>0)&&!(EM.cnt>0)){const f=Math.exp(-fdt*dc*3);let mx=0;   /* via veloce: niente tinte ne' particelle libere da rilasciare */
+    for(let i=0,n=m.length;i<n;i++){const o=m[i];if(o===0)continue;const v=o*f;if(v<.004)m[i]=0;else{m[i]=v;if(v>mx)mx=v}}
+    MKO.any=mx>0;dirty=true}
+  else if(dc>0&&MKO.any){const f=Math.exp(-fdt*dc*3);let mx=0;for(let i=0;i<m.length;i++){const v=m[i]*f;m[i]=v<.004?0:v;if(v<.004){if(TINT.n>0)tintClr(i);if(EM.cnt>0&&EM.free[i])emRelease(i)}if(v>mx)mx=v}MKO.any=mx>0;dirty=true}
   NET.mc=null;
   if(XR.on){
     if(zVrBrush(m,+g('i3mr').value)){MKO.any=true;dirty=true}
@@ -7177,16 +7470,21 @@ function zMouseMask(ya,pi,cd,sc){
   }else MKO.last=null;
   if(!XR.on){if(hit){NET.mc=[hit[0],hit[1]];netBrush(2,{x:hit[0],y:hit[1],on:true,er:false},hit[2])}else netBrush(2,null,0)}
   if(NET.on&&zNetBrush(m)){MKO.any=true;dirty=true}
-  if(EM.dirty){EM.dirty=false;homeUp()}
+  if(EM.dirty){EM.dirty=false;homeFlush()}
   const ka=KIA;
-  if(MKO.col!==col){MKO.col=col;dirty=true}
+  if(MKO.col!==col){MKO.col=col;MKO.fl=false;dirty=true}
   if(TINT.n>0&&MKO.tz!==CIM){MKO.tz=CIM;if(!(IMGS[IDX]&&IMGS[IDX].vid))dirty=true}   /* cambio immagine in una sequenza: ricarico i colori con le tinte */
+  const flat=ka===0&&MKO.ka===0&&!(TINT.n>0);   /* Mouse/VR senza inversione: l'alfa vale 255 ovunque, qualunque cosa disegni il pennello */
   if(ka>.001||MKO.ka>.001)dirty=true;   /* inversione in corso (o attiva): ricalcola ogni frame */
   MKO.ka=ka;
+  if(XF.on)MKO.fl=false;
   if(dirty&&!XF.on){
-    const mk=zMkMake();
-    for(let i=0;i<m.length;i++)CIM[i*4+3]=mk(0,0,0,0,i);
-    gl.bindTexture(gl.TEXTURE_2D,col);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,gw,gh,gl.RGBA,gl.UNSIGNED_BYTE,tintBuf(CIM));
+    if(flat&&MKO.fl&&MKO.fc===CIM){}   /* la texture ha gia' alfa 255 ovunque: niente da ricalcolare ne' da ricaricare */
+    else{
+      const mk=zMkMake();
+      for(let i=0;i<m.length;i++)CIM[i*4+3]=mk(0,0,0,0,i);
+      gl.bindTexture(gl.TEXTURE_2D,col);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,gw,gh,gl.RGBA,gl.UNSIGNED_BYTE,tintBuf(CIM));
+      MKO.fl=flat;MKO.fc=CIM}
   }
 }
 document.getElementById('i3mcl').onclick=()=>{tintAll();emClear();if(MKO.m)MKO.m.fill(0);MKO.any=false;MKO.last=null;MKO.vl=null;if(LASTX&&V==='i3')buildP(LASTX)};
@@ -7195,20 +7493,74 @@ document.getElementById('i3mcl').onclick=()=>{tintAll();emClear();if(MKO.m)MKO.m
  document.getElementById('i3mf').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const im=new Image(),u=URL.createObjectURL(f);
   im.onload=()=>{const k=Math.min(1,512/Math.max(im.width,im.height)),c2=document.createElement('canvas');c2.width=Math.max(1,Math.round(im.width*k));c2.height=Math.max(1,Math.round(im.height*k));
    c2.getContext('2d').drawImage(im,0,0,c2.width,c2.height);MKO.cv=c2;MKO.id++;URL.revokeObjectURL(u);
-   document.getElementById('i3mk').value='img';rb()};im.src=u;e.target.value=''})}
+   document.getElementById('i3mk').value='img';document.getElementById('i3mk').dispatchEvent(new Event('change'));rb()};im.src=u;e.target.value=''})}
 
 {const mkS=document.getElementById('i3mk'),mkI=document.getElementById('i3mki'),
  vrU=()=>{document.querySelectorAll('.mkvr').forEach(e=>e.style.display=mkS.value==='vr'?'':'none');
   document.querySelectorAll('.mkq').forEach(e=>e.style.display=mkS.value==='vr'?'':'none');
-  document.querySelectorAll('.mkm').forEach(e=>e.style.display=(mkS.value==='mouse'&&mkI.checked)?'':'none')};
+  document.querySelectorAll('.mkcam').forEach(e=>e.style.display=mkS.value==='cam'?'':'none');
+  camSync();
+  document.querySelectorAll('.mkm').forEach(e=>e.style.display=(mkS.value==='mouse'&&mkI.checked)?'':'none');
+  {const sv=mkS.value,sh=(c,on)=>document.querySelectorAll(c).forEach(e=>e.style.display=on?'':'none');
+   sh('.mkth',['lum','sat','alpha','img','cam'].indexOf(sv)>=0);sh('.mkimg',sv==='img');sh('.mkbr',sv==='mouse'||sv==='vr');
+   sh('.mkdc',['mouse','vr','cam'].indexOf(sv)>=0);sh('.mkcl',sv==='mouse'||sv==='vr');sh('.mkinv',sv!=='none');
+   const MKH={none:'Tutte le particelle sono attive: il comportamento qui sopra decide come reagiscono al mouse.',
+    lum:'Le particelle compaiono dove l\u2019immagine \u00e8 luminosa. Soglia min/max scelgono quali toni le generano, Morbidezza sfuma il bordo.',
+    sat:'Le particelle compaiono dove l\u2019immagine \u00e8 saturata. Soglia min/max scelgono quali toni le generano, Morbidezza sfuma il bordo.',
+    alpha:'Le particelle compaiono dove l\u2019immagine \u00e8 opaca (canale alfa). Soglia min/max e Morbidezza regolano il bordo.',
+    img:'Con l\u2019immagine maschera il bianco genera particelle, il nero no. Soglia min/max e Morbidezza regolano il bordo.',
+    mouse:'Le particelle compaiono dove passa il cursore, senza bisogno di cliccare (Dissolvenza 0 = restano). Con Inverti maschera nascono dal centro del cursore e si vedono solo quelle emesse: Quantit\u00e0 e Vivacit\u00e0 emissione regolano il flusso.',
+    cam:'La maschera si aggiorna in tempo reale: Luminosit\u00e0 = le zone chiare generano particelle (Soglia min/max scelgono i toni), Movimento = compaiono dove ti muovi e svaniscono con Dissolvenza (0 = restano).',
+    vr:''};
+   const h=document.getElementById('i3mkh');
+   if(h){const t=(MKH[sv]||'')+(MKH[sv]&&sv!=='none'?' Inverti maschera scambia le zone.':'');h.textContent=t;h.style.display=t?'':'none'}}
+  if(window.mbehSync)window.mbehSync()};
  mkS.addEventListener('input',vrU);mkS.addEventListener('change',vrU);mkI.addEventListener('change',()=>{
   if(!mkI.checked&&EM.free&&EM.cnt>0&&MKO.m){for(let i=0;i<MKO.m.length;i++)if(EM.free[i])MKO.m[i]=0;emClear()}   /* inverti spento: le particelle emesse tornano a casa */
   vrU()});vrU()}
+/* comportamento delle particelle: dipende dalla sorgente scelta in «Interazione particelle».
+   Con «Mouse» il cursore emette particelle (nascono / nascono e restano); con ogni altra sorgente restano «Buca e sposta» e «Attrae» e le particelle compaiono dove la sorgente le accende */
+{const g=id=>document.getElementById(id),sel=g('mbeh'),hint=g('mbehh');let prevMst=null,busy=0;
+ const fire=(el,t)=>el.dispatchEvent(new Event(t,{bubbles:true}));
+ const TXT={1:'Il muro sparisce e le particelle nascono dove si trova il cursore, poi svaniscono (Dissolvenza). Quantit\u00e0, Vivacit\u00e0 e Raggio di nascita si regolano qui sotto (Quantit\u00e0 emissione mouse, Vivacit\u00e0 emissione mouse, Raggio pennello).',
+  2:'Le particelle nascono dove passa il cursore e restano dov\u2019erano nate (Dissolvenza = 0): puoi disegnare con le particelle. \u00abCancella pennellate\u00bb qui sotto le toglie.',
+  3:'Il mouse attira le particelle invece di spingerle via (Spinta negativa).'};
+ const hs=()=>{const m=+sel.value;hint.style.display=TXT[m]?'':'none';hint.textContent=TXT[m]||''};
+ const apply=()=>{busy=1;try{
+  const m=+sel.value,mk=g('i3mk'),mi=g('i3mki'),mst=g('mst'),dc=g('i3mdc');
+  if(m===3){if(prevMst===null)prevMst=+mst.value;mst.value=-Math.abs(prevMst||1);fire(mst,'input')}
+  else if(prevMst!==null){mst.value=prevMst;prevMst=null;fire(mst,'input')}
+  if(m===1||m===2){
+    if(mk.value!=='mouse'){mk.value='mouse';fire(mk,'input');fire(mk,'change')}
+    if(!mi.checked){mi.checked=true;fire(mi,'change')}
+    if(m===2)dc.value=0;else if(+dc.value===0)dc.value=.2;
+    fire(dc,'input');
+  }else if(mi.checked&&mk.value==='mouse'){mi.checked=false;fire(mi,'change')}
+  hs();
+ }finally{busy=0}};
+ /* adatta il comportamento alla sorgente: emissione dal mouse solo con sorgente Mouse */
+ const sync=()=>{
+  const sv=g('i3mk').value,mi=g('i3mki'),mouseSrc=V!=='i3'||sv==='mouse';
+  for(const o of sel.options){const need=o.value==='1'||o.value==='2';o.hidden=need&&!mouseSrc;o.disabled=need&&!mouseSrc}
+  if(busy)return;
+  if(!mouseSrc&&(sel.value==='1'||sel.value==='2')){sel.value='0';apply();if(mi.checked){mi.checked=false;fire(mi,'change')}return}
+  if(V==='i3'&&sv==='mouse'){
+   if(mi.checked&&sel.value==='0'){sel.value=+g('i3mdc').value===0?'2':'1';hs()}
+   else if(!mi.checked&&(sel.value==='1'||sel.value==='2')){sel.value='0';apply()}
+  }};
+ window.mbehSync=sync;
+ sel.addEventListener('change',apply);
+ g('i3mk').addEventListener('change',sync);g('i3mki').addEventListener('change',sync);
+ sync()}
 function zi(){return document.getElementById('i3inv').checked?1:0}function zInv(l){return zi()?1-l:l}
 syncOut();applyView();
 
 /* ---------- pannello: info sui parametri, gruppi comprimibili, larghezza regolabile ---------- */
 const TIPS={
+sqf:"Percentuale di particelle che vengono spinte verso la silhouette speculare: 0 = spenta, 0,2 = un quinto delle particelle parte, il resto resta nella silhouette.",
+sqt:"Tempo in secondi che le particelle impiegano ad andare da un corpo all'altro (flusso a senso unico: all'arrivo si dissolvono).",
+sqd:"Dispersione laterale: 0 = le particelle viaggiano in linea retta, 1 = percorsi diversi ogni volta e nuvola larga e sparsa tra i due corpi.",
+sqx:"Posizione orizzontale dell'asse di specchio tra le due silhouette.",
 mnon:"Attiva lo stile minimal: puntini minuscoli e monocromi su nero, al posto del rendering normale.",
 mnsz:"Dimensione media dei punti.",mnsv:"Quanto la dimensione varia da punto a punto.",
 mnop:"Opacità dei punti: più alto = più pieni.",mnso:"Sfuma i bordi rendendo i punti morbidi.",
@@ -7256,7 +7608,7 @@ i3mk:"Sorgente che decide dove compaiono le particelle.",
 i3mlo:"Soglia minima della maschera: sotto questo valore le particelle spariscono.",
 i3mhi:"Soglia massima della maschera: sopra questo valore le particelle spariscono.",
 i3msf:"Morbidezza del bordo della maschera.",i3mr:"Dimensione del pennello che disegna la maschera (vale anche per i controller VR).",i3mvb:"In VR, con sorgente Controller VR, i controller Quest emettono particelle: scegli il tasto. B / Y cancella.",i3mvm:"Nello spazio 3D: le particelle nascono nel punto davanti al controller, ovunque tu lo porti. Sul piano: nascono dove il raggio tocca l'immagine.",i3mvd:"Quanto lontano dal controller (in metri) nasce l'emissione, lungo la direzione del raggio. 0 = sulla punta.",i3mvq:"Quante particelle nascono a ogni fotogramma con il tasto premuto.",
-i3mdc:"Velocità con cui la maschera dipinta svanisce.",i3mki:"Inverte la maschera.",
+i3mdc:"Velocità con cui la maschera dipinta svanisce.",dlon:"Layer con la triangolazione di Delaunay disegnato sopra le particelle.",dlpr:"Quanti punti usa la triangolazione: più alto = più dettagliata e più pesante.",dlth:"Luminosità minima perché un punto dell'immagine diventi un vertice.",dlml:"Lunghezza massima di una linea, in frazione della larghezza.",dlw:"Spessore delle linee.",dlop:"Opacità delle linee.",dlcol:"Colore delle linee.",dlpt:"Disegna un punto su ogni vertice.",dlmx:"0 = solo la triangolazione di Delaunay, 1 = solo le celle di Voronoi (vertici = baricentri dei triangoli). Nel mezzo le due reti si fondono in una sola: ogni linea Delaunay si accorcia mentre la sua linea duale cresce, incrociandosi a metà.",dlfl:"Quanto in fretta i punti seguono le particelle: valori bassi = movimento lento e fluido, alti = più reattivo.",i3mki:"Inverte la maschera.",
 rmode:"Come vengono disegnate: particelle 3D oppure gaussian splat (macchie sfumate).",
 gsn:"Quanti splat del file mostrare: 1 = tutti (il più realistico), meno = più veloce.",gsz:"Dimensione dei gaussian splat.",gop:"Opacità dei gaussian splat.",gsl:"Quanto sono lunghe le scaglie rispetto alla larghezza.",gsv:"Quanto le scaglie «dal movimento» si allungano e si orientano seguendo la velocità delle particelle.",tri:"Intensità delle scie (continua, tratteggio). Le scie si fondono con l'immagine invece di sommarsi e bruciarla.",gst:"Forma di ogni gaussian: Morbido (originale), Scaglie (pennellate allungate), Scaglie mov. (si orientano col movimento), Pixel (blocchi), Disco netto, Anello, Contorno, Nucleo, Rombo, Quadrato.",gsh:"Quanto è netto il bordo del gaussian: 0 = morbido, 1 = netto. Cambiando stile si imposta un valore adatto.",gsw:"Spessore del contorno per gli stili Anello e Contorno.",gtf:"Le tails usano la dimensione, l'opacità e lo stile dei gaussian invece di una striscia sottile.",gto:"Opacità delle tails dei gaussian (scia continua e copie).",sndm:"Da dove arriva il suono: Originale (grani di rumore), oppure il tuo file in modo granulare, loop che segue il movimento, o colpi a ogni gesto.",sndpt:"Intonazione di base del suono (1 = originale, 2 = un'ottava sopra).",sndvr:"Quanto l'intonazione sale col movimento delle particelle.",sndgr:"Durata dei frammenti nella modalità granulare.",
 mat:"Aspetto della superficie delle particelle: opaco, lucido, metallo o luminoso.",
@@ -7612,7 +7964,7 @@ function initOutputMode(){
 /* ================= PROGETTO: salva / apri ================= */
 let PLYSRC=null;
 {const _lp=loadPLY;loadPLY=async function(f){const b=OBJ;await _lp(f);if(f&&OBJ!==b)PLYSRC=f}}
-const PRJ_SEQ=['xf','hold','auto','fitm','vspd'];
+const PRJ_SEQ=['xf','hold','auto','fitm','vspd','wcam'];
 const prjEl=id=>document.getElementById(id);
 const prjSt=m=>{const e=prjEl('prjs');if(e)e.textContent=m||''};
 const prjMb=n=>(n/1048576).toFixed(n>1048576*10?0:1)+' MB';
@@ -7623,7 +7975,7 @@ function prjCollect(){
   const pv={};for(const k in PV)pv[k]={...PV[k]};
   const seq={};PRJ_SEQ.forEach(id=>{const e=prjEl(id);if(e)seq[id]=e.type==='checkbox'?e.checked:e.value});
   const live=IMGS.slice(0,IDX).filter(m=>m.live).length;
-  return{app:'fluida',ver:1,saved:new Date().toISOString(),view:V,ar:ARK,idx:Math.max(0,IDX-live),seq,pv,cam:[...cam],cyaw,cpit};
+  return{app:'fluida',ver:1,saved:new Date().toISOString(),view:V,ar:ARK,idx:Math.max(0,IDX-live),wcdev:(WC.on&&WC.devId)||'',live:IMGS.some(m=>m.live),liveCur:!!(IMGS[IDX]&&IMGS[IDX].live),seq,pv,cam:[...cam],cyaw,cpit};
 }
 let prjBusy=false;
 async function prjSave(){
@@ -7689,6 +8041,25 @@ async function prjOpen(file){
     if(LASTX)buildP(LASTX);
     reset();
     if(M.idx>0&&IMGS.length>M.idx)goTo(M.idx);
+    if(M.live&&!IMGS.some(m=>m.live)){   /* webcam in sequenza (elemento live): non è un file, va riaperta */
+      prjSt('Riavvio la webcam…');await addCam();
+      if(!M.liveCur&&M.idx>=0&&IMGS.length>M.idx&&IDX!==M.idx)goTo(M.idx);
+    }
+    /* riavvia le webcam che erano attive nel progetto (il caricamento imposta solo i controlli, non apre il flusso) */
+    try{if(prjEl('i3mk').value==='cam'){prjSt('Riavvio la webcam…');if(CAMK.s)camStop();await camSync()}}catch(e){console.warn('webcam maschera',e)}   /* Sorgente particelle = Webcam: il caricamento imposta solo il menu, la camera va aperta */
+    try{
+      const wb=prjEl('wcam');
+      if(wb&&wb.checked&&!WCM.on)wb.dispatchEvent(new Event('change',{bubbles:true}));
+      if(M.view==='wc'||V==='wc'){   /* vista Webcam: riapre la camera (stessa periferica se c'è ancora) */
+        if(V!=='wc')setView('wc');
+        if(!WC.on){
+          prjSt('Riavvio la webcam…');
+          if(M.wcdev)await wcStart(M.wcdev);
+          if(!WC.on)await wcStart();
+          if(!WC.on)prjSt('Webcam non partita: premi «Avvia webcam» nella vista Webcam');
+        }
+      }
+    }catch(e){console.warn('webcam',e);prjSt('Webcam non partita: '+(e&&e.message||e))}
     prjSt('Progetto aperto: '+file.name+(skipped?' · '+skipped+' media non erano incorporati nel file (mantenuti quelli attuali)':'')+(P.ply&&P.ply.skipped?' · l\'oggetto PLY non era incorporato':''));
   }catch(e){console.error(e);prjSt('Errore nell\'apertura: '+(e&&e.message||e))}
   finally{prjBusy=false}
