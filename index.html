@@ -823,7 +823,7 @@ body.wcon #stage{touch-action:none}
 <label class="s" data-s="i3 o3 e2 wc">Scala mondo<b></b><input type="range" id="xrk" min=".2" max="3" step=".05" value="1"></label>
 <label class="s" data-s="i3 o3">Forza mani<b></b><input type="range" id="xrf" min="0" max="6" step=".1" value="2.5"></label>
 <label class="s" data-s="i3 o3">Raggio mani<b></b><input type="range" id="xrr" min=".05" max=".8" step=".01" value=".3"></label>
-<p class="hint full" data-s="i3 o3 e2 wc">Parametri in VR · apri il pannello: clic dello stick destro (controller) oppure pizzico pollice+anello della mano sinistra. Ordine: preset movimento, velocità, forma particella, scala mondo, passthrough (acceso/spento), ambiente 3D, poi gli altri; scegliendo un ambiente il passthrough si spegne. Scegli con stick ◀ ▶ (mani: pizzico medio, sinistra avanti, destra indietro) e cambia il valore tenendo premute entrambe le grip (mani: pizzico indice con tutte e due) e allargando/stringendo: 60 cm = tutta la corsa, 12 cm = una voce nei menu. Pennello con le mani: pizzico indice emette, medio cancella (a pannello chiuso).</p>
+<p class="hint full" data-s="i3 o3 e2 wc">Parametri in VR · apri il pannello: clic dello stick destro (controller) oppure doppio pizzico pollice+medio della mano sinistra. Ordine: preset movimento, velocità, forma particella, scala mondo, passthrough (acceso/spento), ambiente 3D, poi gli altri; scegliendo un ambiente il passthrough si spegne. Scegli con stick ◀ ▶ (mani: pizzico medio, sinistra avanti, destra indietro) e cambia il valore tenendo premute entrambe le grip (mani: pizzico indice con tutte e due) e allargando/stringendo: 60 cm = tutta la corsa, 12 cm = una voce nei menu. Pennello con le mani: pizzico indice emette, medio cancella (a pannello chiuso).</p>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrh" checked> Mani 3D (al posto dei punti)</label>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrsph"> Sfere interattive nello spazio (anche dal menu della mano, scheda Sfere)</label>
 <label class="s" data-s="i3 o3 e2 wc">Sfere · quantità<b></b><input type="range" id="xrspn" min="1" max="24" step="1" value="8"></label>
@@ -3481,7 +3481,7 @@ function xrHandGest(hh,s,fr,rig,now,J,w,it,tt){
   const ds=[D(it,tt),D(J('middle-finger-tip'),tt),D(J('ring-finger-tip'),tt),D(J('pinky-finger-tip'),tt)];
   for(let i=0;i<4;i++)pr[i]=old[i]?ds[i]<.045:ds[i]<.025;
   const ed=i=>pr[i]&&!old[i];
-  if(ed(1))xrPmToggle(now);   /* pollice + medio = apre/chiude il menu */
+  if(hh===0&&ed(1)){if(now-(XR.dpT||-1e9)<700){XR.dpT=-1e9;xrPmToggle(now)}else XR.dpT=now}   /* doppio pizzico pollice + medio della SINISTRA = apre/chiude il menu; la destra resta libera per i parametri */
   if(w)XR.pw[hh]={x:w.x,y:w.y,z:w.z,t:now};
   if(hh===0&&ed(3))XR.rc=true;
   if(it&&tt)XR.hs[hh]={p:{x:(it.x+tt.x)/2,y:(it.y+tt.y)/2,z:(it.z+tt.z)/2},g:pr[0]};
@@ -3502,7 +3502,7 @@ function xrHandBrush(hh,s,fr,rig,pr,it,tt,w,now){
 /* ---------- menu in VR stile Tilt Brush: palette sopra la mano sinistra, laser con la destra ----------
    a sinistra le schede (Movimento, Forma, Ambiente, Pennello, Mani, Mondo), a destra bottoni/cursori della scheda scelta.
    Controller: grilletto destro = clic (si trascina sui cursori) · X (sinistro) o clic stick destro = apre/chiude.
-   Mani: pizzico dell'indice destro = clic · anello sinistro = apre/chiude. */
+   Mani: pizzico dell'indice destro = clic · doppio pizzico pollice+medio sinistro = apre/chiude. */
 const TBW=896,TBH=632,TBHW=.17,TBHH=TBHW*TBH/TBW;   /* metà larghezza/altezza della palette in metri */
 const TBT=[
   {n:'Shape particles',c:'#ffb85a',it:['shp','sz']},
@@ -3527,7 +3527,7 @@ const TBHELP=[
   'Scheda Sfere: spingile con mani e controller · grip = afferra e lancia',
   '#Mani (hand tracking)',
   'Pizzico pollice + indice = emetti · pollice + anulare = cancella',
-  'Pizzico pollice + medio = apri / chiudi il menu',
+  'Doppio pizzico pollice + medio (mano sinistra) = apri / chiudi il menu',
   'Nel menu: pizzico dell\'indice destro = clic, trascina i cursori',
   'Due pizzichi d\'indice, allarga / stringi = scala l\'oggetto',
   'Pollice + mignolo (sinistra) = ricentra · batti le mani = cambia stile mani',
@@ -3714,7 +3714,7 @@ function xrHudTex(){
     }
   }
   g.textAlign='center';g.font=F(13);g.fillStyle='#6f788a';
-  g.fillText('Trigger destro = clic · X sinistro = chiudi · mani: pollice+medio = chiudi, pizzico indice = clic',W/2,H-14);
+  g.fillText('Trigger destro = clic · X sinistro = chiudi · mani: doppio pizzico pollice+medio sinistra = chiudi, pizzico indice destro = clic',W/2,H-14);
   gl.bindTexture(gl.TEXTURE_2D,xrHT);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,xrHC);
 }
