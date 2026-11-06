@@ -851,7 +851,7 @@ body.wcon #stage{touch-action:none}
 <label class="s" data-s="i3 o3 e2 wc">Scala mondo<b></b><input type="range" id="xrk" min=".2" max="3" step=".05" value="1"></label>
 <label class="s" data-s="i3 o3">Forza mani<b></b><input type="range" id="xrf" min="0" max="6" step=".1" value="2.5"></label>
 <label class="s" data-s="i3 o3">Raggio mani<b></b><input type="range" id="xrr" min=".05" max=".8" step=".01" value=".3"></label>
-<p class="hint full" data-s="i3 o3 e2 wc">Parametri in VR · apri il pannello: clic dello stick destro (controller) oppure doppio pizzico pollice+medio della mano sinistra. Ordine: preset movimento, velocità, forma particella, scala mondo, passthrough (acceso/spento), ambiente 3D, poi gli altri; scegliendo un ambiente il passthrough si spegne. Scegli con stick ◀ ▶ (mani: pizzico medio, sinistra avanti, destra indietro) e cambia il valore tenendo premute entrambe le grip (mani: pizzico indice con tutte e due) e allargando/stringendo: 60 cm = tutta la corsa, 12 cm = una voce nei menu. Pennello con le mani: pizzico indice emette, medio cancella (a pannello chiuso).</p>
+<p class="hint full" data-s="i3 o3 e2 wc">Parametri in VR · apri il pannello: clic dello stick destro (controller) oppure doppio pizzico pollice+medio della mano sinistra. Ordine: preset movimento, velocità, forma particella, scala mondo, passthrough (acceso/spento), ambiente 3D, poi gli altri; scegliendo un ambiente il passthrough si spegne. Scegli con stick ◀ ▶ (mani: pizzico medio, sinistra avanti, destra indietro) e cambia il valore tenendo premute entrambe le grip (mani: pizzico indice con tutte e due) e allargando/stringendo: 60 cm = tutta la corsa, 12 cm = una voce nei menu. Pennello con le mani: pizzico indice emette, medio cancella (a pannello chiuso). Scala e sposta l&rsquo;oggetto: due pizzichi d&rsquo;indice (o due grip) insieme, allarga/stringi per la scala e muovi le mani per spostare la nuvola nello spazio (con la nuvola bloccata cambia solo la scala).</p>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrh" checked> Mani 3D (al posto dei punti)</label>
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrsph"> Sfere interattive nello spazio (anche dal menu della mano, scheda Sfere)</label>
 <label class="s" data-s="i3 o3 e2 wc">Sfere · quantità<b></b><input type="range" id="xrspn" min="1" max="24" step="1" value="8"></label>
@@ -865,7 +865,7 @@ body.wcon #stage{touch-action:none}
 <label class="chk full" data-s="i3 o3 e2 wc"><input type="checkbox" id="xrsn"> Rotazione a scatti (più comoda per alcuni)</label>
 <label class="s" data-s="i3 o3 e2 wc">Risoluzione<b></b><input type="range" id="xrres" min=".5" max="1.2" step=".05" value=".85"></label>
 <p class="hint full" data-s="i3 o3 e2 wc">Passthrough: la casella si abilita solo se Chrome offre sessioni AR con il visore; su Link spesso non succede. Collega il Quest al PC con Air Link (o Virtual Desktop), poi apri Fluida in Chrome sul PC. <b style="color:var(--wh)">Telefono (AR)</b>: 1 dito = sposta la nuvola &middot; 2 dita = pizzica per ingrandire/rimpicciolire, ruota le dita per girarla, trascina su/gi&ugrave; per avvicinarla/allontanarla &middot; doppio tap = riportala davanti a te. La risoluzione vale all&rsquo;ingresso in VR. L&rsquo;anteprima sul PC mostra l&rsquo;occhio sinistro, ritagliato al formato della finestra.</p>
-<p class="hint full" id="vrcmd" data-s="i3 o3 e2 wc"><b>Cosa puoi fare in VR</b><br>Controller: trigger attrae &middot; grip respinge &middot; stick sinistro cammina &middot; stick destro gira (continuo o a scatti) e sale/scende &middot; click stick sinistro ricentra.<br>Mani (tracking attivo): pizzica per attrarre &middot; palmo aperto per spingere.<br>Il globo tenue attorno al punto &egrave; la zona d&rsquo;effetto.<br>Sfere interattive (scheda Sfere nel menu della mano): spingile con mani, controller e testa &middot; grip = afferra e lancia.<br>Maschera particelle (sorgente Controller VR): A / X emette particelle nello spazio davanti al controller &middot; B / Y cancella (si cambia in &laquo;Pennello VR&raquo;).</p>
+<p class="hint full" id="vrcmd" data-s="i3 o3 e2 wc"><b>Cosa puoi fare in VR</b><br>Controller: trigger attrae &middot; grip respinge &middot; due grip insieme: allarga/stringi = scala, muovi = sposta la nuvola &middot; stick sinistro cammina &middot; stick destro gira (continuo o a scatti) e sale/scende &middot; click stick sinistro ricentra.<br>Mani (tracking attivo): pizzica per attrarre &middot; palmo aperto per spingere &middot; due pizzichi d&rsquo;indice insieme: scala e sposta la nuvola.<br>Il globo tenue attorno al punto &egrave; la zona d&rsquo;effetto.<br>Sfere interattive (scheda Sfere nel menu della mano): spingile con mani, controller e testa &middot; grip = afferra e lancia.<br>Maschera particelle (sorgente Controller VR): A / X emette particelle nello spazio davanti al controller &middot; B / Y cancella (si cambia in &laquo;Pennello VR&raquo;).</p>
 </div>
 <div class="osec" id="secnet" data-s="i3 o3 e2 wc">
 <span id="nets" class="full">Non collegato</span>
@@ -1155,24 +1155,21 @@ vec3 skyc(vec3 d){
 float rsp(vec3 ro,vec3 rd,vec3 c,float r){vec3 oc=ro-c;float b=dot(oc,rd),h=b*b-dot(oc,oc)+r*r;if(h<0.)return -1.;h=sqrt(h);float t=-b-h;return t>1e-3?t:-1.;}
 float pm(vec2 d,vec2 hs){vec2 e=1.-smoothstep(hs-.3,hs,abs(d));return e.x*e.y;}
 float pw(vec3 p,vec3 n,vec3 q){vec3 d=q-p;float l=length(d);return max(dot(n,d/l),0.)*7./(3.+l*l*.5);}
-float shK(vec3 p,vec3 L,float dl){
-  float s=1.;
-  if(eB>.5){
-    float t0=rsp(p,L,vec3(-2.3,eY+.8,-1.8),.8);if(t0>0.&&t0<dl)s*=.15;
-    float t1=rsp(p,L,vec3(2.1,eY+.55,-.5),.55);if(t1>0.&&t1<dl)s*=.15;}
-  vec3 oc=eOc-p;float tb=dot(oc,L);
+float shK(vec3 p,vec3 L,float dl){   /* solo l'ombra dell'oggetto sul resto della scena (le ombre delle sfere sono state tolte: costavano un raggio per luce) */
+  float s=1.;vec3 oc=eOc-p;float tb=dot(oc,L);
   if(tb>0.)s*=1.-eS*(1.-smoothstep(eOr*.3,eOr*1.3,length(oc-L*tb)));
   return s;}
 vec3 tcl(float ph){float u=fract(eTm*.05+ph)*3.;int i=int(u);float f=smoothstep(0.,1.,fract(u));
   vec3 a=i==0?eC0:(i==1?eC1:eC2),b=i==0?eC1:(i==1?eC2:eC0);return mix(a,b,f);}
 vec3 tcol(){return tcl(0.);}
-void room(vec3 ro,vec3 rd,vec3 lo,vec3 hi,inout float t,inout vec3 n,inout int id,int rid){
-  if(rd.x>1e-5){float tt=(hi.x-ro.x)/rd.x;if(tt>1e-3&&tt<t){t=tt;n=vec3(-1,0,0);id=rid;}}
-  else if(rd.x<-1e-5){float tt=(lo.x-ro.x)/rd.x;if(tt>1e-3&&tt<t){t=tt;n=vec3(1,0,0);id=rid;}}
-  if(rd.z>1e-5){float tt=(hi.z-ro.z)/rd.z;if(tt>1e-3&&tt<t){t=tt;n=vec3(0,0,-1);id=rid;}}
-  else if(rd.z<-1e-5){float tt=(lo.z-ro.z)/rd.z;if(tt>1e-3&&tt<t){t=tt;n=vec3(0,0,1);id=rid;}}
-  if(rd.y>1e-5){float tt=(hi.y-ro.y)/rd.y;if(tt>1e-3&&tt<t){t=tt;n=vec3(0,-1,0);id=rid;}}
-  else if(rd.y<-1e-5){float tt=(lo.y-ro.y)/rd.y;if(tt>1e-3&&tt<t){t=tt;n=vec3(0,1,0);id=rid;}}}
+/* uscita da una scatola vista dall'interno: 6 piani in un solo calcolo, senza rami */
+float boxIn(vec3 ro,vec3 rd,vec3 lo,vec3 hi,out vec3 n){
+  vec3 d=mix(rd,vec3(1e-5),lessThan(abs(rd),vec3(1e-5)));
+  vec3 t=(mix(lo,hi,step(vec3(0.),d))-ro)/d;
+  float tm=min(min(t.x,t.y),t.z);
+  n=-sign(d)*step(t,vec3(tm));
+  n=n/max(length(n),1e-3);
+  return tm;}
 bool hb(vec3 ro,vec3 rd,vec3 c,float r){vec3 oc=ro-c;float b=dot(oc,rd),d=dot(oc,oc);return b*b-d+r*r>0.&&(b<0.||d<r*r);}
 void orb(vec3 ro,vec3 rd,float R,float amp,inout float t,inout vec3 n,inout int id,inout int hk){
   if(!hb(ro,rd,vec3(0),R+amp+.25))return;
@@ -1210,73 +1207,91 @@ vec3 lit(vec3 p,vec3 n,vec3 al){
   else{float sl=gLod;gLod=7.;c+=al*skyc(n)*.9;gLod=sl;}
   if(eM>2.5)c+=al*inl(p,n);
   return c;}
-vec3 trc(vec3 ro,vec3 rd,int nb){
-  vec3 acc=vec3(0),thr=vec3(1);
-  for(int b=0;b<4;b++){
-    if(b>=nb)break;
-    float t=1e9;vec3 n=vec3(0,1,0);int id=0,hk=0;
-    if(rd.y<-1e-5&&ro.y>eY&&(eM<.5||eG>.5)){float tt=(eY-ro.y)/rd.y;if(tt<t&&!(eM>1.5&&eM<2.5&&eIn>.5&&cbIn(ro)&&!cbIn(ro+rd*tt))){t=tt;n=vec3(0,1,0);id=1;}}
-    if(eM<.5){
-      if(rd.y>1e-5){float tt=(5.-ro.y)/rd.y;if(tt<t){t=tt;n=vec3(0,-1,0);id=3;}}
-      if(rd.x>1e-5){float tt=(6.-ro.x)/rd.x;if(tt<t){t=tt;n=vec3(-1,0,0);id=2;}}
-      else if(rd.x<-1e-5){float tt=(-6.-ro.x)/rd.x;if(tt<t){t=tt;n=vec3(1,0,0);id=2;}}
-      if(rd.z>1e-5){float tt=(6.-ro.z)/rd.z;if(tt<t){t=tt;n=vec3(0,0,-1);id=2;}}
-      else if(rd.z<-1e-5){float tt=(-6.-ro.z)/rd.z;if(tt<t){t=tt;n=vec3(0,0,1);id=2;}}}
+/* ---------------------------------------------------------------------------------------------
+   AMBIENTI LITE (Quest / mobile). Rispetto alla versione precedente:
+   - niente rimbalzi a catena (prima fino a 4 raggi per pixel, anche per ogni particella): un raggio primario
+     e, solo dove serve, UN riflesso (pavimento, palle) su una scena semplificata
+   - niente ombre delle sfere, stanze e sale come scatole analitiche (boxIn), una sola formula per tutte le pareti
+   - lampade e orbite (cicli di sfere) solo nel passaggio a schermo intero (nb>=3), mai nelle chiamate per particella
+   - la «Stanza infinita» non usa più specchi: la profondità è simulata con tre strati di puntini
+   nb: 1 = luce ambiente da una particella (nessun riflesso) · 2 = riflesso di una particella · 3+ = schermo intero
+   --------------------------------------------------------------------------------------------- */
+void scn(vec3 ro,vec3 rd,bool full,inout float t,inout vec3 n,inout int id,inout int hk){
+  vec3 bn;
+  if(rd.y<-1e-5&&ro.y>eY&&(eM<.5||eG>.5)){float tt=(eY-ro.y)/rd.y;
+    if(tt<t&&!(eM>1.5&&eM<2.5&&eIn>.5&&cbIn(ro)&&!cbIn(ro+rd*tt))){t=tt;n=vec3(0,1,0);id=1;}}
+  if(eM<.5){float tb=boxIn(ro,rd,vec3(-6.,-9.,-6.),vec3(6.,5.,6.),bn);if(tb<t){t=tb;n=bn;id=bn.y<-.5?3:2;}}
+  if(eB>.5){
     vec3 s0=vec3(-2.3,eY+.8,-1.8),s1=vec3(2.1,eY+.55,-.5);
-    if(eB>.5){
-      float ts=rsp(ro,rd,s0,.8);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-s0);id=4;}
-      ts=rsp(ro,rd,s1,.55);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-s1);id=5;}}
-    if(eM>2.5){
-      int sn=int(eIn+.5);
-      if(sn==1){room(ro,rd,vec3(-4.5,-9.,-4.5),vec3(4.5,3.8,4.5),t,n,id,11);orb(ro,rd,1.7,.3,t,n,id,hk);}
-      else if(sn==2){room(ro,rd,vec3(-4.5,-9.,-4.5),vec3(4.5,3.8,4.5),t,n,id,12);tubes(ro,rd,t,n,id,hk);}
-      else if(sn==3){
-        room(ro,rd,vec3(-9.,-9.,-9.),vec3(9.,4.,9.),t,n,id,13);
-        vec3 sc0=vec3(0,eY+1.2,-8.);float ts=rsp(ro,rd,sc0,2.8);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-sc0);id=14;}
-        if(abs(rd.z)>1e-5){float th=(-1.6-ro.z)/rd.z;if(th>1e-3&&th<t){vec3 q=ro+rd*th;if(abs(length(q.xy)-1.62)<.07){t=th;n=vec3(0,0,rd.z>0.?-1.:1.);id=19;}}}}
-      else{
-        if(hb(ro,rd,vec3(0,eY+1.4,-3.4),5.6))for(int i=0;i<16;i++){float fi=float(i),h1=hs3(vec3(fi,7.,3.)),h2=hs3(vec3(fi,2.,9.));
-          vec3 lc=vec3(-3.6+2.4*mod(fi,4.)+(h1-.5)*.9,eY+.35+2.4*h2,-.8-1.7*floor(fi*.25)+(h2-.5)*.6);
-          float ts=rsp(ro,rd,lc,.2);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-lc);id=17;hk=i;}}
-        orb(ro,rd,1.6,.5,t,n,id,hk);}
-    }
-    if(eM<.5){float ts=rsp(ro,rd,eP,eR);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-eP);id=6;}}
-    if(b==0){gT=t;gI=id;}
-    if(id==0){gRo=ro;gBx=1.;acc+=thr*skyc(rd);gBx=0.;break;}
-    vec3 p=ro+rd*t;
-    if(id==6){acc+=thr*eK*3.;break;}
-    vec3 al=eW,em=vec3(0),rt=vec3(1);float rf=0.;
-    if(id==1){
-      float ck=mod(floor(p.x*.8)+floor(p.z*.8),2.);
-      al=eM<.5?eW*mix(.3,.55,ck):eW*.5;
-      al*=1.-.55*eS*exp(-dot(p.xz-eOc.xz,p.xz-eOc.xz)/(eOr*eOr*.9));
-      rf=eF*(.1+.9*pow(1.-abs(dot(n,rd)),4.))*(eM<.5?exp(-t*.04):exp(-t*.004));if(eM>2.5)em=fgl(p);
-      if(eM>1.5&&eM<2.5&&eIn>.5){gRo=ro;gBx=1.;em+=skyc(rd)*.6;gBx=0.;}}   /* cube map: il pavimento coincide con la faccia −Y */
-    else if(id==2){
-      if(n.x>.5)em=eC1*pm(vec2(p.z,p.y-1.5),vec2(2.5,1.2))*eI*2.5;
-      else if(n.x<-.5)em=eC2*pm(vec2(p.z,p.y-1.5),vec2(2.5,1.2))*eI*2.5;
-      else if(n.z>.5)em=(eC1+eC2)*.5*pm(vec2(p.x,p.y-.2),vec2(4.,.18))*eI*2.5;}
-    else if(id==3){al=eW*.8;em=eC0*pm(p.xz,vec2(2.5,2.5))*eI*2.2;}
-    else if(id==4){al=vec3(.03);rf=.9;rt=vec3(.95,.97,1.);}
-    else if(id==11){al=vec3(.02);rf=.93;rt=vec3(.95,.97,1.);
-      vec2 uv=(abs(n.x)>.5?p.zy:(abs(n.z)>.5?p.xy:p.xz))*1.3,f=fract(uv)-.5,ci=floor(uv);
-      float tw=.5+.5*sin(eTm*(1.+2.*hs3(vec3(ci,1.)))+hs3(vec3(ci,5.))*6.2832),dt=smoothstep(.16,.09,length(f))*step(.35,hs3(vec3(ci,3.)));
-      em=(mod(ci.x+ci.y,2.)<1.?eC0:eC1)*dt*(1.2+2.5*tw);}
-    else if(id==12){al=eW;
-      if(n.z>.5){vec2 dd=abs(vec2(p.x,p.y-(eY+1.5)));em=tcol()*(1.-smoothstep(1.9,2.3,dd.x))*(1.-smoothstep(1.2,1.5,dd.y))*1.5;}}
-    else if(id==13){if(n.y<-.5){al=vec3(.01);rf=.82;rt=vec3(1.,.95,.9);}else al=eW*.3;}
-    else if(id==14){al=vec3(0);em=mix(eC1,eC0,pow(abs(dot(n,rd)),.6))*(3.4+.5*sin(eTm*.6));}
-    else if(id==17){al=vec3(0);vec3 lc2=(hk%3==0)?eC0:((hk%3==1)?eC1:eC2);em=lc2*(2.2+1.8*(.5+.5*sin(eTm*1.3+float(hk)*1.7)));}
-    else if(id==18){al=vec3(0);em=(hk%3==0?eC0:(hk%3==1?eC1:eC2))*(3.+1.5*sin(eTm*2.+float(hk)*1.3));}
-    else if(id==19){al=vec3(0);em=mix(eC1,eC0,.5)*3.2;}
-    else if(id==21){al=vec3(.02);em=tcl(float(hk)*.25)*1.8;}
-    else if(id==5){al=eC2*.3+.05;rf=.45;rt=mix(vec3(1),eC2,.5);}
-    acc+=thr*(em+lit(p,n,al)*(1.-rf));
-    thr*=rf*rt;
-    if(rf<.02||max(thr.r,max(thr.g,thr.b))<.03)break;
-    ro=p+n*1e-3;rd=reflect(rd,n);
+    float ts=rsp(ro,rd,s0,.8);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-s0);id=4;}
+    ts=rsp(ro,rd,s1,.55);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-s1);id=5;}}
+  if(eM>2.5){
+    int sn=int(eIn+.5);
+    if(sn==1){float tb=boxIn(ro,rd,vec3(-4.5,-9.,-4.5),vec3(4.5,3.8,4.5),bn);if(tb<t){t=tb;n=bn;id=11;}
+      if(full)orb(ro,rd,1.7,.3,t,n,id,hk);}
+    else if(sn==2){float tb=boxIn(ro,rd,vec3(-4.5,-9.,-4.5),vec3(4.5,3.8,4.5),bn);if(tb<t){t=tb;n=bn;id=12;}
+      tubes(ro,rd,t,n,id,hk);}
+    else if(sn==3){
+      float tb=boxIn(ro,rd,vec3(-9.,-9.,-9.),vec3(9.,4.,9.),bn);if(tb<t){t=tb;n=bn;id=13;}
+      vec3 sc0=vec3(0,eY+1.2,-8.);float ts=rsp(ro,rd,sc0,2.8);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-sc0);id=14;}
+      if(abs(rd.z)>1e-5){float th=(-1.6-ro.z)/rd.z;if(th>1e-3&&th<t){vec3 q=ro+rd*th;if(abs(length(q.xy)-1.62)<.07){t=th;n=vec3(0,0,rd.z>0.?-1.:1.);id=19;}}}}
+    else if(full){
+      if(hb(ro,rd,vec3(0,eY+1.4,-3.4),5.6))for(int i=0;i<16;i++){float fi=float(i),h1=hs3(vec3(fi,7.,3.)),h2=hs3(vec3(fi,2.,9.));
+        vec3 lc=vec3(-3.6+2.4*mod(fi,4.)+(h1-.5)*.9,eY+.35+2.4*h2,-.8-1.7*floor(fi*.25)+(h2-.5)*.6);
+        float ts=rsp(ro,rd,lc,.2);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-lc);id=17;hk=i;}}
+      orb(ro,rd,1.6,.5,t,n,id,hk);}
   }
-  return acc;}
+  if(eM<.5){float ts=rsp(ro,rd,eP,eR);if(ts>0.&&ts<t){t=ts;n=normalize(ro+rd*t-eP);id=6;}}
+}
+/* colore di un punto colpito (emissione + luce); rf = quanto riflette, rt = tinta del riflesso */
+vec3 shd(vec3 ro,vec3 rd,float t,vec3 n,int id,int hk,out float rf,out vec3 rt){
+  vec3 p=ro+rd*t,al=eW,em=vec3(0);rf=0.;rt=vec3(1);
+  if(id==6)return eK*3.;
+  if(id==1){
+    float ck=mod(floor(p.x*.8)+floor(p.z*.8),2.);
+    al=eM<.5?eW*mix(.3,.55,ck):eW*.5;
+    al*=1.-.55*eS*exp(-dot(p.xz-eOc.xz,p.xz-eOc.xz)/(eOr*eOr*.9));
+    float f=1.-abs(dot(n,rd));f*=f;f*=f;
+    rf=eF*(.1+.9*f)*(eM<.5?exp(-t*.04):exp(-t*.004));if(eM>2.5)em=fgl(p);
+    if(eM>1.5&&eM<2.5&&eIn>.5){gRo=ro;gBx=1.;em+=skyc(rd)*.6;gBx=0.;}}   /* cube map: il pavimento coincide con la faccia -Y */
+  else if(id==2){
+    if(n.x>.5)em=eC1*pm(vec2(p.z,p.y-1.5),vec2(2.5,1.2))*eI*2.5;
+    else if(n.x<-.5)em=eC2*pm(vec2(p.z,p.y-1.5),vec2(2.5,1.2))*eI*2.5;
+    else if(n.z>.5)em=(eC1+eC2)*.5*pm(vec2(p.x,p.y-.2),vec2(4.,.18))*eI*2.5;}
+  else if(id==3){al=eW*.8;em=eC0*pm(p.xz,vec2(2.5,2.5))*eI*2.2;}
+  else if(id==4){al=vec3(.03);rf=.9;rt=vec3(.95,.97,1.);}
+  else if(id==5){al=eC2*.3+.05;rf=.45;rt=mix(vec3(1),eC2,.5);}
+  else if(id==11){   /* stanza infinita: tre strati di puntini a scale diverse al posto dei rimbalzi tra specchi */
+    al=vec3(.02);vec2 uv0=(abs(n.x)>.5?p.zy:(abs(n.z)>.5?p.xy:p.xz));
+    for(int k=0;k<3;k++){float fk=float(k);vec2 uv=uv0*1.3*(1.+.6*fk)+fk*vec2(3.7,1.9),f=fract(uv)-.5,ci=floor(uv);
+      float tw=.5+.5*sin(eTm*(1.+2.*hs3(vec3(ci,1.)))+hs3(vec3(ci,5.))*6.2832),dt=smoothstep(.16,.09,length(f))*step(.35,hs3(vec3(ci,3.+fk)));
+      em+=(mod(ci.x+ci.y,2.)<1.?eC0:eC1)*dt*(1.2+2.5*tw)*(1.-.3*fk)*.8;}}
+  else if(id==12){al=eW;
+    if(n.z>.5){vec2 dd=abs(vec2(p.x,p.y-(eY+1.5)));em=tcol()*(1.-smoothstep(1.9,2.3,dd.x))*(1.-smoothstep(1.2,1.5,dd.y))*1.5;}}
+  else if(id==13){if(n.y<-.5){al=vec3(.01);em=mix(eC1,eC0,.5)*.3*exp(-dot(p.xz,p.xz)*.012);}else al=eW*.3;}
+  else if(id==14){al=vec3(0);em=mix(eC1,eC0,pow(abs(dot(n,rd)),.6))*(3.4+.5*sin(eTm*.6));}
+  else if(id==17){al=vec3(0);vec3 lc2=(hk%3==0)?eC0:((hk%3==1)?eC1:eC2);em=lc2*(2.2+1.8*(.5+.5*sin(eTm*1.3+float(hk)*1.7)));}
+  else if(id==18){al=vec3(0);em=(hk%3==0?eC0:(hk%3==1?eC1:eC2))*(3.+1.5*sin(eTm*2.+float(hk)*1.3));}
+  else if(id==19){al=vec3(0);em=mix(eC1,eC0,.5)*3.2;}
+  else if(id==21){al=vec3(.02);em=tcl(float(hk)*.25)*1.8;}
+  return em+lit(p,n,al)*(1.-rf);
+}
+vec3 trc(vec3 ro,vec3 rd,int nb){
+  float t=1e9;vec3 n=vec3(0,1,0);int id=0,hk=0;
+  scn(ro,rd,nb>=3,t,n,id,hk);
+  gT=t;gI=id;
+  if(id==0){gRo=ro;gBx=1.;vec3 sk=skyc(rd);gBx=0.;return sk;}
+  float rf;vec3 rt;
+  vec3 c=shd(ro,rd,t,n,id,hk,rf,rt);
+  if(nb>=2&&rf>.02){   /* un solo riflesso, su scena semplificata (senza lampade/orbite) */
+    vec3 p=ro+rd*t,rr=reflect(rd,n),o2=p+n*1e-3;
+    float t2=1e9;vec3 n2=vec3(0,1,0);int i2=0,k2=0;
+    scn(o2,rr,false,t2,n2,i2,k2);
+    vec3 rc;
+    if(i2==0){gRo=o2;gBx=1.;rc=skyc(rr);gBx=0.;}
+    else{float f2;vec3 r2;rc=shd(o2,rr,t2,n2,i2,k2,f2,r2);}
+    c+=rc*rf*rt;}
+  return c;}
 `;
 
 const pvP=P(`uniform sampler2D P,U,H,F;uniform float A,ya,pi,cd,sc,fl,sp,dm,de,tu,T,nz,ns,nt,ob,gA,gF,gR,gS,gT,mr,ms,mw,md,mz,mo,mel,mir,mgn,nO,nL,nG,nR,cE,cG,wJ,wR,wP,vF,vS,vW,kV,kD,kA,kT,nS,qF,qT,qP,qD,qX,qK;uniform vec3 cam;uniform vec2 mp,mv,mp2,mv2;uniform float mo2;uniform vec4 xhp[10],xhq[10];uniform vec4 hmA[12],hmB[12];uniform float hmK,hmV,hmM;uniform float xhf;
@@ -1510,8 +1525,8 @@ vec4 shEnv(int m){
   if(m==0){gLod=1.5;
     vec3 D=lamp(vw,nw,Vd,60.,sp)+IL;return vec4(vc*(am*(.3+2.*ir)+D)+sp*rf+trc(p0,rr,eM>2.5?1:2)*(rf*.35*fr),1);}
   if(m==1){gLod=1.;vec3 D=lamp(vw,nw,Vd,180.,sp)+IL;
-    return vec4(vc*(am*(.3+2.*ir)+D)*.85+sp*(.35+rf)+trc(p0,rr,eM>2.5?2:3)*(.25+.55*rf)*(.3+fr),1);}
-  if(m==2){gLod=.5;vec3 rl=trc(p0,rr,eM>2.5?2:3);
+    return vec4(vc*(am*(.3+2.*ir)+D)*.85+sp*(.35+rf)+trc(p0,rr,2)*(.25+.55*rf)*(.3+fr),1);}
+  if(m==2){gLod=.5;vec3 rl=trc(p0,rr,2);
     vec3 D=lamp(vw,nw,Vd,90.,sp);return vec4(vc*rl*1.15+vc*am*ir*.4+vc*sp*rf*.8+vc*IL*.4,1);}
   vec3 spX=vec3(0),DX=vec3(0);
   extraLights(vw,nw,Vd,DX,spX,eyeW);
@@ -1694,7 +1709,7 @@ const envP=P(`uniform float A,ya,pi,cd,sc,eHf,eLo,eKs;uniform vec3 cam,camW,eKo;
 `+RR+ENVG+`void main(){
   vec2 nd=v*2.-1.;mat3 M=R(ya,pi),Mt=transpose(M);
   vec3 rd=normalize(Mt*vec3(nd.x*A/sc,nd.y/sc,-cd)),ro=cam+Mt*vec3(0,0,cd);
-  vec3 c=trc(ro,rd,eLo>.5?2:(eM>2.5?3:4));
+  vec3 c=trc(ro,rd,3);
   if(eFg>0.){
     float T=gI==0?1.-(1.-exp(-eFg*8.))*exp(-max(rd.y,0.)*(2.+eFh*2.)):fogT(ro,ro+rd*gT);
     c=mix(eFc,c,T);}
@@ -2488,6 +2503,7 @@ function scrDraw(XA,ya,pi,cd,sc){
 function scrScene(){SCRO=null;drawP()}
 function frame(){
   gl.disable(gl.SCISSOR_TEST);fpsTick();
+  if(typeof MVT==='object'&&MVT&&MVT.step){const n=performance.now(),d=Math.min(.05,Math.max(0,(n-(MVT.l||n))/1000));MVT.l=n;MVT.step(d)}   /* transizione preset movimento */
   const SM=scrOn();document.body.classList.toggle('wcon',V==='wc'&&!SM);
   if(SM&&V==='e2'){scrEnsure();SCRO=SRT}
   if(V==='wc'){wcFrame();if(NET.on)netPresence(null,0,0,0);netCurUpdate();if(SM){scrWcUp();scrScene()}RAF();return}
@@ -3473,10 +3489,15 @@ function xrSpread(cs){
   const d=Math.hypot(a.p.x-b.p.x,a.p.y-b.p.y,a.p.z-b.p.z);if(d<.02)return;
   const getPc=()=>{const[c,s]=cs(),k=XR.k,dx=-XR.off[0],dz=-XR.off[2];return[(dx*c-dz*s)/k,-XR.off[1]/k,(dx*s+dz*c)/k]};
   const setPc=P=>{const[c,s]=cs(),k=XR.k;XR.off=[-k*(c*P[0]+s*P[2]),-k*P[1],-k*(-s*P[0]+c*P[2])]};
+  const M=[(a.p.x+b.p.x)/2,(a.p.y+b.p.y)/2,(a.p.z+b.p.z)/2];   /* punto medio tra le due mani / controller, nello spazio XR */
   XR.sc2=1;
-  if(!XR.sp){XR.sp={d0:d,k0:XR.k};return}
-  const nk=Math.min(3,Math.max(.2,XR.sp.k0*XR.sp.d0/d));
-  if(Math.abs(nk-XR.k)>1e-4){const P0=getPc();XR.k=nk;const sl=byId('xrk');sl.value=nk;XR.ksl=+sl.value;sl.dispatchEvent(new Event('input'));setPc(P0)}
+  if(!XR.sp){XR.sp={d0:d,k0:XR.k,M0:M,P0:getPc()};return}
+  const S=XR.sp,nk=Math.min(3,Math.max(.2,S.k0*S.d0/d)),Pk=getPc();
+  if(Math.abs(nk-XR.k)>1e-4){XR.k=nk;const sl=byId('xrk');sl.value=nk;XR.ksl=+sl.value;sl.dispatchEvent(new Event('input'))}
+  /* allarga/stringi = scala attorno al centro; muovi le mani insieme = il centro dell'oggetto segue il punto medio (su, giu, avanti, indietro, di lato).
+     Con la nuvola bloccata resta ferma e cambia solo la scala. */
+  if(XR.lock||!S.M0||!S.P0)setPc(Pk);
+  else setPc([S.P0[0]+M[0]-S.M0[0],S.P0[1]+M[1]-S.M0[1],S.P0[2]+M[2]-S.M0[2]]);
 }
 /* battito di mani: due polsi che si avvicinano veloci → cambia stile delle mani */
 function xrClap(now){
@@ -3561,14 +3582,14 @@ const TBHELP=[
   'Trigger (tasti anteriori) = emetti particelle · B / Y = cancella',
   'X (controller sinistro) = apri / chiudi questo menu',
   'Nel menu: laser destro + trigger = clic, trascina i cursori',
-  'Due grip insieme, allarga / stringi = scala l\'oggetto',
+  'Due grip: allarga / stringi = scala · muovi = sposta l\'oggetto',
   'Stick sinistro = muoviti · stick destro = ruota e cambia quota',
   'Scheda Sfere: spingile con mani e controller · grip = afferra e lancia',
   '#Mani (hand tracking)',
   'Pizzico pollice + indice = emetti · pollice + anulare = cancella',
   'Doppio pizzico pollice + medio (mano sinistra) = apri / chiudi il menu',
   'Nel menu: pizzico dell\'indice destro = clic, trascina i cursori',
-  'Due pizzichi d\'indice, allarga / stringi = scala l\'oggetto',
+  'Due pizzichi d\'indice: allarga / stringi = scala · muovi = sposta l\'oggetto',
   'Pollice + mignolo (sinistra) = ricentra · batti le mani = cambia stile mani',
   '#Gaussian · Tails · Suono',
   'Gaussian: stile, scaglie e pixel (serve 3D Object con Rendering = Gaussian splat)',
@@ -5851,6 +5872,9 @@ aid('audpbtn').onclick=()=>{const e=AUD.el;if(!e)return;if(e.paused){e.play().ca
 
 /* ---------- preset del blocco Movimento ---------- */
 var mvRaf=0;
+/* Transizione dei preset: NON usa requestAnimationFrame della finestra (in una sessione VR si ferma e, all'uscita, ripartiva di colpo facendo esplodere le particelle).
+   Avanza dentro frame(), che gira sia in finestra sia in VR, con passo massimo di 50 ms per fotogramma. */
+var MVT={step:null,p:0,l:0};
 const MVD={dep:.8,flw:2.5,spr:.012,dmp:.86,tur:.3,trl:0,trk:8,trt:.5,vol:.6,vdp:1.2,vam:.6,vts:1,nty:1,nz:.25,ns:2.5,nfo:4,nfl:2,nfg:.5,nrs:1,nce:.15,ncg:1,nwj:1,nwr:0,nwp:1,nvf:2,nvs:1,nvw:0,nsa:.6};
 const MVP={
   calmo:{dep:.6,flw:1,spr:.018,dmp:.94,tur:.08,nty:1,nz:.18,ns:1.8,nfo:3,vol:.45,vdp:1,vam:.35,vts:.45},
@@ -5861,7 +5885,7 @@ const MVP={
   tempesta:{dep:1.7,flw:3.4,spr:.005,dmp:.86,tur:1.2,trl:.7,trk:12,trt:.5,nty:3,nz:1.4,ns:3,nce:.1,ncg:2.4,vol:1,vdp:2.2,vam:1.5,vts:2.2}
 };
 function stopMvPreset(){
-  cancelAnimationFrame(mvRaf);
+  cancelAnimationFrame(mvRaf);MVT.step=null;
   document.querySelectorAll('#mvpresets button').forEach(b=>b.classList.remove('active'));
 }
 /* con i PLY le coordinate sono 3D vere: ampiezze ridotte, e Calmo riporta la nuvola alla forma originale */
@@ -5875,12 +5899,15 @@ function setMvPreset(name){
   if(ny.value!==String(T.nty)){ny.value=T.nty;ny.dispatchEvent(new Event('change',{bubbles:true}))}
   ids.forEach(id=>from[id]=nv(id));
   document.querySelectorAll('#mvpresets button').forEach(b=>b.classList.toggle('active',b.dataset.p===name));
-  const t0=performance.now(),step=now=>{
-    const r=Math.min(1,(now-t0)/1600),w=r*r*(3-2*r);
-    ids.forEach(id=>{const e=document.getElementById(id);e.value=from[id]+(T[id]-from[id])*w;e.dispatchEvent(new Event('input',{bubbles:true}))});
-    if(r<1)mvRaf=requestAnimationFrame(step);
+  const els={};ids.forEach(id=>els[id]=document.getElementById(id));
+  MVT.p=0;MVT.l=performance.now();
+  MVT.step=dtc=>{
+    MVT.p+=dtc;
+    const r=Math.min(1,MVT.p/1.6),w=r*r*(3-2*r);
+    ids.forEach(id=>{const e=els[id];e.value=from[id]+(T[id]-from[id])*w;e.dispatchEvent(new Event('input',{bubbles:true}))});
+    if(r>=1)MVT.step=null;
   };
-  mvRaf=requestAnimationFrame(step);
+  MVT.step(0);   /* il primo passo parte subito, anche se il frame successivo tarda */
 }
 document.querySelectorAll('#mvpresets button').forEach(b=>{b.onclick=()=>setMvPreset(b.dataset.p)});
 ['input','change'].forEach(ev=>document.getElementById('blkmv').addEventListener(ev,e=>{if(e.isTrusted&&!e.target.closest('#audgrp'))stopMvPreset()}));
@@ -6840,7 +6867,7 @@ function drawP(){
   if(XR.vcam&&XV){if(XV===XVS[0])vcUpload();vcDraw(XV.Vw/XV.Vh)}
   const MN=!SCN&&mnOn(),EU=(!MN&&!XR.pt&&!XR.vcam&&(SCN||V==='o3'||V==='i3'))?envU():null;
   if(EU){gl.bindVertexArray(null);
-    if(EU.eM>2.5||(window.LOWAUTO&&XR.on)){envEnsure();draw(envP,envT,{A:XA,ya,pi,cd,sc,cam:XV&&XV.camR?XV.camR:cam,camW:cam,eKs:XV&&XV.camR?XV.k:1,eKo:XV&&XV.camR?XV.ko:[0,0,0],...EU,eHf:1,eLo:(window.LOWAUTO&&XR.on)?1:0});gl.depthFunc(gl.ALWAYS);draw(envC,null,{s:envT.t});gl.depthFunc(gl.LESS)}
+    if(EU.eM>2.5||window.LOWAUTO){envEnsure(XW,XH);draw(envP,envT,{A:XA,ya,pi,cd,sc,cam:XV&&XV.camR?XV.camR:cam,camW:cam,eKs:XV&&XV.camR?XV.k:1,eKo:XV&&XV.camR?XV.ko:[0,0,0],...EU,eHf:1,eLo:1});gl.depthFunc(gl.ALWAYS);draw(envC,null,{s:envT.t});gl.depthFunc(gl.LESS)}
     else{gl.depthFunc(gl.ALWAYS);draw(envP,null,{A:XA,ya,pi,cd,sc,cam:XV&&XV.camR?XV.camR:cam,camW:cam,eKs:XV&&XV.camR?XV.k:1,eKo:XV&&XV.camR?XV.ko:[0,0,0],...EU,eHf:0});gl.depthFunc(gl.LESS)}}
   /* per le particelle la stanza va portata nel loro mondo scalato (pavimento, luci) */
   const EUw=(XV&&EU&&XV.camR&&(XV.k!==1||XV.ko[0]||XV.ko[1]||XV.ko[2]))?(()=>{const k=XV.k,o=XV.ko,m=a=>a&&a.length===3?[a[0]*k+o[0],a[1]*k+o[1],a[2]*k+o[2]]:a;
@@ -6994,7 +7021,7 @@ const mnId=['mnsz','mnsv','mnop','mnso','mngl','mnco','mntw','mnvg','mnfc','mndf
 const mnOn=()=>document.getElementById('mnon').checked;
 function mnU(){const h=document.getElementById('mntn').value,u={mntn:[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255)};mnId.forEach(k=>u[k]=nv(k));return u}
 let mnT=null,envT=null,envScale=.6;
-function envEnsure(){const w=Math.max(2,Math.round((XR.on?XR.W:c.width)*envScale)),h=Math.max(2,Math.round((XR.on?XR.H:c.height)*envScale));if(envT&&envT.w===w&&envT.h===h)return;if(envT){gl.deleteTexture(envT.t);gl.deleteFramebuffer(envT.fbo)}envT=mk(w,h)}
+function envEnsure(w0,h0){const w=Math.max(2,Math.round((w0||(XR.on?XR.W:c.width))*envScale)),h=Math.max(2,Math.round((h0||(XR.on?XR.H:c.height))*envScale));if(envT&&envT.w===w&&envT.h===h)return;if(envT){gl.deleteTexture(envT.t);gl.deleteFramebuffer(envT.fbo)}envT=mk(w,h)}
 /* Pre-riscaldamento: il driver finisce di compilare lo shader dell'ambiente solo al primo disegno. Se succede dentro la sessione VR il visore si blocca (glitch, spegnimento forzato).
    Qui lo disegno una volta su un bersaglio minuscolo PRIMA di entrare, a pagina ancora visibile. */
 async function envWarm(){
