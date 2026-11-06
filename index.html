@@ -188,6 +188,7 @@ body.cb *{visibility:hidden!important}body.cb #c,body.cb .cbv,body.cb #cbh,body.
 #xro #xch button{flex:none;min-height:44px;padding:0 16px;white-space:nowrap;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.28);font-size:14px}
 #xro #xch button:active{transform:scale(.95)}
 #xro #xch button.act{background:linear-gradient(160deg,rgba(255,255,255,.5),rgba(255,255,255,.26));border-color:rgba(255,255,255,.7);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),0 0 0 1px rgba(255,255,255,.35),0 4px 16px rgba(0,0,0,.28);font-weight:650}
+#hrtg{display:grid;grid-template-columns:1fr 104px;gap:4px 8px;align-items:center;grid-column:1/-1;padding:0 7px}#hrtg select{padding:3px 4px;font-size:10px;letter-spacing:.05em}#hrtg label.chk{font-size:11px}#hrmt{display:grid;grid-template-columns:54px 1fr;gap:5px 8px;align-items:center;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gr);grid-column:1/-1;padding:0 7px;margin:2px 0 4px}.hrrow{grid-column:1/-1;padding:0 7px}
 .aumt{height:5px;background:#444}.aumt>div{height:100%;width:0;background:var(--wh)}#audgrp{grid-column:1/-1;display:grid;grid-template-columns:inherit;gap:inherit}:is(#audgrp,#audgrp>.cgb)>.full{grid-column:1/-1}:is(#audgrp,#audgrp>.cgb)>.row,:is(#audgrp,#audgrp>.cgb)>#audmt,:is(#audgrp,#audgrp>.cgb)>#audtg,:is(#audgrp,#audgrp>.cgb)>.hint{padding-left:7px;padding-right:7px}:is(#audgrp,#audgrp>.cgb)>.row{margin-top:2px}:is(#audgrp,#audgrp>.cgb)>#audmt{margin:2px 0 4px}#audtg{display:grid;grid-template-columns:1fr 104px;gap:4px 8px;align-items:center}#audtg select{padding:3px 4px;font-size:10px;letter-spacing:.05em}#audtg label.chk{font-size:11px}#audmt{display:grid;grid-template-columns:54px 1fr;gap:5px 8px;align-items:center;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gr)}
 </style>
 <style>
@@ -388,18 +389,6 @@ body.wcon #stage{touch-action:none}
 <button data-s="i3" class="full mkcl" id="i3mcl">Cancella pennellate</button>
 <label data-s="i3" class="chk full mkinv"><input type="checkbox" id="i3mki"> Inverti maschera</label>
 <p class="hint full" id="i3mkh" data-s="i3" style="display:none"></p>
-<p class="full" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Layer triangolazione Delaunay</p>
-<label class="chk full"><input type="checkbox" id="dlon"> Mostra il layer sopra le particelle</label>
-<label class="s">Precisione<input type="range" id="dlpr" min="1" max="10" step="1" value="7"></label>
-<label class="s">Soglia luminosità<input type="range" id="dlth" min=".02" max=".9" step=".01" value=".12"></label>
-<label class="s">Lunghezza max linee<input type="range" id="dlml" min=".03" max="1" step=".01" value=".5"></label>
-<label class="s">Spessore linee<input type="range" id="dlw" min=".25" max="5" step=".25" value=".75"></label>
-<label class="s">Opacità linee<input type="range" id="dlop" min=".05" max="1" step=".05" value=".8"></label>
-<label class="s">Colore linee<input type="color" id="dlcol" value="#ffffff"></label>
-<label class="chk full"><input type="checkbox" id="dlpt"> Mostra anche i punti</label>
-<label class="s full">Fusione: Delaunay ↔ Voronoi<input type="range" id="dlmx" min="0" max="1" step=".01" value="1"></label>
-<label class="s full">Reattività (bassa = più fluido)<input type="range" id="dlfl" min="1" max="30" step="1" value="8"></label>
-<p class="hint full">Il layer legge dove ci sono particelle luminose, ne sceglie dei punti e li unisce con la triangolazione di Delaunay, quindi collega anche gruppi di particelle distanti (per esempio due sagome). Precisione alta = più punti e più triangoli (più pesante). Lunghezza max taglia i collegamenti troppo lunghi.</p>
 <p class="full" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Spinta del mouse</p>
 <label class="s">Raggio<input type="range" id="mra" min=".03" max=".6" step=".01" value=".18"></label>
 <label class="s">Spinta<input type="range" id="mst" min="-2" max="2" step=".05" value="1"></label>
@@ -477,6 +466,32 @@ body.wcon #stage{touch-action:none}
 <label class="s">Dispersione laterale<input type="range" id="sqd" min="0" max="1" step=".01" value=".6"></label>
 <label class="s">Asse speculare X<input type="range" id="sqx" min="-1" max="1" step=".01" value="0"></label>
 <p class="hint full">Solo una parte delle particelle (la quota) parte verso la silhouette speculare in un flusso continuo a senso unico: a metà viaggio è piena, mentre all'arrivo si dissolve sfumando e nuove particelle nascono sfumando dal corpo di origine; le altre restano ferme, quindi le silhouette non si svuotano. Una quota bassa (0,1–0,3) dà l'effetto nuvola tra i due corpi.</p>
+<h2 class="full cg">Mani · impronta del movimento</h2>
+<h2 class="full cg">Mani · reattive</h2>
+<label class="chk full"><input type="checkbox" id="hmon"> Mani · imprimi movimento</label>
+<label class="chk full"><input type="checkbox" id="hmre"> Mani · particelle reattive ai gesti</label>
+<label class="s full">Intensità<b></b><input type="range" id="hramt" min="0" max="2" step=".05" value="1.6"></label>
+<label class="s full">Sensibilità<b></b><input type="range" id="hrsns" min=".3" max="4" step=".05" value="1.5"></label>
+<label class="s full">Morbidezza<b></b><input type="range" id="hrsm" min="0" max=".95" step=".01" value=".55"></label>
+<div id="hrmt"><span>Gesto</span><div class="aumt"><div></div></div><span>Apertura</span><div class="aumt"><div></div></div><span>Dita</span><div class="aumt"><div></div></div><span>Colpo</span><div class="aumt"><div></div></div></div>
+<div class="full hint" style="margin-top:4px">Parametri che reagiscono · gesto che li pilota</div>
+<div class="row full hrrow"><button id="hrall">Tutti</button><button id="hrnone">Nessuno</button></div>
+<div id="hrtg"></div>
+<p class="hint full">Scegli per ogni parametro quale gesto lo pilota (Preset = mappatura del preset di movimento). Gesto = ampiezza del movimento della mano · Apertura = mano aperta/chiusa · Dita = dita agitate · Livello = insieme · Colpo = movimento secco. Indipendente dall’audio: i due possono lavorare insieme.</p>
+<p class="hint full" id="hmst">Spento. Sul computer usa la webcam, in VR i giunti delle mani del visore (o i controller).</p>
+<label class="s full">Mani · modalità<select id="hmm"><option value="0">Trascina</option><option value="1">Spinta</option><option value="2">Vortice</option><option value="3">Risucchio</option></select></label>
+<label class="s">Mani · forza<b></b><input type="range" id="hmk" min="0" max="3" step=".05" value="1"></label>
+<label class="s">Mani · raggio<b></b><input type="range" id="hmr" min=".05" max="1.2" step=".01" value=".35"></label>
+<label class="s">Mani · trascinamento<b></b><input type="range" id="hmv" min="0" max="3" step=".05" value="1"></label>
+<label class="s">Mani · morbidezza<b></b><input type="range" id="hmsm" min="0" max=".95" step=".01" value=".5"></label>
+<label class="s full">Mani · punti<select id="hmpt"><option value="0">Mano intera (palmo + 5 dita)</option><option value="1">Solo palmo</option><option value="2">Solo punte delle dita</option><option value="3">Solo indice</option></select></label>
+<label class="chk full"><input type="checkbox" id="hmrep" checked> Mani · in VR sostituisci la spinta base</label>
+<label class="chk full"><input type="checkbox" id="hmmir" checked> Mani · webcam specchiata</label>
+<label class="s">Mani · webcam portata<b></b><input type="range" id="hmg" min="1" max="2.2" step=".05" value="1.4"></label>
+<label class="s">Mani · webcam profondità<b></b><input type="range" id="hmz" min="-1" max="1" step=".05" value="0"></label>
+<label class="s">Mani · webcam distanza<b></b><input type="range" id="hmzk" min="0" max="3" step=".05" value="1"></label>
+<label class="chk full"><input type="checkbox" id="hmov" checked> Mani · mostra sullo schermo</label>
+<p class="hint full">Le mani diventano un pennello invisibile che imprime il proprio movimento alle particelle. Sul computer la webcam riconosce le mani (MediaPipe, la prima volta serve internet; il permesso della camera viene chiesto all'attivazione) e le porta nella scena: Portata amplia il campo, Profondità sposta il piano della mano, Distanza fa avvicinare la mano alla scena quando la avvicini alla camera. In VR usa i giunti dell'hand tracking del visore, oppure i controller se non vede le mani. Trascina: le particelle prendono la velocità della mano (solo quando si muove) · Spinta: le allontana · Vortice: le avvolge attorno alla traiettoria · Risucchio: le attira. Forza = intensità, Raggio = area d'influenza, Trascinamento = quanta velocità viene trasmessa, Morbidezza = filtro anti-tremolio. Con «sostituisci la spinta base» in VR la spinta classica delle mani (Forza mani) viene sospesa mentre l'impronta è attiva, per evitare il doppio effetto.</p>
 <label class="s full">Trails · tipo<select id="trm"><option value="0">Scia continua</option><option value="1">Copie (ripetizione)</option><option value="2">Tratteggio (scia a trattini)</option><option value="3">Fluid hairs (optical flow)</option><option value="4">Serpentina (scia ondulata)</option></select></label>
 <label class="s">Trails · lunghezza<input type="range" id="trl" min="0" max="2" step=".02" value="0"></label>
 <label class="s">Trails · campioni<input type="range" id="trk" min="2" max="16" step="1" value="8"></label>
@@ -636,6 +651,20 @@ body.wcon #stage{touch-action:none}
   </div>
   <label class="s full">Velocit&agrave; Luce<input type="range" id="lgspd" min=".1" max="3" step=".05" value="1"></label>
 </div>
+</div></details>
+  <details class="blk" data-s="i3 o3"><summary>FX</summary><div class="in">
+<p class="full" style="margin:8px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gr)">Layer triangolazione Delaunay</p>
+<label class="chk full"><input type="checkbox" id="dlon"> Mostra il layer sopra le particelle</label>
+<label class="s">Precisione<input type="range" id="dlpr" min="1" max="10" step="1" value="7"></label>
+<label class="s">Soglia luminosità<input type="range" id="dlth" min=".02" max=".9" step=".01" value=".12"></label>
+<label class="s">Lunghezza max linee<input type="range" id="dlml" min=".03" max="1" step=".01" value=".5"></label>
+<label class="s">Spessore linee<input type="range" id="dlw" min=".25" max="5" step=".25" value=".75"></label>
+<label class="s">Opacità linee<input type="range" id="dlop" min=".05" max="1" step=".05" value=".8"></label>
+<label class="s">Colore linee<input type="color" id="dlcol" value="#ffffff"></label>
+<label class="chk full"><input type="checkbox" id="dlpt"> Mostra anche i punti</label>
+<label class="s full">Fusione: Delaunay ↔ Voronoi<input type="range" id="dlmx" min="0" max="1" step=".01" value="1"></label>
+<label class="s full">Reattività (bassa = più fluido)<input type="range" id="dlfl" min="1" max="30" step="1" value="8"></label>
+<p class="hint full">Il layer legge dove ci sono particelle luminose, ne sceglie dei punti e li unisce con la triangolazione di Delaunay, quindi collega anche gruppi di particelle distanti (per esempio due sagome). Precisione alta = più punti e più triangoli (più pesante). Lunghezza max taglia i collegamenti troppo lunghi.</p>
 </div></details>
   <details class="blk" data-s="i3 o3 e2 wc"><summary>Ambiente 3D</summary><div class="in">
 <label class="s full">Ambiente<select id="envm"><option value="0">Nessuno</option><optgroup label="Stanze"><option value="1">Stanza</option><option value="2">Studio</option><option value="3">Neon</option><option value="4">Tramonto</option></optgroup><optgroup label="Cieli"><option value="5">Cielo</option><option value="6">Alba</option><option value="7">Notte</option><option value="8">Nuvoloso</option></optgroup><option value="9">Foto 360&deg;</option><optgroup label="Installazioni"><option value="10">Stanza infinita</option><option value="11">Camera di luce</option><option value="12">Sole in sala</option><option value="13">Foresta di lampade</option></optgroup><option value="14">Cube map</option></select></label>
@@ -1251,7 +1280,7 @@ vec3 trc(vec3 ro,vec3 rd,int nb){
   return acc;}
 `;
 
-const pvP=P(`uniform sampler2D P,U,H,F;uniform float A,ya,pi,cd,sc,fl,sp,dm,de,tu,T,nz,ns,nt,ob,gA,gF,gR,gS,gT,mr,ms,mw,md,mz,mo,mel,mir,mgn,nO,nL,nG,nR,cE,cG,wJ,wR,wP,vF,vS,vW,kV,kD,kA,kT,nS,qF,qT,qP,qD,qX,qK;uniform vec3 cam;uniform vec2 mp,mv,mp2,mv2;uniform float mo2;uniform vec4 xhp[10],xhq[10];uniform float xhf;
+const pvP=P(`uniform sampler2D P,U,H,F;uniform float A,ya,pi,cd,sc,fl,sp,dm,de,tu,T,nz,ns,nt,ob,gA,gF,gR,gS,gT,mr,ms,mw,md,mz,mo,mel,mir,mgn,nO,nL,nG,nR,cE,cG,wJ,wR,wP,vF,vS,vW,kV,kD,kA,kT,nS,qF,qT,qP,qD,qX,qK;uniform vec3 cam;uniform vec2 mp,mv,mp2,mv2;uniform float mo2;uniform vec4 xhp[10],xhq[10];uniform vec4 hmA[12],hmB[12];uniform float hmK,hmV,hmM;uniform float xhf;
 `+RR+`float hs(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
 float vn3(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
   return mix(mix(mix(hs(i),hs(i+vec3(1,0,0)),f.x),mix(hs(i+vec3(0,1,0)),hs(i+vec3(1,1,0)),f.x),f.y),
@@ -1339,6 +1368,15 @@ void main(){
   }}
   for(int i=0;i<10;i++){vec4 H=xhp[i];if(H.w>0.){vec3 d=p-H.xyz;float l=length(d),f=1.-smoothstep(0.,H.w,l);
     if(f>0.){vec4 Q=xhq[i];a+=(Q.xyz*3.-u)*f*.2*xhf;a-=d/(l+1e-3)*Q.w*f*.05*xhf;}}}
+  /* impronta delle mani: 12 punti (2 mani x palmo + 5 punte), ognuno e' una capsula dalla posizione precedente a quella attuale */
+  if(hmK>0.){for(int i=0;i<12;i++){vec4 ha_=hmA[i];if(ha_.w>0.){vec4 hb_=hmB[i];vec3 ab_=ha_.xyz-hb_.xyz;float l2_=dot(ab_,ab_);
+    float t_=l2_>1e-9?clamp(dot(p-hb_.xyz,ab_)/l2_,0.,1.):1.;vec3 d_=p-(hb_.xyz+ab_*t_);float dl_=length(d_),f_=1.-smoothstep(0.,ha_.w,dl_);
+    if(f_>0.){float s_=length(ab_);vec3 v_=ab_*(s_>.1?.1/s_:1.);float g_=min(1.,length(v_)*18.),k_=hmK*hb_.w;vec3 n_=d_/(dl_+1e-3);
+      float dw_=hmM<.5?1.:.35;
+      a+=(v_*2.*hmV-u)*f_*.2*k_*dw_*smoothstep(0.,.25,g_);
+      if(hmM>.5&&hmM<1.5)a+=n_*(.25+g_)*f_*k_*.012;
+      else if(hmM>1.5&&hmM<2.5){vec3 x_=s_>1e-4?ab_/s_:vec3(0,0,1);a+=cross(x_,n_)*(.2+g_)*f_*k_*.014;}
+      else if(hmM>2.5)a-=n_*(.3+g_)*f_*k_*.01;}}}}
   float qfd=1.;
   if(qF>0.){
     float qs=.75+.5*hq(h.xy,3.1),qo=hq(h.xy,5.7);
@@ -1962,7 +2000,7 @@ function sU(p,k,v,unit){
   if(!(k in p.u))p.u[k]=gl.getUniformLocation(p.p,k);const l=p.u[k];
   if(l===null)return unit;
   if(k==='uXR')gl.uniformMatrix3fv(l,false,v);
-  else if(k==='xhp'||k==='xhq'||k==='xhj'||k==='xhc'||k==='xht')gl.uniform4fv(l,v);
+  else if(k==='xhp'||k==='xhq'||k==='xhj'||k==='xhc'||k==='xht'||k==='hmA'||k==='hmB')gl.uniform4fv(l,v);
   else if(v instanceof WebGLTexture){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,v);gl.uniform1i(l,unit);return unit+1}
   else if(typeof v==='number')gl.uniform1f(l,v);
   else if(v.length===2)gl.uniform2f(l,v[0],v[1]);
@@ -3397,7 +3435,7 @@ function xrVel(i,P,att){
   XR.xq.set([vx,vy,vz,att],i*4);
 }
 /* ---------- parametri dal visore: stick destro (controller) o pizzichi (mani) + pannello in VR ---------- */
-const XRP=[['mvpresets','Preset movimento','m'],['thumbs','Immagine / video','q'],['spd','Velocità'],['aud','Audio reactive','x'],['audsrc','Sorgente audio','s'],['audspd','Velocità audio'],['audamt','Audio · intensità'],['audsns','Audio · sensibilità'],['audsm','Audio · morbidezza'],['shp','Forma particella','s'],['xrk','Scala mondo'],['xrpt','Passthrough','b'],['trm','Tails · tipo','s'],['trl','Tails · lunghezza'],['trk','Tails · campioni'],['trt','Tails · rastremazione'],['tri','Tails · intensità'],['gtf','Tails come i gaussian','x'],['rmode','Rendering','s'],['gst','Stile gaussian','s'],['gsh','Durezza bordo'],['gsl','Allungamento scaglie'],['gsv','Reattività al movimento'],['gsz','Scala gaussian'],['gop','Opacità gaussian'],['xrhs','Stile mani','s'],['xrh','Mani 3D','x'],['xrsph','Sfere interattive','x'],['xrspn','Sfere · quantità'],['xrspr','Sfere · dimensione'],['snd','Suono attivo','x'],['sndm','Sorgente suono','s'],['sndv','Volume suono'],['sndpt','Intonazione'],['sndvr','Pitch col movimento'],['sndgr','Durata grano'],['envm','Mondi','s'],['den','Particelle'],['grw','Crescita particelle'],['sz','Dimensione'],['nz','Noise'],['flw','Flusso'],['tur','Turbolenza'],['i3mr','Raggio pennello'],['i3mvq','Quantità pennello'],['i3mvd','Distanza pennello'],['li','Luce · intensità'],['fgd','Nebbia · densità'],['fgr','Nebbia · raggi'],['envi','Ambiente · intensità'],['xrf','Forza mani'],['xrr','Raggio mani']];
+const XRP=[['mvpresets','Preset movimento','m'],['thumbs','Immagine / video','q'],['spd','Velocità'],['aud','Audio reactive','x'],['audsrc','Sorgente audio','s'],['audspd','Velocità audio'],['audamt','Audio · intensità'],['audsns','Audio · sensibilità'],['audsm','Audio · morbidezza'],['shp','Forma particella','s'],['xrk','Scala mondo'],['xrpt','Passthrough','b'],['trm','Tails · tipo','s'],['trl','Tails · lunghezza'],['trk','Tails · campioni'],['trt','Tails · rastremazione'],['tri','Tails · intensità'],['gtf','Tails come i gaussian','x'],['rmode','Rendering','s'],['gst','Stile gaussian','s'],['gsh','Durezza bordo'],['gsl','Allungamento scaglie'],['gsv','Reattività al movimento'],['gsz','Scala gaussian'],['gop','Opacità gaussian'],['xrhs','Stile mani','s'],['xrh','Mani 3D','x'],['xrsph','Sfere interattive','x'],['xrspn','Sfere · quantità'],['xrspr','Sfere · dimensione'],['snd','Suono attivo','x'],['sndm','Sorgente suono','s'],['sndv','Volume suono'],['sndpt','Intonazione'],['sndvr','Pitch col movimento'],['sndgr','Durata grano'],['envm','Mondi','s'],['den','Particelle'],['grw','Crescita particelle'],['sz','Dimensione'],['nz','Noise'],['flw','Flusso'],['tur','Turbolenza'],['i3mr','Raggio pennello'],['i3mvq','Quantità pennello'],['i3mvd','Distanza pennello'],['li','Luce · intensità'],['fgd','Nebbia · densità'],['fgr','Nebbia · raggi'],['envi','Ambiente · intensità'],['xrf','Forza mani'],['xrr','Raggio mani'],['hmon','Imprimi movimento mani','x'],['hmre','Mani reattive ai gesti','x'],['hramt','Mani reattive · intensità'],['hrsns','Mani reattive · sensibilità'],['hrsm','Mani reattive · morbidezza'],['hmm','Impronta · modalità','s'],['hmk','Impronta · forza'],['hmr','Impronta · raggio'],['hmv','Impronta · trascinamento']];
 const MVN=['calmo','fumo','onde','tempesta','correnti','sciame'];
 function xrPtSet(on){if(!XR.ptCap){XR.hudDirty=1;return}XR.pt=on?1:0;byId('xrpt').checked=!!on;XR.hudDirty=1;XR.stT=0}
 byId('xrpt').addEventListener('change',()=>{if(XR.on&&XR.ptCap)xrPtSet(byId('xrpt').checked)});
@@ -3513,6 +3551,7 @@ const TBT=[
   {n:'Gaussian',c:'#ffd166',it:['gst','gsh','gsl','gsv','gsz','gop']},
   {n:'Suono',c:'#5ad1c0',it:['snd','sndm','#sndinfo','sndv','sndpt','sndvr','sndgr']},
   {n:'Mani',c:'#c79bff',it:['xrhs','xrh','#clap']},
+  {n:'Impronta mani',c:'#e0a84a',it:['hmon','hmre','hramt','hrsns','hrsm','hmm','hmk','hmr','hmv']},
   {n:'Sfere',c:'#ff9f6e',it:['xrsph','xrspn','xrspr']},
   {n:'Cattura',c:'#ff6b6b',it:['#capb','#capo','#capn']},
   {n:'Istruzioni',c:'#8ee3ef',it:['#help']}
@@ -5476,16 +5515,33 @@ const AUDSEL={},AUDOF={};
 AUDROWS.forEach(r=>{AUDSEL[r[0]]={on:true,band:'p'};r[2].forEach(i=>AUDOF[i]=r[0])});
 function audM(id){
   const e=AUDE[id]||(AUDE[id]=aid(id)),base=(id==='spd'&&AUD.on)?+aid('audspd').value:+e.value;   /* con audio reactive la velocità è quella dedicata */
-  if(!AUD.on)return base;
-  const rk=AUDOF[id],sl=rk&&AUDSEL[rk];if(sl&&!sl.on)return base;
-  let c=(AUDMAP[AUD.pn]||AUDMAP._)[id];
-  if(sl&&sl.band!=='p'){c=[0,0,0,0,0];c[sl.band]=AUDW[id]||.7}   /* banda scelta a mano */
-  if(!c)return base;
-  const q=AUD.amt*1.8*(c[0]*AUD.b+c[1]*AUD.m+c[2]*AUD.t+c[3]*AUD.l+c[4]*AUD.k);
+  if(!AUD.on&&!HR.on)return base;
+  const rk=AUDOF[id];let q=0;
+  if(AUD.on){
+    const sl=rk&&AUDSEL[rk];
+    if(!(sl&&!sl.on)){
+      let c=(AUDMAP[AUD.pn]||AUDMAP._)[id];
+      if(sl&&sl.band!=='p'){c=[0,0,0,0,0];c[sl.band]=AUDW[id]||.7}   /* banda scelta a mano */
+      if(c)q+=AUD.amt*1.8*(c[0]*AUD.b+c[1]*AUD.m+c[2]*AUD.t+c[3]*AUD.l+c[4]*AUD.k);
+    }
+  }
+  if(HR.on){
+    const sl=rk&&HRSEL[rk];
+    if(!(sl&&!sl.on)){
+      let c=(AUDMAP[AUD.pn]||AUDMAP._)[id];
+      if(sl&&sl.band!=='p'){c=[0,0,0,0,0];c[sl.band]=AUDW[id]||.7}   /* gesto scelto a mano */
+      if(c)q+=HR.amt*1.8*(c[0]*HR.b+c[1]*HR.m+c[2]*HR.t+c[3]*HR.l+c[4]*HR.k);
+    }
+  }
+  if(!q)return base;
   let v=base*(1+q);
   if(q>0&&base>0)v+=q*(+e.max-+e.min)*.05;   /* contributo minimo: anche i preset con valori bassi si muovono in modo visibile */
   return Math.max(+e.min,Math.min(+e.max*1.6,v));
 }
+/* mani reattive: stessa logica dell'audio ma con selezione propria */
+var HR={on:false,b:0,m:0,t:0,l:0,k:0,bs:0,lb:0,kick:0,amt:1.6,sns:1.5,sm:.55,mc:0};
+const HRSEL={};
+AUDROWS.forEach(r=>{HRSEL[r[0]]={on:true,band:'p'}});
 
 /* ---------- parametri OSC ---------- */
 (function(){
@@ -5527,7 +5583,7 @@ function oscParam(k,v){
   }else if(el.tagName==='BUTTON'){if(a===undefined||num>0)el.click()}
 }
 setTimeout(()=>{try{oscBuild()}catch(e){}},0);
-const audE=()=>AUD.on?Math.min(4,1+AUD.amt*(1.1*AUD.b+.5*AUD.m+1.2*AUD.k)):1;
+const audE=()=>Math.min(4,(AUD.on?1+AUD.amt*(1.1*AUD.b+.5*AUD.m+1.2*AUD.k):1)*(HR.on?1+HR.amt*(1.1*HR.b+.5*HR.m+1.2*HR.k):1));
 function audSay(t){const e=aid('audst');if(e)e.textContent=t}
 function audStop(){
   try{if(AUD.node)AUD.node.disconnect()}catch(e){}
@@ -5609,6 +5665,33 @@ function audPulse(){
   box.addEventListener('change',rd);
   aid('audall').onclick=()=>{box.querySelectorAll('input').forEach(e=>e.checked=true);rd()};
   aid('audnone').onclick=()=>{box.querySelectorAll('input').forEach(e=>e.checked=false);rd()};
+})();
+function hrTick(d){
+  const el=aid('hmre');HR.on=!!(el&&el.checked);
+  if(!HR.on){HR.b=HR.m=HR.t=HR.l=HR.k=0;return}
+  HR.amt=+aid('hramt').value;HR.sns=+aid('hrsns').value;HR.sm=+aid('hrsm').value;
+  const hm=aid('hmon');if(hm&&!hm.checked)hm.checked=true;   /* servono le mani riconosciute */
+  const raw=hmReact(d),nn=[];
+  for(let i=0;i<4;i++)nn[i]=raw[i]<.03?0:Math.min(1,Math.pow(raw[i],1.3)*HR.sns/1.5);
+  const ka=1-Math.pow(.25+HR.sm*.6,d*60),kr=1-Math.pow(HR.sm,d*60),cur=[HR.b,HR.m,HR.t,HR.l];
+  for(let i=0;i<4;i++)cur[i]+=(nn[i]-cur[i])*(nn[i]>cur[i]?ka:kr);
+  HR.b=cur[0];HR.m=cur[1];HR.t=cur[2];HR.l=cur[3];
+  const now=performance.now();HR.bs+=(nn[0]-HR.bs)*(1-Math.pow(.92,d*60));HR.kick=0;
+  if(nn[0]>HR.bs*1.35+.08&&nn[0]>.3&&now-HR.lb>170){HR.k=1;HR.kick=1;HR.lb=now}
+  HR.k*=Math.pow(.93,d*60);
+  if((++HR.mc&1)===0){const m=aid('hrmt');if(m&&m.offsetParent){const v=[HR.b,HR.m,HR.t,HR.k],q=m.querySelectorAll('.aumt>div');for(let i=0;i<4;i++)q[i].style.width=(v[i]*100).toFixed(0)+'%'}}
+}
+(function(){
+  const box=aid('hrtg'),B=['Preset','Gesto ampio','Apertura mano','Dita agitate','Livello','Colpo'];
+  AUDROWS.forEach(r=>{
+    const l=document.createElement('label');l.className='chk';l.innerHTML='<input type="checkbox" data-k="'+r[0]+'" checked> '+r[1];
+    const se=document.createElement('select');se.dataset.k=r[0];
+    se.innerHTML=B.map((n,i)=>'<option value="'+(i?i-1:'p')+'">'+n+'</option>').join('');
+    box.appendChild(l);box.appendChild(se)});
+  const rd=()=>{box.querySelectorAll('input').forEach(e=>HRSEL[e.dataset.k].on=e.checked);box.querySelectorAll('select').forEach(e=>{HRSEL[e.dataset.k].band=e.value==='p'?'p':+e.value})};
+  box.addEventListener('change',rd);
+  aid('hrall').onclick=()=>{box.querySelectorAll('input').forEach(e=>e.checked=true);rd()};
+  aid('hrnone').onclick=()=>{box.querySelectorAll('input').forEach(e=>e.checked=false);rd()};
 })();
 /* ---------- mappatura MIDI / tastiera ---------- */
 var MAPS=[];try{MAPS=JSON.parse(localStorage.getItem('fluida.map.v1')||'[]')}catch(e){}
@@ -6457,6 +6540,248 @@ function wkStep(dt,T){
   }
   return{e:[WK.x+rx*sw,ey,WK.z+rz*sw],ya:vy,pi:nv('inc')+Math.sin(WK.ph*2)*.012*bob*a};
 }
+/* ---------- Mani: imprimi il movimento (webcam sul computer · giunti / controller in VR) ---------- */
+const HM={cam:null,vid:null,lm:null,busy:0,fail:0,leg:0,pend:0,last:0,starting:0,cfail:0,er:'',n:0,mode:-1,
+  K:0,V:1,M:0,A:new Float32Array(48),B:new Float32Array(48),
+  tg:[null,null],               /* bersaglio webcam per mano: 6 punti (u,v,profondita') in spazio schermo */
+  sm:new Float32Array(36),      /* posizione lisciata dei 12 punti (schermo con la webcam, mondo in VR) */
+  wp:new Float32Array(36),      /* ultima posizione in mondo */
+  live:new Uint8Array(12),hw:new Uint8Array(12),
+  raw:null,rawT:0,ov:null,stT:0};
+const HMMUL=[[1,.45,.45,.45,.45,.45],[1,0,0,0,0,0],[0,.6,.6,.6,.6,.6],[0,0,.8,0,0,0]];
+const HMLK=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+const hmLoadJS=src=>new Promise((ok,ko)=>{const t=document.createElement('script');t.src=src;t.crossOrigin='anonymous';t.onload=ok;t.onerror=()=>ko(new Error('script non caricato'));document.head.appendChild(t)});
+async function hmLoad(){
+  if(HM.lm||HM.busy||HM.fail)return;HM.busy=1;
+  const MPH='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/';
+  /* 1) libreria classica @mediapipe/hands */
+  try{
+    if(!window.Hands)await hmLoadJS(MPH+'hands.js');
+    if(!window.Hands)throw new Error('libreria non caricata');
+    const hs=new window.Hands({locateFile:f=>MPH+f});
+    hs.setOptions({maxNumHands:2,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});
+    hs.onResults(r=>{const L=r.multiHandLandmarks||[],HD=r.multiHandedness||[];HM.n=L.length;HM.er='';hmIngest(L,L.map((_,i)=>(HD[i]&&(HD[i].label||HD[i].categoryName))||'Left'),performance.now())});
+    await hs.initialize();
+    HM.leg=1;HM.lm=hs;HM.busy=0;return;
+  }catch(e){console.warn('@mediapipe/hands non disponibile, provo tasks-vision',e)}
+  /* 2) ripiego: MediaPipe tasks-vision */
+  try{
+    const B='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14',m=await import(B+'/vision_bundle.mjs'),fs=await m.FilesetResolver.forVisionTasks(B+'/wasm');
+    const mk=d=>m.HandLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:d},runningMode:'VIDEO',numHands:2});
+    try{HM.lm=await mk('GPU')}catch(e){HM.lm=await mk('CPU')}
+    HM.leg=0;
+  }catch(e){HM.fail=1;console.warn('HandLandmarker non disponibile',e)}
+  HM.busy=0;
+}
+async function hmCamStart(){
+  if(HM.cam||HM.starting)return;HM.starting=1;
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false});
+    if(!byId('hmon').checked||XR.on){st.getTracks().forEach(t=>t.stop());HM.starting=0;return}
+    HM.cam=st;
+    const v=document.createElement('video');v.muted=true;v.playsInline=true;v.setAttribute('playsinline','');v.autoplay=true;v.srcObject=st;
+    v.style.cssText='position:fixed;left:-9999px;top:0;width:2px;height:2px;opacity:0;pointer-events:none';document.body.appendChild(v);
+    v.play().catch(()=>{});HM.vid=v;HM.er='';
+    hmLoad();
+  }catch(e){
+    HM.er='webcam non disponibile ('+(e&&e.name||e)+')';HM.cfail=performance.now()+4000;
+    const el=byId('hmon');if(el)el.checked=false;   /* si riattiva a mano, senza richiedere la camera in loop */
+    const st=byId('hmst');if(st)st.textContent='Mani: '+HM.er;
+  }
+  HM.starting=0;
+}
+function hmCamStop(){
+  try{HM.cam&&HM.cam.getTracks().forEach(t=>t.stop())}catch(e){}HM.cam=null;
+  if(HM.vid){try{HM.vid.pause();HM.vid.srcObject=null;HM.vid.remove()}catch(e){}HM.vid=null}
+  HM.tg=[null,null];HM.live.fill(0);HM.hw.fill(0);HM.raw=null;HM.n=0;HM.pend=0;
+}
+/* landmark MediaPipe -> bersagli in spazio schermo (u,v da 0 a 1, v verso l'alto) con specchio, portata e profondita' dalla grandezza del palmo */
+/* zona della scena visibile, come frazione della larghezza del canvas: esclude il pannello che lo copre */
+function hmVis(){
+  const r=c.getBoundingClientRect(),p=document.querySelector('.panel');let x0=0,x1=1;
+  if(p&&r.width>8&&getComputedStyle(p).display!=='none'){
+    const q=p.getBoundingClientRect();
+    if(q.width>8&&q.right>r.left&&q.left<r.right){
+      if(q.left+q.width/2>r.left+r.width/2)x1=Math.max(.2,(q.left-r.left)/r.width);else x0=Math.min(.8,(q.right-r.left)/r.width);
+    }
+  }
+  return[x0,x1];
+}
+function hmIngest(L,lab,now){
+  const v=HM.vid;if(!v||!v.videoWidth)return;
+  const W=v.videoWidth,Hh=v.videoHeight,mir=byId('hmmir').checked,g=+byId('hmg').value,z0=+byId('hmz').value,zk=+byId('hmzk').value;
+  HM.raw=L;HM.rawT=now;HM.camA=W/Hh;const[vx0,vx1]=hmVis();
+  const used=[0,0],tg=[null,null];
+  for(let n=0;n<L.length&&n<2;n++){
+    const l=L[n];if(!l||l.length<21)continue;
+    let sd=lab[n]==='Left'?0:1;if(used[sd])sd=1-sd;if(used[sd])continue;used[sd]=1;
+    const sz=Math.hypot((l[0].x-l[9].x)*W,(l[0].y-l[9].y)*Hh)/Hh,qz=Math.max(-1.2,Math.min(1.2,z0+(sz-.18)*zk*3));
+    const P=ids=>{let x=0,y=0;for(const i of ids){x+=l[i].x;y+=l[i].y}x/=ids.length;y/=ids.length;
+      const u=((mir?1-x:x)-.5)*g+.5,vv=((1-y)-.5)*g+.5;return[vx0+Math.max(0,Math.min(1,u))*(vx1-vx0),Math.max(0,Math.min(1,vv)),qz]};   /* la mano resta nella zona visibile: mai sul pannello */
+    tg[sd]={p:[P([0,5,9,13,17]),P([4]),P([8]),P([12]),P([16]),P([20])],t:now};
+  }
+  for(let k=0;k<2;k++)if(!tg[k]&&HM.tg[k]&&now-HM.tg[k].t<150)tg[k]=HM.tg[k];
+  HM.tg=tg;
+}
+function hmDetect(now){
+  const v=HM.vid;if(!HM.lm||!v||v.readyState<2||!v.videoWidth)return;
+  if(HM.pend||now-HM.last<33)return;HM.last=now;
+  if(HM.leg){HM.pend=1;HM.lm.send({image:v}).catch(e=>{HM.er=String(e&&e.message||e).slice(0,60)}).finally(()=>{HM.pend=0})}
+  else{
+    try{const r=HM.lm.detectForVideo(v,now),L=(r&&r.landmarks)||[],H=(r&&(r.handedness||r.handednesses))||[];
+      HM.n=L.length;HM.er='';hmIngest(L,L.map((_,i)=>(H[i]&&H[i][0]&&H[i][0].categoryName)||'Left'),now)}
+    catch(e){HM.er=String(e&&e.message||e).slice(0,60)}
+  }
+}
+/* punto della mano in VR (spazio scena): giunti dell'hand tracking, altrimenti il controller (solo palmo) */
+function hmVrPoint(h,j){
+  const X=XR.xj,b=h*25,jp=i=>{const o=(b+i)*4;return X[o+3]>0?[X[o],X[o+1],X[o+2]]:null};
+  if(X[b*4+3]>0){
+    if(j===0){const w=jp(0),m=jp(11);return w&&m?[(w[0]+m[0])/2,(w[1]+m[1])/2,(w[2]+m[2])/2]:w}
+    return jp([0,4,9,14,19,24][j]);
+  }
+  const cp=XR.cp&&XR.cp[h];return(j===0&&cp)?[cp[0],cp[1],cp[2]]:null;
+}
+function hmStatus(on,vr,now){
+  if(now-HM.stT<500)return;HM.stT=now;
+  const el=byId('hmst');if(!el)return;let t;
+  if(!on)t='Spento. Sul computer usa la webcam, in VR i giunti delle mani del visore (o i controller).';
+  else if(vr){let h=0,c=0;for(let i=0;i<2;i++){if(XR.xj[i*100+3]>0)h++;else if(XR.cp&&XR.cp[i])c++}t='Mani: VR · '+(h?h+' man'+(h>1?'i':'o')+' tracciat'+(h>1?'e':'a'):c?c+' controller':'nessuna mano vista')}
+  else if(HM.fail)t='Mani: modello non caricato (serve internet)';
+  else if(HM.er)t='Mani: '+HM.er;
+  else if(!HM.cam)t='Mani: avvio la webcam…';
+  else if(!HM.lm)t='Mani: carico il modello…';
+  else{let h=0;for(let i=0;i<2;i++)if(HM.tg[i]&&now-HM.tg[i].t<350)h++;t=h?'Mani: webcam · '+h+' rilevat'+(h>1?'e':'a'):'Mani: webcam attiva · nessuna mano vista'}
+  if(el.textContent!==t)el.textContent=t;
+}
+function hmOv(on,A,cd,sc,R0){
+  let o=HM.ov;
+  if(!on||!byId('hmov').checked||!HM.raw){if(o&&o.style.display!=='none')o.style.display='none';return}
+  const r=c.getBoundingClientRect();if(r.width<8||r.height<8)return;
+  /* il CSS globale dei canvas (inset:0; margin:auto) lo centrerebbe nella finestra, sopra il pannello: qui si azzera */
+  if(!o){o=HM.ov=document.createElement('canvas');o.id='hmo';o.style.cssText='position:fixed;inset:auto;margin:0;right:auto;bottom:auto;pointer-events:none;z-index:4';document.body.appendChild(o)}
+  const dpr=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*dpr),H=Math.round(r.height*dpr);
+  o.style.display='block';o.style.left=r.left+'px';o.style.top=r.top+'px';o.style.width=r.width+'px';o.style.height=r.height+'px';
+  if(o.width!==W||o.height!==H){o.width=W;o.height=H}
+  const g=o.getContext('2d');g.clearRect(0,0,W,H);
+  const now=performance.now();if(now-HM.rawT>300)return;
+  const[vx0,vx1]=hmVis(),mir=byId('hmmir').checked,gn=+byId('hmg').value,ca=HM.camA||1.78,K=gn*H*.8,st=+byId('xrhs').value,h3=byId('xrh').checked;
+  const hx=(byId('xrhf').checked?byId('xrhc').value:'#ff2d2d').replace('#',''),rgb=[0,2,4].map(i=>parseInt(hx.substr(i,2),16)||0);
+  const mix=(t,a)=>'rgba('+rgb.map(v=>Math.round(v+(255-v)*t)).join(',')+','+(a==null?1:a)+')',col=(a)=>mix(0,a);
+  const CH=[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]],PALM=[0,1,5,9,13,17],cl=v=>Math.max(0,Math.min(1,v));
+  g.save();g.beginPath();g.rect(vx0*W,0,(vx1-vx0)*W,H);g.clip();   /* solo la parte di scena visibile, mai sul pannello */
+  g.lineCap='round';g.lineJoin='round';
+  for(const l of HM.raw){
+    if(!l||l.length<21)continue;
+    let cx=0,cy=0;for(const i of[0,5,9,13,17]){cx+=l[i].x;cy+=l[i].y}cx/=5;cy/=5;
+    const u=((mir?1-cx:cx)-.5)*gn+.5,v=((1-cy)-.5)*gn+.5,PX=(vx0+cl(u)*(vx1-vx0))*W,PY=(1-cl(v))*H;
+    const Q=l.map(q=>[PX+(mir?-1:1)*(q.x-cx)*ca*K,PY+(q.y-cy)*K]);   /* forma della mano non deformata, centrata sul palmo */
+    const hs=Math.max(20*dpr,Math.hypot(Q[0][0]-Q[9][0],Q[0][1]-Q[9][1])),M=(i)=>Q[i];
+    const link=(a,b)=>{g.moveTo(Q[a][0],Q[a][1]);g.lineTo(Q[b][0],Q[b][1])};
+    const poly=()=>{g.beginPath();PALM.forEach((i,k)=>k?g.lineTo(Q[i][0],Q[i][1]):g.moveTo(Q[i][0],Q[i][1]));g.closePath()};
+    const dot=(i,rd)=>{g.beginPath();g.arc(Q[i][0],Q[i][1],rd,0,7);g.fill()};
+    if(!h3){   /* «Mani 3D» spento: solo i punti, come in VR */
+      g.fillStyle=col(.95);for(const i of[0,4,8,12,16,20])dot(i,(i?3.2:4.8)*dpr);continue;
+    }
+    if(st===1){   /* Scheletro: ossa chiare, giunti colorati */
+      g.strokeStyle=mix(.65,.95);g.lineWidth=hs*.06;g.beginPath();for(const[a,b]of HMLK)link(a,b);g.stroke();
+      g.fillStyle=col(.95);for(let i=0;i<21;i++)dot(i,hs*(i%4===0&&i?.045:.058));
+    }else if(st===2){   /* Robot: segmenti scuri sfaccettati, giunti luminosi */
+      poly();g.fillStyle='rgba(30,34,40,.92)';g.fill();g.strokeStyle=col(.7);g.lineWidth=hs*.02;g.stroke();
+      g.strokeStyle='#1f2329';g.lineWidth=hs*.13;g.beginPath();for(const[a,b]of HMLK)link(a,b);g.stroke();
+      g.strokeStyle='#4b5563';g.lineWidth=hs*.07;g.beginPath();for(const[a,b]of HMLK)link(a,b);g.stroke();
+      g.save();g.shadowColor=col(1);g.shadowBlur=hs*.22;g.fillStyle=col(1);for(let i=0;i<21;i++)dot(i,hs*.052);g.restore();
+    }else if(st===3){   /* Guanto cartoon: bianco, dita grosse, polsino colorato */
+      const d=[Q[0][0]-PX,Q[0][1]-PY],n=Math.hypot(d[0],d[1])||1;
+      g.fillStyle=col(1);g.strokeStyle='#1d1d1d';g.lineWidth=hs*.04;g.beginPath();g.arc(Q[0][0]+d[0]/n*hs*.1,Q[0][1]+d[1]/n*hs*.1,hs*.3,0,7);g.fill();g.stroke();
+      g.strokeStyle='#1d1d1d';g.lineWidth=hs*.23;g.beginPath();CH.forEach(c=>{g.moveTo(Q[c[0]][0],Q[c[0]][1]);for(let k=1;k<4;k++)g.lineTo(Q[c[k]][0],Q[c[k]][1])});g.stroke();
+      poly();g.fillStyle='#1d1d1d';g.fill();g.lineWidth=hs*.1;g.stroke();
+      g.strokeStyle='#fff';g.lineWidth=hs*.16;g.beginPath();CH.forEach(c=>{g.moveTo(Q[c[0]][0],Q[c[0]][1]);for(let k=1;k<4;k++)g.lineTo(Q[c[k]][0],Q[c[k]][1])});g.stroke();
+      poly();g.fillStyle='#fff';g.fill();
+    }else{   /* Neon: mano sottile da ologramma con alone */
+      g.save();g.shadowColor=col(1);g.shadowBlur=hs*.3;
+      poly();g.fillStyle=col(.14);g.fill();
+      g.strokeStyle=mix(.3,.95);g.lineWidth=hs*.035;g.beginPath();for(const[a,b]of HMLK)link(a,b);g.stroke();
+      g.fillStyle=mix(.7,1);for(let i=0;i<21;i++)dot(i,hs*(i&&i%4===0?.06:.03));
+      g.restore();
+    }
+  }
+  g.restore();
+}
+/* chiamata una volta per frame da drawP, prima del passo di simulazione */
+function hmStep(dt,A,ya,pi,cd,sc,active){
+  const el=byId('hmon'),on=active&&el&&el.checked,vr=!!XR.on,now=performance.now();
+  HM.K=0;
+  if(!on){HM.fail=0;if(HM.cam)hmCamStop();hmOv(false);hmStatus(false,vr,now);if(HM.A[3]>0||HM.A[15]>0)HM.A.fill(0);HM.live.fill(0);HM.hw.fill(0);return}
+  if(HM.mode!==(vr?1:0)){HM.mode=vr?1:0;HM.live.fill(0);HM.hw.fill(0)}
+  if(vr){if(HM.cam)hmCamStop()}
+  else{
+    if(!HM.cam&&!HM.starting&&now>HM.cfail)hmCamStart();
+    if(HM.cam)hmDetect(now);
+  }
+  const K=+byId('hmk').value,pt=Math.max(0,Math.min(3,+byId('hmpt').value|0)),sm=+byId('hmsm').value,R0=+byId('hmr').value*(vr?XR.k:1),
+    al=1-Math.exp(-Math.min(.1,dt)*(vr?70:(5+45*(1-sm)))),MUL=HMMUL[pt];
+  HM.V=+byId('hmv').value;HM.M=+byId('hmm').value|0;
+  for(let h=0;h<2;h++)for(let j=0;j<6;j++){
+    const s=h*6+j,o=s*3,mul=MUL[j];let tg=null;
+    if(mul>0){if(vr)tg=hmVrPoint(h,j);else{const T=HM.tg[h];if(T&&now-T.t<350)tg=T.p[j]}}
+    if(!tg){HM.live[s]=0;HM.hw[s]=0;HM.A[s*4+3]=0;continue}
+    if(!HM.live[s]){HM.sm[o]=tg[0];HM.sm[o+1]=tg[1];HM.sm[o+2]=tg[2];HM.live[s]=1}
+    else{HM.sm[o]+=(tg[0]-HM.sm[o])*al;HM.sm[o+1]+=(tg[1]-HM.sm[o+1])*al;HM.sm[o+2]+=(tg[2]-HM.sm[o+2])*al}
+    let w;
+    if(vr)w=[HM.sm[o],HM.sm[o+1],HM.sm[o+2]];
+    else{
+      const qz=HM.sm[o+2],f=(cd-qz)/(sc*cd),q=[(HM.sm[o]-.5)*2*A*f,(HM.sm[o+1]-.5)*2*f,qz],r=rot(q,ya,pi);
+      w=[cam[0]+r[0],cam[1]+r[1],cam[2]+r[2]];
+    }
+    const b=HM.hw[s]?[HM.wp[o],HM.wp[o+1],HM.wp[o+2]]:w;
+    HM.B.set([b[0],b[1],b[2],1],s*4);HM.A.set([w[0],w[1],w[2],R0*mul],s*4);
+    HM.wp[o]=w[0];HM.wp[o+1]=w[1];HM.wp[o+2]=w[2];HM.hw[s]=1;
+  }
+  HM.K=K;
+  hmOv(!vr,A,cd,sc,R0);hmStatus(true,vr,now);
+}
+/* ---------- gesti delle mani come "bande" (0..1) ----------
+   raw[0] gesto = ampiezza (velocita' del palmo) · raw[1] apertura della mano (dita-palmo, sul range recente)
+   raw[2] dita = agitazione delle dita rispetto al palmo · raw[3] livello complessivo */
+HM.rf=null;
+function hmReact(d){
+  const vr=!!XR.on,now=performance.now(),dt=Math.max(.001,Math.min(.1,d)),ks=vr?1/Math.max(.2,XR.k||1):1;
+  const F=HM.rf||(HM.rf={pv:[null,null],v:[0,0],g:[0,0],sv:[0,0],sg:[0,0],so:[0,0],lo:[0,0],hi:[0,0],seen:[0,0]});
+  let vmax=0,og=0,oo=0,nh=0;
+  for(let h=0;h<2;h++){
+    let P=null,ts=0;
+    if(vr){const a=[];for(let j=0;j<6;j++){const q=hmVrPoint(h,j);a.push(q?[q[0]*ks,q[1]*ks,q[2]*ks]:null)}if(a[0]){P=a;ts=now}}
+    else{const T=HM.tg[h];if(T&&now-T.t<350){P=T.p;ts=T.t}}
+    if(!P){F.pv[h]=null;F.v[h]=F.g[h]=0;F.sv[h]+=(0-F.sv[h])*Math.min(1,dt*12);F.sg[h]+=(0-F.sg[h])*Math.min(1,dt*12);F.so[h]+=(0-F.so[h])*Math.min(1,dt*8);continue}
+    const pa=P[0],tips=[1,2,3,4,5].filter(j=>P[j]);
+    const dist=(u,v)=>Math.hypot(u[0]-v[0],u[1]-v[1],u[2]-v[2]);
+    if(tips.length){
+      let od=0;for(const j of tips)od+=dist(P[j],pa);od/=tips.length;
+      if(!F.seen[h]){F.lo[h]=od*.85;F.hi[h]=od*1.15;F.seen[h]=1}
+      const ad=Math.min(1,dt*.06);F.hi[h]=Math.max(od,F.hi[h]+(od-F.hi[h])*ad);F.lo[h]=Math.min(od,F.lo[h]+(od-F.lo[h])*ad);
+      const rg=Math.max(F.hi[h]-F.lo[h],F.hi[h]*.3,1e-4);
+      F.so[h]+=(Math.max(0,Math.min(1,(od-F.lo[h])/rg))-F.so[h])*Math.min(1,dt*10);oo+=F.so[h];
+    }else F.so[h]+=(0-F.so[h])*Math.min(1,dt*8);
+    const pv=F.pv[h];   /* velocita': solo con un campione nuovo (la webcam rileva a ~30 Hz) */
+    if(pv&&ts>pv.t){
+      const ds=(ts-pv.t)/1000;
+      if(ds>.002&&ds<.25){
+        F.v[h]=dist(pa,pv.P[0])/ds;
+        let g=0,c=0;for(const j of tips){if(pv.P[j]){const rn=[P[j][0]-pa[0],P[j][1]-pa[1],P[j][2]-pa[2]],ro=[pv.P[j][0]-pv.P[0][0],pv.P[j][1]-pv.P[0][1],pv.P[j][2]-pv.P[0][2]];g+=Math.hypot(rn[0]-ro[0],rn[1]-ro[1],rn[2]-ro[2])/ds;c++}}
+        F.g[h]=c?g/c:0;
+      }else{F.v[h]=0;F.g[h]=0}
+      F.pv[h]={t:ts,P};
+    }else if(!pv)F.pv[h]={t:ts,P};
+    F.sv[h]+=(F.v[h]-F.sv[h])*Math.min(1,dt*14);F.sg[h]+=(F.g[h]-F.sg[h])*Math.min(1,dt*14);
+    vmax=Math.max(vmax,F.sv[h]);og+=F.sg[h];nh++;
+  }
+  if(!nh)return [0,0,0,0];
+  const r0=Math.min(1,vmax/1.6),r1=Math.min(1,oo/nh),r2=Math.min(1,(og/nh)/1.1);
+  return [r0,r1,r2,Math.min(1,(r0*1.2+r1+r2*.8)/3)];
+}
+/* i punti delle mani in VR: se l'impronta e' attiva (e scelto «sostituisci») la spinta base viene sospesa */
+function hmNetXP(){netXP();if(HM.K>0&&XR.on&&byId('hmrep').checked){NET.xp.fill(0,0,24);NET.xq.fill(0,0,24)}}
 function drawP(){
   if(!pPos)return;
   const SCN=!P3&&(V==='e2'||V==='wc');
@@ -6481,6 +6806,7 @@ function drawP(){
   if(XR.on){xrPrep(cd);XR.R=XR.Rc;cam=XR.camc}
   else if(!WKO&&(P3||scrOn())&&envColOn()){const G=envGeo();if(G){const eo=rot([0,0,cd],ya,pi),e=[cam[0]+eo[0],cam[1]+eo[1],cam[2]+eo[2]],q=envPush(e,.3,G);cam[0]+=q[0]-e[0];cam[1]+=q[1]-e[1];cam[2]+=q[2]-e[2]}}
   try{sndFrame(dt)}catch(e){}
+  try{hmStep(dt,pAsp,ya,pi,cd,sc,!SCN)}catch(e){if(!hmStep.er){hmStep.er=1;console.error('mani',e)}HM.K=0}
   if(!SCN)zMouseMask(ya,pi,cd,sc);
   const fl=audM('flw'),tu=audM('tur'),nz=audM('nz'),ns=nv('ns');
   if(!SCN){
@@ -6488,7 +6814,7 @@ function drawP(){
     MS.vx+=(cl(MS.ax*iv*pAsp)-MS.vx)*.3;MS.vy+=(cl(MS.ay*iv)-MS.vy)*.3;MS.ax=MS.ay=0;
     const MQ0=MQT;if(nv('sqf')>0)MQT=(MQT+fdt/Math.max(.1,nv('sqt')))%4096;else MQT=0;const MQ1=MQT;
     pass(pvP,pVel,{P:pPos.read.t,U:pVel.read.t,H:home.t,F:vel.read.t,A:pAsp,ya,pi,cd,sc,fl,sp:audM('spr'),dm:nv('dmp'),de:audM('dep'),ob:V==='o3'?1:0,tu,nz,ns,nt:nv('nty'),T,cam,nO:nv('nfo'),nS:nv('nsa'),nL:nv('nfl'),nG:nv('nfg'),nR:nv('nrs'),cE:nv('nce'),cG:nv('ncg'),wJ:nv('nwj'),wR:nv('nwr'),wP:nv('nwp'),vF:nv('nvf'),vS:nv('nvs'),vW:audM('nvw'),kV:audM('vol'),kD:audM('vdp'),kA:audM('vam'),kT:ZT,qF:nv('sqf'),qT:MQ1,qP:MQ0,qD:nv('sqd'),qX:nv('sqx')*(V==='o3'?1:pAsp),qK:Math.max(kk,.02),
-      gA:nv('fam'),gF:nv('ffq'),gR:nv('frg'),gS:nv('fsl'),gT:FT,mp:MS.p,mv:[MS.vx,MS.vy],mr:nv('mra'),ms:nv('mst'),mw:nv('mwi'),md:nv('mdr'),mz:nv('mzd'),mel:nv('mel'),mir:nv('mir'),mgn:nv('mgn'),mo,xhp:(netXP(),NET.xp),xhq:NET.xq,xhf:XR.on?XR.f:(NET.xn?1:0),mp2:NET.rm,mv2:NET.rmv,mo2:NET.rmo});
+      gA:nv('fam'),gF:nv('ffq'),gR:nv('frg'),gS:nv('fsl'),gT:FT,mp:MS.p,mv:[MS.vx,MS.vy],mr:nv('mra'),ms:nv('mst'),mw:nv('mwi'),md:nv('mdr'),mz:nv('mzd'),mel:nv('mel'),mir:nv('mir'),mgn:nv('mgn'),mo,xhp:(hmNetXP(),NET.xp),xhq:NET.xq,xhf:XR.on?XR.f:(NET.xn?1:0),mp2:NET.rm,mv2:NET.rmv,mo2:NET.rmo,hmA:HM.A,hmB:HM.B,hmK:HM.K,hmV:HM.V,hmM:HM.M});
     pass(ppP,pPos,{P:pPos.read.t,U:pVel.read.t,H:home.t,kk,qF:nv('sqf'),qT:MQ1,qP:MQ0,qD:nv('sqd'),ob:V==='o3'?1:0,de:audM('dep')});
   }
   palRGB().forEach((c,i)=>palArr.set(c,i*3));
@@ -6648,6 +6974,7 @@ function syncOut(){document.querySelectorAll('label.s').forEach(l=>{const i=l.qu
 function tick(){
   const n=performance.now(),d=Math.min((n-lastF)/1e3,.05);lastF=n;fdt=d;
   try{audTick(d)}catch(e){}
+  try{hrTick(d)}catch(e){}
   spdCur+=(audM('spd')-spdCur)*Math.min(1,d*1.5);TT+=d*spdCur;FT+=d*spdCur*nv('fsp');ZT+=d*spdCur*audM('vts');
   if(++oc%15===0)syncOut();
   if(V==='e2'){autoEm();try{audPulse()}catch(e){}}
