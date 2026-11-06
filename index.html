@@ -466,7 +466,6 @@ body.wcon #stage{touch-action:none}
 <label class="s">Dispersione laterale<input type="range" id="sqd" min="0" max="1" step=".01" value=".6"></label>
 <label class="s">Asse speculare X<input type="range" id="sqx" min="-1" max="1" step=".01" value="0"></label>
 <p class="hint full">Solo una parte delle particelle (la quota) parte verso la silhouette speculare in un flusso continuo a senso unico: a metà viaggio è piena, mentre all'arrivo si dissolve sfumando e nuove particelle nascono sfumando dal corpo di origine; le altre restano ferme, quindi le silhouette non si svuotano. Una quota bassa (0,1–0,3) dà l'effetto nuvola tra i due corpi.</p>
-<h2 class="full cg">Mani · impronta del movimento</h2>
 <h2 class="full cg">Mani · reattive</h2>
 <label class="chk full"><input type="checkbox" id="hmon"> Mani · imprimi movimento</label>
 <label class="chk full"><input type="checkbox" id="hmre"> Mani · particelle reattive ai gesti</label>
@@ -3551,7 +3550,8 @@ const TBT=[
   {n:'Gaussian',c:'#ffd166',it:['gst','gsh','gsl','gsv','gsz','gop']},
   {n:'Suono',c:'#5ad1c0',it:['snd','sndm','#sndinfo','sndv','sndpt','sndvr','sndgr']},
   {n:'Mani',c:'#c79bff',it:['xrhs','xrh','#clap']},
-  {n:'Impronta mani',c:'#e0a84a',it:['hmon','hmre','hramt','hrsns','hrsm','hmm','hmk','hmr','hmv']},
+  {n:'Mani reattive',c:'#f0c060',it:['hmre','hramt','hrsns','hrsm']},
+  {n:'Impronta mani',c:'#e0a84a',it:['hmon','hmm','hmk','hmr','hmv']},
   {n:'Sfere',c:'#ff9f6e',it:['xrsph','xrspn','xrspr']},
   {n:'Cattura',c:'#ff6b6b',it:['#capb','#capo','#capn']},
   {n:'Istruzioni',c:'#8ee3ef',it:['#help']}
@@ -4427,7 +4427,7 @@ function xrPrep(cdO){
   const h3=byId('xrh').checked&&xhP.ok&&!XR.herr,hpit=+byId('xrhp').value*Math.PI/180;
   {let nC=0,nH=0;for(const s of XR.ses.inputSources){if(s.hand)nH++;else if(s.gripSpace)nC++}
    if(now-XR.stT>600){XR.stT=now;xrSt('in VR'+(XR.lock?' \u00b7 bloccata':'')+((XR.pt||XR.vcam)?' \u00b7 passthrough':'')+' \u00b7 controller '+nC+' \u00b7 mani '+nH+(XR.hmsg?' \u00b7 '+XR.hmsg:''),1)}}
-  XR.lh=null;XR.hs=[null,null];XR.cp=[null,null];
+  XR.lh=null;XR.hs=[null,null];XR.cp=[null,null];XR.cg=[null,null];
   for(const s of XR.ses.inputSources){
     const base=s.handedness==='left'?0:3,hh=s.handedness==='left'?0:1;
     if(s.hand){
@@ -4456,7 +4456,7 @@ function xrPrep(cdO){
         XR.xp.set([P[0],P[1],P[2],R0],base*4);
         xrVel(base,P,(tr>.05||gr>.05)?Math.max(-1,Math.min(1,tr-gr)):-.5);
         if(hh===0)XR.lh=P;
-        XR.cp[hh]=P;
+        XR.cp[hh]=P;XR.cg[hh]=[tr,gr];
         XR.hs[hh]={p:gp.transform.position,g:!!(g&&g.buttons[1]&&g.buttons[1].pressed)};
         if(!XR.pmOn&&!XR.sc2)try{xrBrush(hh,s,fr,rig,now)}catch(ex){console.warn('pennello VR',ex)}
         if(h3)try{const th=g&&[3,4,5].some(i=>g.buttons[i]&&(g.buttons[i].touched||g.buttons[i].pressed));
@@ -5670,7 +5670,7 @@ function hrTick(d){
   const el=aid('hmre');HR.on=!!(el&&el.checked);
   if(!HR.on){HR.b=HR.m=HR.t=HR.l=HR.k=0;return}
   HR.amt=+aid('hramt').value;HR.sns=+aid('hrsns').value;HR.sm=+aid('hrsm').value;
-  const hm=aid('hmon');if(hm&&!hm.checked)hm.checked=true;   /* servono le mani riconosciute */
+  if(!XR.on){const hm=aid('hmon');if(hm&&!hm.checked)hm.checked=true}   /* sul computer serve la webcam; in VR le reattive leggono i giunti da sole e NON accendono l'impronta (sospenderebbe la spinta base delle mani) */
   const raw=hmReact(d),nn=[];
   for(let i=0;i<4;i++)nn[i]=raw[i]<.03?0:Math.min(1,Math.pow(raw[i],1.3)*HR.sns/1.5);
   const ka=1-Math.pow(.25+HR.sm*.6,d*60),kr=1-Math.pow(HR.sm,d*60),cur=[HR.b,HR.m,HR.t,HR.l];
@@ -6747,14 +6747,14 @@ function hmStep(dt,A,ya,pi,cd,sc,active){
 HM.rf=null;
 function hmReact(d){
   const vr=!!XR.on,now=performance.now(),dt=Math.max(.001,Math.min(.1,d)),ks=vr?1/Math.max(.2,XR.k||1):1;
-  const F=HM.rf||(HM.rf={pv:[null,null],v:[0,0],g:[0,0],sv:[0,0],sg:[0,0],so:[0,0],lo:[0,0],hi:[0,0],seen:[0,0]});
+  const F=HM.rf||(HM.rf={pv:[null,null],v:[0,0],g:[0,0],sv:[0,0],sg:[0,0],so:[0,0],lo:[0,0],hi:[0,0],seen:[0,0],ptr:[0,0]});
   let vmax=0,og=0,oo=0,nh=0;
   for(let h=0;h<2;h++){
     let P=null,ts=0;
     if(vr){const a=[];for(let j=0;j<6;j++){const q=hmVrPoint(h,j);a.push(q?[q[0]*ks,q[1]*ks,q[2]*ks]:null)}if(a[0]){P=a;ts=now}}
     else{const T=HM.tg[h];if(T&&now-T.t<350){P=T.p;ts=T.t}}
     if(!P){F.pv[h]=null;F.v[h]=F.g[h]=0;F.sv[h]+=(0-F.sv[h])*Math.min(1,dt*12);F.sg[h]+=(0-F.sg[h])*Math.min(1,dt*12);F.so[h]+=(0-F.so[h])*Math.min(1,dt*8);continue}
-    const pa=P[0],tips=[1,2,3,4,5].filter(j=>P[j]);
+    const pa=P[0],tips=[1,2,3,4,5].filter(j=>P[j]),cg=(vr&&!P[1]&&XR.cg&&XR.cg[h])||null;   /* cg: controller (grip, trigger) al posto dei giunti */
     const dist=(u,v)=>Math.hypot(u[0]-v[0],u[1]-v[1],u[2]-v[2]);
     if(tips.length){
       let od=0;for(const j of tips)od+=dist(P[j],pa);od/=tips.length;
@@ -6762,7 +6762,9 @@ function hmReact(d){
       const ad=Math.min(1,dt*.06);F.hi[h]=Math.max(od,F.hi[h]+(od-F.hi[h])*ad);F.lo[h]=Math.min(od,F.lo[h]+(od-F.lo[h])*ad);
       const rg=Math.max(F.hi[h]-F.lo[h],F.hi[h]*.3,1e-4);
       F.so[h]+=(Math.max(0,Math.min(1,(od-F.lo[h])/rg))-F.so[h])*Math.min(1,dt*10);oo+=F.so[h];
-    }else F.so[h]+=(0-F.so[h])*Math.min(1,dt*8);
+    }else if(cg)F.so[h]+=((1-cg[1])-F.so[h])*Math.min(1,dt*10);   /* grip rilasciato = mano aperta */
+    else F.so[h]+=(0-F.so[h])*Math.min(1,dt*8);
+    if(cg)oo+=F.so[h];
     const pv=F.pv[h];   /* velocita': solo con un campione nuovo (la webcam rileva a ~30 Hz) */
     if(pv&&ts>pv.t){
       const ds=(ts-pv.t)/1000;
@@ -6773,6 +6775,7 @@ function hmReact(d){
       }else{F.v[h]=0;F.g[h]=0}
       F.pv[h]={t:ts,P};
     }else if(!pv)F.pv[h]={t:ts,P};
+    if(cg){F.g[h]=Math.abs(cg[0]-F.ptr[h])/dt*.5;F.ptr[h]=cg[0]}   /* trigger mosso = dita agitate */
     F.sv[h]+=(F.v[h]-F.sv[h])*Math.min(1,dt*14);F.sg[h]+=(F.g[h]-F.sg[h])*Math.min(1,dt*14);
     vmax=Math.max(vmax,F.sv[h]);og+=F.sg[h];nh++;
   }
