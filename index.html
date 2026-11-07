@@ -3,13 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
 <title>Fluida</title>
 
 <style>
 :root{--bk:#0a0a0a;--wh:#ededed;--gr:#8c8c8c}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--bk);color:var(--wh);font:13px/1.45 'JetBrains Mono','IBM Plex Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;display:flex;height:100vh;overflow:hidden}
+body{background:var(--bk);color:var(--wh);font:13px/1.45 'JetBrains Mono','IBM Plex Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;display:flex;height:100vh;height:100dvh;overflow:hidden}
 body.flip{flex-direction:row-reverse}
 body.maplearn .panel :is(input,select,button,label.s,label.chk){cursor:crosshair}
 body.maplearn #blkmap :is(input,select,button,label.s,label.chk){cursor:pointer}
@@ -263,7 +269,7 @@ body.wcon #stage{touch-action:none}
 body.nopanel #pntog .pf{fill:none}
 body.flip #pntog svg{transform:scaleX(-1)}
 body.outmode #pntog{display:none}
-@media (max-width:760px) and (orientation:portrait){
+@media (max-width:760px) and (orientation:portrait),(min-width:761px) and (max-width:1100px) and (orientation:portrait) and (pointer:coarse){
   body.nopanel .stage{height:100dvh}
   #pntog svg,body.flip #pntog svg{transform:rotate(90deg)}   /* col pannello sotto la scena, la barretta sta in basso */
 }
@@ -271,6 +277,56 @@ body.outmode #pntog{display:none}
 @media (pointer:coarse) and (orientation:landscape) and (max-height:540px){
   #pntog{display:none}
   body.nopanel .panel{display:flex}
+}
+
+/* ---- iPad / Android: tablet, touch, schermi dinamici ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* telefono e tablet in verticale: la scena resta fissa in alto mentre scorri i parametri */
+@media (max-width:760px) and (orientation:portrait),(min-width:761px) and (max-width:1100px) and (orientation:portrait) and (pointer:coarse){
+  .stage{position:sticky;top:0;z-index:3}
+}
+/* tablet in verticale: scena sopra, pannello sotto a tutta larghezza (come sul telefono) */
+@media (min-width:761px) and (max-width:1100px) and (orientation:portrait) and (pointer:coarse){
+  body,body.flip{flex-direction:column;overflow:auto;height:auto}
+  .stage{height:56dvh;flex:none}
+  .panel{width:100%!important;border:0!important;border-top:1px solid var(--wh)!important}
+  #rsz{display:none!important}
+}
+/* tablet in orizzontale: pannello proporzionato allo schermo */
+@media (min-width:761px) and (pointer:coarse) and (orientation:landscape) and (min-height:541px){
+  .panel{width:clamp(320px,34vw,400px)}
+}
+/* touch: bersagli grandi, niente zoom di iOS sui campi, niente selezione per sbaglio */
+@media (pointer:coarse){
+  html{overscroll-behavior:none}
+  button,select,label,summary{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .panel{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  .panel input[type=text],.panel input[type=number],.panel textarea,.panel pre{-webkit-user-select:text;user-select:text}
+  button,.btn{min-height:40px;font-size:13px}
+  select,.osc input[type=text],.panel input[type=text],.panel input[type=number]{min-height:40px;font-size:16px}
+  .chk{min-height:40px}
+  .chk input[type=checkbox],.chk input[type=radio],.lxgrp>h3 label input,.mainlight-h label input{width:20px;height:20px;flex:none}
+  label.s{padding:8px 10px}
+  .blk>summary{padding:12px;min-height:44px;align-items:center}
+  input[type=range]{height:30px}
+  input[type=range]::-webkit-slider-runnable-track{height:6px}
+  input[type=range]::-moz-range-track{height:6px}
+  input[type=range]::-webkit-slider-thumb{width:26px;height:26px;margin-top:-10px;border-width:4px}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-width:4px}
+  .maprow button{min-height:30px}
+}
+/* senza mouse: niente stati hover "incollati" dopo il tocco, e la X delle miniature sempre visibile */
+@media (hover:none),(pointer:coarse){
+  button:hover,.btn:hover{background:none;color:var(--wh)}
+  button.on:hover,button.pri:hover,.btn.pri:hover{background:var(--wh);color:var(--bk)}
+  label.s:hover:not(:focus-within){border-color:transparent;background:none;color:#c8c8c8}
+  .blk>summary:hover{background:none}
+  .blk.o>summary:hover{background:var(--wh)}
+  .chk:hover{background:none}
+  input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--wh)}
+  input[type=range]:hover::-moz-range-thumb{box-shadow:0 0 0 1px var(--wh)}
+  .th i{display:block}
+  #pntog:hover{background:rgba(10,10,10,.6);color:var(--wh);opacity:.7}
 }
 </style>
 </head>
