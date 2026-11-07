@@ -254,11 +254,30 @@ body.wcon #stage{touch-action:none}
   #pcmenu{display:grid}
   #pcflip{left:66px}
 }
+
+/* ---- bottone a schermo: apri / chiudi il pannello delle proprietà ---- */
+#pntog{position:absolute;left:12px;bottom:12px;z-index:61;width:42px;height:42px;padding:0;display:grid;place-items:center;border:1px solid var(--wh);background:rgba(10,10,10,.6);color:var(--wh);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:.7;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#pntog:hover,#pntog:focus-visible{opacity:1;background:var(--wh);color:var(--bk)}
+#pntog svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+#pntog .pf{fill:currentColor;stroke:none}
+body.nopanel #pntog .pf{fill:none}
+body.flip #pntog svg{transform:scaleX(-1)}
+body.outmode #pntog{display:none}
+@media (max-width:760px) and (orientation:portrait){
+  body.nopanel .stage{height:100dvh}
+  #pntog svg,body.flip #pntog svg{transform:rotate(90deg)}   /* col pannello sotto la scena, la barretta sta in basso */
+}
+/* telefono in orizzontale: il pannello è il cassetto ☰, il bottone in più non serve (e il cassetto si apre anche a pannello nascosto) */
+@media (pointer:coarse) and (orientation:landscape) and (max-height:540px){
+  #pntog{display:none}
+  body.nopanel .panel{display:flex}
+}
 </style>
 </head>
 <body class="roton">
 <main class="stage" id="stage"><canvas id="c" width="1600" height="900"></canvas><canvas id="wcv"></canvas><div id="netcur" style="display:none;position:fixed;width:20px;height:20px;border:2px solid #6ec8ff;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:50;box-shadow:0 0 8px rgba(255,255,255,.4)"></div><div id="fps" hidden></div><div id="captoast"></div><div id="capbar"><button id="capb1" aria-label="Scatta foto"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button><button id="capb2" aria-label="Registra video"><span class="rd"></span></button></div>
 <button id="pcmenu" aria-label="Impostazioni"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div id="pcscrim"></div>
+<button id="pntog" aria-label="Nascondi pannello" aria-expanded="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M15 4v16"/><rect class="pf" x="15" y="4" width="6" height="16"/></svg></button>
 <div id="pcam">
   <button id="pcflip" aria-label="Fotocamera frontale / posteriore"><svg viewBox="0 0 24 24"><path d="M20 7h-9a4 4 0 0 0-4 4v1M4 17h9a4 4 0 0 0 4-4v-1M17 4l3 3-3 3M7 20l-3-3 3-3"/></svg></button>
   <button id="pcfmt" aria-label="Formato e file">16:9</button>
@@ -6628,7 +6647,9 @@ function hmVis(){
   const r=c.getBoundingClientRect(),p=document.querySelector('.panel');let x0=0,x1=1;
   if(p&&r.width>8&&getComputedStyle(p).display!=='none'){
     const q=p.getBoundingClientRect();
-    if(q.width>8&&q.right>r.left&&q.left<r.right){
+    /* il pannello copre la scena solo se si sovrappone anche in verticale: sul telefono in verticale sta SOTTO la canvas (ov<=0) e non va sottratto, altrimenti le mani finiscono schiacciate sul bordo destro */
+    const ov=Math.min(q.bottom,r.bottom)-Math.max(q.top,r.top);
+    if(q.width>8&&ov>r.height*.5&&q.right>r.left&&q.left<r.right){
       if(q.left+q.width/2>r.left+r.width/2)x1=Math.max(.2,(q.left-r.left)/r.width);else x0=Math.min(.8,(q.right-r.left)/r.width);
     }
   }
@@ -8564,6 +8585,14 @@ pcq('pcvf').addEventListener('change',e=>{PCS.vf=e.target.value;pcFmtUI()});
 }
 
 /* telefono in orizzontale: cassetto del pannello */
+/* bottone a schermo: apre / chiude il pannello delle proprietà (come il tasto P) */
+{
+  const b=document.getElementById('pntog'),bd=document.body;
+  const sync=()=>{const o=!bd.classList.contains('nopanel');b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Nascondi pannello':'Mostra pannello');b.title=o?'Nascondi pannello (P)':'Mostra pannello (P)'};
+  b.onclick=()=>{bd.classList.toggle('nopanel');sync();setTimeout(()=>dispatchEvent(new Event('resize')),30)};
+  new MutationObserver(sync).observe(bd,{attributes:true,attributeFilter:['class']});
+  sync();
+}
 pcq('pcmenu').onclick=()=>document.body.classList.toggle('pcopen');
 pcq('pcscrim').onclick=()=>document.body.classList.remove('pcopen');
 pcSync();
